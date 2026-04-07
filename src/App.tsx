@@ -253,7 +253,7 @@ export default function App() {
                     
                     <motion.div 
                       variants={containerVariants}
-                      className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 w-full pb-8 justify-items-center"
+                      className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full pb-8"
                     >
                       {activeProjects.map((project) => (
                         <div key={project.id} className="flex flex-col gap-4 w-[260px]">
@@ -351,7 +351,7 @@ export default function App() {
                           >
                             <motion.div 
                               variants={containerVariants}
-                              className="pt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 w-full pb-12 justify-items-center"
+                              className="pt-8 flex flex-wrap justify-center gap-1 sm:gap-4 w-full pb-12"
                             >
                               {comingSoonProjects.map((project) => (
                                 <div key={project.id} className="flex flex-col gap-4 w-[260px]">
