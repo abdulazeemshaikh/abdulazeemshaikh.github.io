@@ -278,7 +278,7 @@ export default function App() {
                                 <div className="flex items-center gap-2">
                                   {project.id === 'zalt' ? (
                                     <div className="w-10 h-6 flex items-center justify-center overflow-hidden">
-                                      <img src="/assets/zalt-icon.png" alt="Zalt" className="w-full h-auto object-contain" />
+                                      <img src="assets/zalt-icon.png" alt="Zalt" className="w-full h-auto object-contain" />
                                     </div>
                                   ) : (
                                     <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${project.color.replace('/20', '')} shadow-sm`} />
