@@ -275,7 +275,7 @@ export default function App() {
                             
                             <div className="flex flex-col min-h-[272px] justify-between relative z-10">
                               <div className="space-y-4">
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-1">
                                   {project.id === 'zalt' ? (
                                     <div className="w-10 h-6 flex items-center justify-center overflow-hidden">
                                       <img src="assets/zalt-icon.png" alt="Zalt" className="w-full h-auto object-contain" />
