@@ -87,7 +87,7 @@ export default function App() {
     return 'Good evening';
   };
 
-  const handleWaitlistSubmit = (e: React.FormEvent) => {
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const waitlistData = {
       name: formName,
@@ -95,15 +95,28 @@ export default function App() {
       timestamp: new Date().toISOString()
     };
     
-    // Mock saving to localStorage since Firebase was declined
-    const existingWaitlist = JSON.parse(localStorage.getItem('waitlist_responses') || '[]');
-    existingWaitlist.push(waitlistData);
-    localStorage.setItem('waitlist_responses', JSON.stringify(existingWaitlist));
-    
-    setIsSubmitted(true);
+    try {
+      // Send to our new backend
+      const response = await fetch('http://localhost:3001/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'waitlist', data: waitlistData })
+      });
+      
+      if (response.ok) {
+        setIsSubmitted(true);
+      }
+    } catch (error) {
+      console.error('Error submitting waitlist:', error);
+      // Fallback: still save locally just in case
+      const existingWaitlist = JSON.parse(localStorage.getItem('waitlist_responses') || '[]');
+      existingWaitlist.push(waitlistData);
+      localStorage.setItem('waitlist_responses', JSON.stringify(existingWaitlist));
+      setIsSubmitted(true);
+    }
   };
 
-  const handleInvestSubmit = (e: React.FormEvent) => {
+  const handleInvestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const investData = {
       name: investFormName,
@@ -112,11 +125,25 @@ export default function App() {
       timestamp: new Date().toISOString()
     };
     
-    const existingInvestments = JSON.parse(localStorage.getItem('investment_interest') || '[]');
-    existingInvestments.push(investData);
-    localStorage.setItem('investment_interest', JSON.stringify(existingInvestments));
-    
-    setIsInvestSubmitted(true);
+    try {
+      // Send to our new backend
+      const response = await fetch('http://localhost:3001/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'invest', data: investData })
+      });
+      
+      if (response.ok) {
+        setIsInvestSubmitted(true);
+      }
+    } catch (error) {
+      console.error('Error submitting investment interest:', error);
+      // Fallback: still save locally just in case
+      const existingInvestments = JSON.parse(localStorage.getItem('investment_interest') || '[]');
+      existingInvestments.push(investData);
+      localStorage.setItem('investment_interest', JSON.stringify(existingInvestments));
+      setIsInvestSubmitted(true);
+    }
   };
 
   const containerVariants = {
