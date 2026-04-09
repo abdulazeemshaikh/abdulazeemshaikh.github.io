@@ -34,7 +34,7 @@ export default function App() {
       id: 'crystals',
       title: 'CRYSTALS',
       tagline: 'Making life simple',
-      description: 'Crystals are modular, lightweight apps that save you time and money. Built privacy-first, each Crystal replaces a bloated SaaS tool you\'d otherwise pay for monthly.',
+      description: 'Crystals are lightweight, modular apps within the Zalt ecosystem designed to save you time and reduce costs. Built with privacy at its core, each Crystal replaces a bulky SaaS tool you’d otherwise pay for every month.',
       color: 'from-amber-500/20 to-yellow-500/20'
     },
     {
