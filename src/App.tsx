@@ -273,54 +273,27 @@ export default function App() {
                     </motion.div>
 
                     <div className="mt-2 flex flex-col items-center gap-4">
-                      <motion.div variants={itemVariants} className="flex items-center justify-center gap-4">
-                        <LiquidMetalButton 
-                          label="INVEST"
-                          width={80}
-                          onClick={() => {
-                            setShowInvestForm(!showInvestForm);
-                            setShowForm(false);
-                          }}
-                        />
-                      </motion.div>
                     </div>
                     
                     <motion.div 
                       variants={containerVariants}
                       className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full pb-8"
                     >
-                      {activeProjects.map((project) => (
-                        <div key={project.id} className="flex flex-col gap-4 w-[260px]">
+                      {activeProjects.filter(p => p.id === 'zalt').map((project) => (
+                        <div key={project.id} className="flex flex-col gap-4 w-full max-w-[600px]">
                           <motion.div 
                             variants={cardVariants}
                             className={`bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
                           >
-                            {/* Soft Gradient Background */}
                             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
-                            
-                            {project.id !== 'zalt' && project.id !== 'crystals' && (
-                              <div className="absolute top-4 right-4 z-20">
-                                <span className="text-[9px] font-bold uppercase tracking-widest text-black/20 bg-black/5 px-2 py-0.5 rounded-sm">
-                                  Coming Soon
-                                </span>
-                              </div>
-                            )}
                             
                             <div className="flex flex-col min-h-[272px] justify-between relative z-10">
                               <div className="space-y-4">
                                 <div className="flex items-center gap-1">
-                                  {project.id === 'zalt' ? (
-                                    <div className="w-10 h-6 flex items-center justify-center overflow-hidden">
-                                      <img src="assets/zalt-icon.png" alt="Zalt" className="w-full h-auto object-contain" />
-                                    </div>
-                                  ) : project.id === 'crystals' ? (
-                                    <div className="w-10 h-6 flex items-center justify-center overflow-hidden">
-                                      <img src="assets/crystals-icon.png" alt="Crystals" className="w-full h-auto object-contain" />
-                                    </div>
-                                  ) : (
-                                    <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${project.color.replace('/20', '')} shadow-sm`} />
-                                  )}
+                                  <div className="w-10 h-6 flex items-center justify-center overflow-hidden">
+                                    <img src="assets/zalt-icon.png" alt="Zalt" className="w-full h-auto object-contain" />
+                                  </div>
                                   <span className="text-sm font-bold tracking-tight text-black">
                                     {project.title}
                                   </span>
@@ -335,33 +308,46 @@ export default function App() {
                                   </p>
                                 </div>
 
-                                {project.id === 'zalt' && (
-                                  <motion.div 
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.5 }}
-                                    className="pt-2"
-                                  >
-                                    <button 
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowForm(true);
-                                        setShowInvestForm(false);
-                                      }}
-                                      className="px-4 py-2 border border-black text-black bg-transparent hover:bg-black hover:text-white rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 w-fit"
-                                    >
-                                      Get early access
-                                    </button>
-                                  </motion.div>
+                                {/* Crystals Card inside Zalt */}
+                                {activeProjects.find(p => p.id === 'crystals') && (
+                                  <div className="mt-6 p-5 border border-black/5 bg-white/40 backdrop-blur-md relative overflow-hidden group/crystals transition-all duration-300">
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${activeProjects.find(p => p.id === 'crystals')?.color} opacity-30 blur-2xl -z-10`} />
+                                    <div className="flex items-center gap-1 mb-2">
+                                      <div className="w-10 h-6 flex items-center justify-center overflow-hidden">
+                                        <img src="assets/crystals-icon.png" alt="Crystals" className="w-full h-auto object-contain" />
+                                      </div>
+                                      <span className="text-sm font-bold tracking-tight text-black">
+                                        {activeProjects.find(p => p.id === 'crystals')?.title}
+                                      </span>
+                                    </div>
+                                    <h3 className="text-lg font-medium leading-tight text-black/80">
+                                      {activeProjects.find(p => p.id === 'crystals')?.tagline}
+                                    </h3>
+                                    <p className="text-[11px] text-black/50 leading-relaxed font-medium mt-2">
+                                      {activeProjects.find(p => p.id === 'crystals')?.description}
+                                    </p>
+                                  </div>
                                 )}
+
+                                <motion.div 
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.5 }}
+                                  className="pt-4"
+                                >
+                                  <LiquidMetalButton 
+                                    label="GET EARLY ACCESS"
+                                    width={160}
+                                    onClick={() => {
+                                      setShowForm(true);
+                                      setShowInvestForm(false);
+                                    }}
+                                  />
+                                </motion.div>
                               </div>
                               
                               <div className="flex justify-end mt-4">
-                                {(project.id === 'zalt' || project.id === 'crystals') && (
-                                  <div className="flex items-center justify-center transition-all duration-300">
-                                    <ArrowUpRight size={18} className="text-black/40" />
-                                  </div>
-                                )}
+                                <ArrowUpRight size={18} className="text-black/40" />
                               </div>
                             </div>
                           </motion.div>
