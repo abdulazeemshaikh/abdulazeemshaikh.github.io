@@ -280,7 +280,7 @@ export default function App() {
                       className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full pb-8"
                     >
                       {activeProjects.filter(p => p.id === 'zalt').map((project) => (
-                        <div key={project.id} className="flex flex-col gap-4 w-full max-w-[620px]">
+                        <div key={project.id} className="flex flex-col gap-4 w-fit">
                           <motion.div 
                             variants={cardVariants}
                             className={`bg-white p-6 md:p-8 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
@@ -290,7 +290,7 @@ export default function App() {
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                             
                             <div className="flex flex-col md:flex-row gap-8 min-h-[272px] relative z-10">
-                              {/* Left Column: Zalt Info (Preserving original width and fonts) */}
+                              {/* Left Column: Zalt Info */}
                               <div className="w-full md:w-[212px] flex flex-col justify-between shrink-0">
                                 <div className="space-y-4">
                                   <div className="flex items-center gap-1">
@@ -329,36 +329,41 @@ export default function App() {
                                 </motion.div>
                               </div>
 
-                              {/* Right Column: Crystals Card inside Zalt */}
+                              {/* Right Column: Exact original Crystals card nested inside */}
                               {activeProjects.find(p => p.id === 'crystals') && (
-                                <div className="flex-1 flex shrink-0">
-                                  <motion.div 
-                                    variants={cardVariants}
-                                    className="bg-white/40 backdrop-blur-md p-6 border border-black/5 rounded-none relative overflow-hidden flex flex-col justify-between w-full"
-                                  >
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${activeProjects.find(p => p.id === 'crystals')?.color} opacity-30 blur-2xl -z-10`} />
+                                <div className="w-[260px] flex shrink-0">
+                                  <div className="bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5">
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${activeProjects.find(p => p.id === 'crystals')?.color} opacity-40 blur-3xl -z-10`} />
+                                    <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                                     
-                                    <div className="space-y-4">
-                                      <div className="flex items-center gap-2">
-                                        <div className="w-8 h-5 flex items-center justify-center overflow-hidden">
-                                          <img src="assets/crystals-icon.png" alt="Crystals" className="w-full h-auto object-contain" />
+                                    <div className="flex flex-col min-h-[272px] justify-between relative z-10">
+                                      <div className="space-y-4">
+                                        <div className="flex items-center gap-1">
+                                          <div className="w-10 h-6 flex items-center justify-center overflow-hidden">
+                                            <img src="assets/crystals-icon.png" alt="Crystals" className="w-full h-auto object-contain" />
+                                          </div>
+                                          <span className="text-sm font-bold tracking-tight text-black">
+                                            {activeProjects.find(p => p.id === 'crystals')?.title}
+                                          </span>
                                         </div>
-                                        <span className="text-xs font-bold text-black">
-                                          {activeProjects.find(p => p.id === 'crystals')?.title}
-                                        </span>
-                                      </div>
-                                      <p className="text-[11px] text-black/50 font-medium leading-relaxed">
-                                        {activeProjects.find(p => p.id === 'crystals')?.tagline}
-                                      </p>
-                                      <p className="text-[10px] text-black/40 mt-2 line-clamp-3">
-                                        {activeProjects.find(p => p.id === 'crystals')?.description}
-                                      </p>
-                                    </div>
+                                        <h3 className="text-lg font-medium leading-tight text-black/80">
+                                          {activeProjects.find(p => p.id === 'crystals')?.tagline}
+                                        </h3>
 
-                                    <div className="flex justify-end mt-4">
-                                      <ArrowUpRight size={18} className="text-black/40" />
+                                        <div className="overflow-hidden">
+                                          <p className="text-[11px] text-black/50 leading-relaxed font-medium mt-2">
+                                            {activeProjects.find(p => p.id === 'crystals')?.description}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      
+                                      <div className="flex justify-end mt-4">
+                                        <div className="flex items-center justify-center transition-all duration-300">
+                                          <ArrowUpRight size={18} className="text-black/40" />
+                                        </div>
+                                      </div>
                                     </div>
-                                  </motion.div>
+                                  </div>
                                 </div>
                               )}
                             </div>
