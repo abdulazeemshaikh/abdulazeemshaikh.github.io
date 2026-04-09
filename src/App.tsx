@@ -333,7 +333,8 @@ export default function App() {
                               {activeProjects.find(p => p.id === 'crystals') && (
                                 <div className="w-[260px] flex shrink-0">
                                   <div className="bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5">
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${activeProjects.find(p => p.id === 'crystals')?.color} opacity-40 blur-3xl -z-10`} />
+                                    {/* Restored Gradient with more vibrancy */}
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${activeProjects.find(p => p.id === 'crystals')?.color} opacity-60 blur-3xl -z-10`} />
                                     <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                                     
                                     <div className="flex flex-col min-h-[272px] justify-between relative z-10">
