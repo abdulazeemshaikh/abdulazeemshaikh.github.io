@@ -286,7 +286,7 @@ export default function App() {
                             className={`bg-white p-6 md:p-8 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
                           >
                             {/* Soft Gradient Background */}
-                            <div className={`absolute inset-0 bg-gradient-to-br ${project.color.replace('/20', '')} opacity-40 blur-3xl -z-10`} />
+                            <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-80 blur-3xl -z-10`} />
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                             
                             <div className="flex flex-col md:flex-row gap-8 min-h-[272px] relative z-10">
@@ -332,9 +332,9 @@ export default function App() {
                               {/* Right Column: Exact original Crystals card nested inside */}
                               {activeProjects.find(p => p.id === 'crystals') && (
                                 <div className="w-[260px] flex shrink-0">
-                                  <div className="bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5">
+                                  <div className="bg-white p-6 rounded-none text-left relative z-0 group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5">
                                     {/* Restored Gradient with more vibrancy */}
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${activeProjects.find(p => p.id === 'crystals')?.color?.replace('/20', '')} opacity-40 blur-3xl -z-10`} />
+                                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/60 to-yellow-500/60 opacity-100 blur-3xl -z-10" />
                                     <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                                     
                                     <div className="flex flex-col min-h-[272px] justify-between relative z-10">
