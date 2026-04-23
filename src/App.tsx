@@ -235,7 +235,7 @@ export default function App() {
                       <span className="text-sm mr-2">Abdul Azeem Shaikh</span>
                       <div className="flex items-center gap-0.5">
                         <a 
-                          href="https://instagram.com/abdulazeemshaikh" 
+                          href="https://www.instagram.com/abdulazeemshaikhh/" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="hover:text-black transition-all flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 active:scale-95"
@@ -243,7 +243,7 @@ export default function App() {
                           <Instagram size={18} strokeWidth={1.5} />
                         </a>
                         <a 
-                          href="https://x.com/abdulazeemsh_" 
+                          href="https://x.com/abdulazeem_s" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="hover:text-black transition-all flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 active:scale-95"
