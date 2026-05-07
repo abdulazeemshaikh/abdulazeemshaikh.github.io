@@ -272,7 +272,7 @@ export default function App() {
                                 <div className="space-y-4">
                                   <div className="flex items-center gap-1">
                                     <div className="w-10 h-6 flex items-center justify-center overflow-hidden">
-                                      <img src="assets/zalt-icon.png" alt="Zalt" className="w-full h-auto object-contain" />
+                                      <img src="assets/zalt-feather.png" alt="Zalt" className="w-full h-auto object-contain" />
                                     </div>
                                     <span className="text-sm font-bold tracking-tight text-black">
                                       {project.title}
