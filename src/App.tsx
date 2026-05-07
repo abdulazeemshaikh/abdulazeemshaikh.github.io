@@ -294,7 +294,8 @@ export default function App() {
                         <div key={project.id} className="flex flex-col gap-4 w-fit">
                           <motion.div 
                             variants={cardVariants}
-                            className={`bg-white p-6 md:p-8 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
+                            className={`bg-white p-6 md:p-8 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5 cursor-pointer`}
+                            onClick={() => window.open('https://zalt-intelligence.github.io/', '_blank')}
                           >
                             {/* Soft Gradient Background */}
                             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
@@ -329,14 +330,16 @@ export default function App() {
                                   transition={{ delay: 0.5 }}
                                   className="pt-4"
                                 >
-                                  <LiquidMetalButton 
-                                    label="GET EARLY ACCESS"
-                                    width={160}
-                                    onClick={() => {
-                                      setShowForm(true);
-                                      setShowInvestForm(false);
-                                    }}
-                                  />
+                                  <div onClick={(e) => e.stopPropagation()}>
+                                    <LiquidMetalButton 
+                                      label="GET EARLY ACCESS"
+                                      width={160}
+                                      onClick={() => {
+                                        setShowForm(true);
+                                        setShowInvestForm(false);
+                                      }}
+                                    />
+                                  </div>
                                 </motion.div>
                               </div>
 
