@@ -24,7 +24,7 @@ export default function App() {
       title: 'ZALT',
       tagline: 'Your self‑improving personal AI companion that can do everything',
       description: 'It is able to automate, run and control your entire life. It understands you and your language. No tricky prompts. No learning special commands. Just talk to it like a friend, and it handles your entire life. It gets smarter on its own, every single day. And when you need it to, it becomes your entire operating system. Simple. Powerful. Yours.',
-      color: 'from-blue-500/20 to-purple-500/20'
+      color: 'from-blue-600/20 to-blue-400/20'
     },
     {
       id: 'crystals',
