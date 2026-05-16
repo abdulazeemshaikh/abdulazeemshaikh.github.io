@@ -287,7 +287,7 @@ export default function App() {
                       className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full pb-8"
                     >
                       {activeProjects.filter(p => p.id === 'zalt').map((project) => (
-                        <div key={project.id} className="flex flex-col gap-4 w-[260px]">
+                        <div key={project.id} className="flex flex-col gap-4 w-[320px]">
                           <motion.div 
                             variants={cardVariants}
                             className={`bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
