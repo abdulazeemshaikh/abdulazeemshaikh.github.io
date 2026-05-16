@@ -287,18 +287,18 @@ export default function App() {
                       className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full pb-8"
                     >
                       {activeProjects.filter(p => p.id === 'zalt').map((project) => (
-                        <div key={project.id} className="flex flex-col gap-4 w-fit">
+                        <div key={project.id} className="flex flex-col gap-4 w-[260px]">
                           <motion.div 
                             variants={cardVariants}
-                            className={`bg-white p-6 md:p-8 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
+                            className={`bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
                           >
                             {/* Soft Gradient Background */}
                             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                             
-                            <div className="flex flex-col md:flex-row gap-8 min-h-[272px] relative z-10">
-                              {/* Left Column: Zalt Info */}
-                              <div className="w-full md:w-[212px] flex flex-col justify-between shrink-0">
+                            <div className="flex flex-col gap-8 min-h-[272px] relative z-10">
+                              {/* Zalt Info */}
+                              <div className="w-full flex flex-col justify-between shrink-0">
                                 <div className="space-y-4">
                                   <div className="flex items-center gap-1">
                                     <div className="w-10 h-12 flex items-center justify-center">
