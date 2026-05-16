@@ -26,13 +26,7 @@ export default function App() {
       description: 'It is able to automate, run and control your entire life. It understands you and your language. No tricky prompts. No learning special commands. Just talk to it like a friend, and it handles your entire life. It gets smarter on its own, every single day. And when you need it to, it becomes your entire operating system. Simple. Powerful. Yours.',
       color: 'from-blue-600/20 to-blue-400/20'
     },
-    {
-      id: 'crystals',
-      title: 'CRYSTALS',
-      tagline: 'Making life simple',
-      description: 'Crystals are lightweight, modular apps within the Zalt ecosystem designed to save you time and reduce costs. Built with privacy at its core, each Crystal replaces a bulky SaaS tool you’d otherwise pay for every month.',
-      color: 'from-amber-500/20 to-yellow-500/20'
-    },
+
     {
       id: 'auren',
       title: 'AUREN',
@@ -63,8 +57,8 @@ export default function App() {
     }
   ];
 
-  const activeProjects = projects.filter(p => p.id === 'zalt' || p.id === 'crystals');
-  const comingSoonProjects = projects.filter(p => p.id !== 'zalt' && p.id !== 'crystals');
+  const activeProjects = projects.filter(p => p.id === 'zalt');
+  const comingSoonProjects = projects.filter(p => p.id !== 'zalt');
 
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -305,42 +299,8 @@ export default function App() {
                                 </motion.div>
                               </div>
 
-                              {/* Right Column: Exact original Crystals card nested inside */}
-                              {activeProjects.find(p => p.id === 'crystals') && (
-                                <div className="w-[260px] flex shrink-0">
-                                  <div className="bg-white p-6 rounded-none text-left relative z-0 group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5">
-                                    {/* Restored Gradient with more vibrancy */}
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${activeProjects.find(p => p.id === 'crystals')?.color} opacity-40 blur-3xl -z-10`} />
-                                    <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
-                                    
-                                    <div className="flex flex-col min-h-[272px] justify-between relative z-10">
-                                      <div className="space-y-4">
-                                        <div className="flex items-center gap-1">
 
-                                          <span className="text-sm font-bold tracking-tight text-black">
-                                            {activeProjects.find(p => p.id === 'crystals')?.title}
-                                          </span>
-                                        </div>
-                                        <h3 className="text-lg font-medium leading-tight text-black/80">
-                                          {activeProjects.find(p => p.id === 'crystals')?.tagline}
-                                        </h3>
 
-                                        <div className="overflow-hidden">
-                                          <p className="text-[11px] text-black/50 leading-relaxed font-medium mt-2">
-                                            {activeProjects.find(p => p.id === 'crystals')?.description}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      
-                                      <div className="flex justify-end mt-4">
-                                        <div className="flex items-center justify-center transition-all duration-300">
-                                          <ArrowUpRight size={18} className="text-black/40" />
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
                             </div>
                           </motion.div>
                         </div>

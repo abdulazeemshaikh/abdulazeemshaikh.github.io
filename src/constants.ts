@@ -1,16 +1,7 @@
 import { Company } from './types';
 
 export const COMPANIES: Company[] = [
-  {
-    id: 'alpha',
-    name: 'Crystals',
-    description: 'Pioneering the future of decentralized infrastructure through advanced algorithmic consensus.',
-    industry: 'Infrastructure',
-    founded: '2021',
-    facts: ['10M+ Nodes', 'Global Reach', 'Carbon Neutral'],
-    color: '#3B82F6', // Blue
-    logo: 'https://ui-avatars.com/api/?name=Crystals&background=3B82F6&color=fff',
-  },
+
   {
     id: 'beta',
     name: 'Zalt',
