@@ -296,6 +296,12 @@ export default function App() {
                             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                             
+                            <div className="absolute top-4 right-4 z-20">
+                              <span className="text-[9px] font-bold uppercase tracking-widest text-black/20 bg-black/5 px-2 py-0.5 rounded-sm">
+                                Coming Soon
+                              </span>
+                            </div>
+
                             <div className="flex flex-col gap-8 min-h-[272px] relative z-10">
                               {/* Zalt Info */}
                               <div className="w-full flex flex-col justify-between shrink-0">
