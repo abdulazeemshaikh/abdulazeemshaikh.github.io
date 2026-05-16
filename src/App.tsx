@@ -20,7 +20,6 @@ export default function App() {
   const [investFormAmount, setInvestFormAmount] = useState<string>('');
   const [showInvestForm, setShowInvestForm] = useState<boolean>(false);
   const [isInvestSubmitted, setIsInvestSubmitted] = useState<boolean>(false);
-  const [showComingSoon, setShowComingSoon] = useState<boolean>(false);
 
   const projects = [
     {
@@ -29,40 +28,10 @@ export default function App() {
       tagline: 'Your self‑improving personal AI companion that can do everything',
       description: 'It is able to automate, run and control your entire life. It understands you and your language. No tricky prompts. No learning special commands. Just talk to it like a friend, and it handles your entire life. It gets smarter on its own, every single day. And when you need it to, it becomes your entire operating system. Simple. Powerful. Yours.',
       color: 'from-green-500/20 to-teal-500/20'
-    },
-
-    {
-      id: 'auren',
-      title: 'AUREN',
-      tagline: 'Hardware that disappears so you can focus.',
-      description: 'Hardware that disappears so you can focus. AUREN builds the simplest, most powerful devices on Earth: computers, phones, headphones, and AR glasses. Under the hood, our custom chips and the Photon light‑based processor crush everything else while sipping power. The Data Vault replaces entire data centers with a tiny box that uses 99% less electricity. Clean, fast, invisible.',
-      color: 'from-purple-500/20 to-pink-500/20'
-    },
-    {
-      id: 'azureim',
-      title: 'AZUREIM',
-      tagline: 'Travel without limits, on Earth and beyond.',
-      description: 'Travel without limits, on Earth and beyond. AZUREIM makes movement effortless and instant. Air‑powered bikes, floating cars, hybrid planes, cargo airships, and rockets that launch with a spin and air propulsion. We\'re building the space elevator and selling real estate in orbit. Getting anywhere—or off the planet—has never been smoother or faster.',
-      color: 'from-cyan-500/20 to-blue-500/20'
-    },
-    {
-      id: 'intrinsic',
-      title: 'INTRINSIC',
-      tagline: 'Robots that care, materials that change everything.',
-      description: 'INTRINSIC builds personal robots that help you make your life simpler, faster and 100x more efficient. Our Colossus Lab creates graphene, antimatter, and quantum tech. And we wirelessly beam electricity through air while harvesting wind from passing cars. The physical world, automated and upgraded.',
-      color: 'from-orange-500/20 to-red-500/20'
-    },
-    {
-      id: 'elemental',
-      title: 'ELEMENTAL',
-      tagline: 'Pure essentials for a cleaner life.',
-      description: 'Pure essentials for a cleaner life. ELEMENTAL gives you food with no preservatives, water that\'s the cheapest and cleanest on Earth, and utensils you can eat or compost. No gimmicks, no waste, no complexity. Just natural, honest products that are good for you and the planet.',
-      color: 'from-green-500/20 to-teal-500/20'
     }
   ];
 
   const activeProjects = projects.filter(p => p.id === 'zalt');
-  const comingSoonProjects = projects.filter(p => p.id !== 'zalt');
 
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -186,20 +155,7 @@ export default function App() {
     },
   };
 
-  const sectionVariants = {
-    hidden: { height: 0, opacity: 0, filter: 'blur(10px)' },
-    visible: { 
-      height: 'auto', 
-      opacity: 1, 
-      filter: 'blur(0px)',
-      transition: {
-        height: { duration: 0.4, ease: "easeOut" },
-        opacity: { duration: 0.3 },
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
+
 
   return (
     <div className="min-h-screen w-full bg-[#FDFDFD] text-zinc-900 font-sans overflow-y-auto flex">
@@ -296,11 +252,7 @@ export default function App() {
                             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                             
-                            <div className="absolute top-4 right-4 z-20">
-                              <span className="text-[9px] font-bold uppercase tracking-widest text-black/20 bg-black/5 px-2 py-0.5 rounded-sm">
-                                Coming Soon
-                              </span>
-                            </div>
+
 
                             <div className="flex flex-col gap-8 min-h-[272px] relative z-10">
                               {/* Zalt Info */}
@@ -345,76 +297,7 @@ export default function App() {
                       ))}
                     </motion.div>
 
-                    {/* Coming Soon Section Toggle */}
-                    <motion.div variants={itemVariants} className="w-full flex flex-col items-center">
-                      <button 
-                        onClick={() => setShowComingSoon(!showComingSoon)}
-                        className="flex items-center gap-2 px-6 py-3 text-xs font-bold uppercase tracking-widest text-black/40 hover:text-black transition-all group"
-                      >
-                        <span>Upcoming Projects</span>
-                        <motion.div
-                          animate={{ rotate: showComingSoon ? 180 : 0 }}
-                          transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                        >
-                          <ChevronDown size={14} />
-                        </motion.div>
-                      </button>
 
-                      <AnimatePresence>
-                        {showComingSoon && (
-                          <motion.div
-                            variants={sectionVariants}
-                            initial="hidden"
-                            animate="visible"
-                            exit="hidden"
-                            className="overflow-hidden w-full"
-                          >
-                            <motion.div 
-                              variants={containerVariants}
-                              className="pt-8 flex flex-wrap justify-center gap-1 sm:gap-4 w-full pb-12"
-                            >
-                              {comingSoonProjects.map((project) => (
-                                <div key={project.id} className="flex flex-col gap-4 w-[260px]">
-                                  <motion.div 
-                                    variants={cardVariants}
-                                    className={`bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
-                                  >
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
-                                    <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
-                                    
-                                    <div className="absolute top-4 right-4 z-20">
-                                      <span className="text-[9px] font-bold uppercase tracking-widest text-black/20 bg-black/5 px-2 py-0.5 rounded-sm">
-                                        Coming Soon
-                                      </span>
-                                    </div>
-                                    
-                                    <div className="flex flex-col min-h-[272px] justify-between relative z-10">
-                                      <div className="space-y-4">
-                                        <div className="flex items-center gap-2">
-                                          <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${project.color.replace('/20', '')} shadow-sm`} />
-                                          <span className="text-sm font-bold tracking-tight text-black">
-                                            {project.title}
-                                          </span>
-                                        </div>
-                                        <h3 className="text-lg font-medium leading-tight text-black/80">
-                                          {project.tagline}
-                                        </h3>
-
-                                        <div className="overflow-hidden">
-                                          <p className="text-[11px] text-black/50 leading-relaxed font-medium mt-2">
-                                            {project.description}
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </motion.div>
-                                </div>
-                              ))}
-                            </motion.div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
                   </div>
               }
             />
