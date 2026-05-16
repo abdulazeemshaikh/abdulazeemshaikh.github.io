@@ -9,6 +9,10 @@ import { SplineBackground } from './components/SplineBackground';
 // ...
 
 export default function App() {
+  const [formName, setFormName] = useState<string>('');
+  const [formContact, setFormContact] = useState<string>('');
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
 
   const [investFormName, setInvestFormName] = useState<string>('');
@@ -78,6 +82,39 @@ export default function App() {
   };
 
 
+
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const waitlistData = {
+      type: 'waitlist',
+      name: formName,
+      contact: formContact,
+      timestamp: new Date().toISOString()
+    };
+    
+    try {
+      const scriptUrl = import.meta.env.VITE_GOOGLE_SHEET_URL;
+      if (scriptUrl) {
+        await fetch(scriptUrl, {
+          method: 'POST',
+          mode: 'no-cors', // Google Apps Script requires no-cors for simple triggers
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(waitlistData),
+        });
+      }
+    } catch (error) {
+      console.error('Submission failed:', error);
+    }
+    
+    // Still save to localStorage as a backup
+    const existingWaitlist = JSON.parse(localStorage.getItem('waitlist_responses') || '[]');
+    existingWaitlist.push(waitlistData);
+    localStorage.setItem('waitlist_responses', JSON.stringify(existingWaitlist));
+    
+    setIsSubmitted(true);
+  };
 
   const handleInvestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -286,6 +323,10 @@ export default function App() {
                                     <LiquidMetalButton 
                                       label="GET EARLY ACCESS"
                                       width={160}
+                                      onClick={() => {
+                                        setShowForm(true);
+                                        setShowInvestForm(false);
+                                      }}
                                     />
                                   </div>
                               </div>
@@ -374,16 +415,104 @@ export default function App() {
           </div>
 
           <AnimatePresence>
-            {showInvestForm && (
+            {(showForm || showInvestForm) && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => {
+                  setShowForm(false);
                   setShowInvestForm(false);
                 }}
                 className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-[90]"
               />
+            )}
+
+            {showForm && (
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0, filter: 'blur(10px)', x: '-50%', y: '-50%' }}
+                  animate={{ scale: 1, opacity: 1, filter: 'blur(0px)', x: '-50%', y: '-50%' }}
+                  exit={{ scale: 0.9, opacity: 0, filter: 'blur(10px)', x: '-50%', y: '-50%' }}
+                  transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                  className="fixed left-1/2 top-1/2 w-full max-w-[360px] bg-white border border-black/5 z-[100] p-8 rounded-[32px] flex flex-col shadow-2xl shadow-black/10"
+                >
+                  <button 
+                    onClick={() => setShowForm(false)}
+                    className="absolute top-6 right-6 text-black/20 hover:text-black transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                  <div className="mt-2" />
+
+                {isSubmitted ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="py-8 flex flex-col items-center justify-center text-center gap-3"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center mb-2">
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 200, damping: 10, delay: 0.2 }}
+                      >
+                        <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </motion.div>
+                    </div>
+                    <h3 className="text-xl text-black">Thank you</h3>
+                  </motion.div>
+                ) : (
+                  <motion.form 
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    onSubmit={handleWaitlistSubmit}
+                    className="flex flex-col gap-3"
+                  >
+                    <motion.div variants={itemVariants} className="flex flex-col gap-1.5 text-left">
+                      <label className="text-xs text-black/40">
+                        Name
+                      </label>
+                      <div className="relative w-full">
+                        <input 
+                          type="text" 
+                          value={formName}
+                          onChange={(e) => setFormName(e.target.value)}
+                          placeholder="Full name or first name"
+                          className="w-full bg-black/5 border border-black/5 rounded-full px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black/5 text-black text-sm placeholder:text-black/20 placeholder:text-[11px] transition-all" 
+                        />
+                      </div>
+                    </motion.div>
+                
+                    <motion.div variants={itemVariants} className="flex flex-col gap-1.5 text-left">
+                      <label className="text-xs text-black/40">
+                        Contact
+                      </label>
+                      <div className="relative w-full">
+                        <textarea 
+                          rows={3}
+                          value={formContact}
+                          onChange={(e) => setFormContact(e.target.value)}
+                          placeholder="Email, Socials and/or Phone number"
+                          className="w-full bg-black/5 border border-black/5 rounded-[18px] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black/5 text-black text-sm placeholder:text-black/20 placeholder:text-[11px] transition-all resize-none" 
+                        />
+                      </div>
+                    </motion.div>
+                    
+                    <motion.div variants={itemVariants} className="mt-0.5 flex justify-center">
+                      <button 
+                        type="submit"
+                        disabled={!formName.trim() || !formContact.trim()}
+                        className="px-8 py-2.5 bg-black text-white rounded-full text-sm hover:bg-black/90 transition-all disabled:opacity-20 disabled:cursor-not-allowed active:scale-95"
+                      >
+                        Join waitlist
+                      </button>
+                    </motion.div>
+                  </motion.form>
+                )}
+              </motion.div>
             )}
 
 
