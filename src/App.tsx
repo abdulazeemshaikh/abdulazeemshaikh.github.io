@@ -24,9 +24,9 @@ export default function App() {
   const projects = [
     {
       id: 'zalt',
-      title: 'ZALT',
-      tagline: 'Your self‑improving personal AI companion that can do everything',
-      description: 'It is able to automate, run and control your entire life. It understands you and your language. No tricky prompts. No learning special commands. Just talk to it like a friend, and it handles your entire life. It gets smarter on its own, every single day. And when you need it to, it becomes your entire operating system. Simple. Powerful. Yours.',
+      title: 'ZYFLERON',
+      tagline: 'Your own personal butler. And it fits in your pocket.',
+      description: 'Zyfleron handles the little things and the big ones (errands, emails, reminders, reservations) before you even ask. Imagine waking up to a day that just flows, where everything gets done, and your mind stays calm. No stress, no forgetting, no busywork. Just you, living life, while your pocket-sized genius quietly takes care of it all.',
       color: 'from-green-500/20 to-teal-500/20'
     }
   ];
@@ -260,7 +260,7 @@ export default function App() {
                                 <div className="space-y-4">
                                   <div className="flex items-center gap-1">
                                     <div className="w-7 h-7 flex items-center justify-center">
-                                      <img src="assets/zalt-feather.png" alt="Zalt" className="w-full h-full object-contain" />
+                                      <img src="assets/zalt-feather.png" alt="Zyfleron" className="w-full h-full object-contain" />
                                     </div>
                                     <span className="text-sm font-bold tracking-tight text-black">
                                       {project.title}

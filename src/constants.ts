@@ -4,13 +4,13 @@ export const COMPANIES: Company[] = [
 
   {
     id: 'beta',
-    name: 'Zalt',
+    name: 'Zyfleron',
     description: 'Redefining human-computer interaction with neural-link interfaces and spatial computing.',
     industry: 'Neurotech',
     founded: '2022',
     facts: ['FDA Approved', 'Latency < 1ms', 'Non-invasive'],
     color: '#10B981', // Emerald
-    logo: 'https://ui-avatars.com/api/?name=Zalt&background=10B981&color=fff',
+    logo: 'https://ui-avatars.com/api/?name=Zyfleron&background=10B981&color=fff',
   },
   {
     id: 'gamma',
