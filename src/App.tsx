@@ -45,7 +45,7 @@ export default function App() {
       tagline: 'Your own personal butler. And it fits in your pocket.',
       description: (
         <>
-          Zyfleron listens. Then it quietly handles everything you used to juggle, stress over, and forget. The moment you speak, your reminders set themselves, your emails write themselves, your life starts <strong className="font-bold text-black/70">flowing</strong> instead of crashing. It feels like someone just handed you a calmer, lighter, luckier version of your life, and it’s yours right now.
+          <strong className="font-bold text-black/70">You were never meant to carry it all.</strong> Zyfleron hears you once & quietly carries everything, so a deep, calm order settles in its place. It feels like finally setting down a weight you forgot you were holding. The companion your soul has been craving, no matter who you are, what you do, or where you wake up. The moment you feel life lift off your shoulders, you’ll understand why 8 billion people are calling it theirs.
         </>
       ),
       color: 'from-green-500/20 to-teal-500/20'
