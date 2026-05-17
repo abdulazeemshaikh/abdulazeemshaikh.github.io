@@ -235,6 +235,10 @@ export default function App() {
                       </div>
                     </motion.div>
 
+                    <motion.div variants={itemVariants} className="text-xs text-black/50 mt-1 text-center font-medium">
+                      I like Sustainable Energy, Space, Cars, Robots & AI
+                    </motion.div>
+
                     <div className="mt-2 flex flex-col items-center gap-4">
                     </div>
                     
