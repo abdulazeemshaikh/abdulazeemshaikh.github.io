@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
 import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
@@ -20,6 +20,23 @@ export default function App() {
   const [investFormAmount, setInvestFormAmount] = useState<string>('');
   const [showInvestForm, setShowInvestForm] = useState<boolean>(false);
   const [isInvestSubmitted, setIsInvestSubmitted] = useState<boolean>(false);
+
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { damping: 25, stiffness: 250 };
+  const cursorX = useSpring(mouseX, springConfig);
+  const cursorY = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX + 15);
+      mouseY.set(e.clientY + 15);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   const projects = [
     {
@@ -235,8 +252,47 @@ export default function App() {
                       </div>
                     </motion.div>
 
-                    <motion.div variants={itemVariants} className="text-xs text-black/50 mt-1 text-center font-medium">
-                      I like Sustainable Energy, Space, Cars, Robots & AI
+                    <motion.div variants={itemVariants} className="text-xs text-black/50 mt-1 text-center font-medium select-none">
+                      I like{' '}
+                      <span 
+                        onMouseEnter={() => setHoveredCategory('energy')} 
+                        onMouseLeave={() => setHoveredCategory(null)} 
+                        className="cursor-pointer hover:text-green-600 transition-colors underline decoration-dotted underline-offset-4"
+                      >
+                        Sustainable Energy
+                      </span>
+                      ,{' '}
+                      <span 
+                        onMouseEnter={() => setHoveredCategory('space')} 
+                        onMouseLeave={() => setHoveredCategory(null)} 
+                        className="cursor-pointer hover:text-blue-500 transition-colors underline decoration-dotted underline-offset-4"
+                      >
+                        Space
+                      </span>
+                      ,{' '}
+                      <span 
+                        onMouseEnter={() => setHoveredCategory('cars')} 
+                        onMouseLeave={() => setHoveredCategory(null)} 
+                        className="cursor-pointer hover:text-red-500 transition-colors underline decoration-dotted underline-offset-4"
+                      >
+                        Cars
+                      </span>
+                      ,{' '}
+                      <span 
+                        onMouseEnter={() => setHoveredCategory('robots')} 
+                        onMouseLeave={() => setHoveredCategory(null)} 
+                        className="cursor-pointer hover:text-purple-500 transition-colors underline decoration-dotted underline-offset-4"
+                      >
+                        Robots
+                      </span>
+                      {' '}&{' '}
+                      <span 
+                        onMouseEnter={() => setHoveredCategory('ai')} 
+                        onMouseLeave={() => setHoveredCategory(null)} 
+                        className="cursor-pointer hover:text-amber-500 transition-colors underline decoration-dotted underline-offset-4"
+                      >
+                        AI
+                      </span>
                     </motion.div>
 
                     <div className="mt-2 flex flex-col items-center gap-4">
@@ -308,6 +364,28 @@ export default function App() {
           </div>
 
           <AnimatePresence>
+            {hoveredCategory && (
+              <motion.div
+                style={{
+                  position: 'fixed',
+                  x: cursorX,
+                  y: cursorY,
+                  pointerEvents: 'none',
+                  zIndex: 9999,
+                }}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                className="text-3xl filter drop-shadow-md select-none"
+              >
+                {hoveredCategory === 'energy' && '⚡'}
+                {hoveredCategory === 'space' && '🚀'}
+                {hoveredCategory === 'cars' && '🏎️'}
+                {hoveredCategory === 'robots' && '🤖'}
+                {hoveredCategory === 'ai' && '🧠'}
+              </motion.div>
+            )}
+
             {(showForm || showInvestForm) && (
               <motion.div
                 initial={{ opacity: 0 }}
