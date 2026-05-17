@@ -320,7 +320,7 @@ export default function App() {
                               {/* Zalt Info */}
                               <div className="w-full flex flex-col justify-between shrink-0">
                                 <div className="space-y-4">
-                                  <div className="flex items-center gap-1">
+                                  <div className="flex items-center justify-center w-full">
                                     <span className="text-sm font-bold tracking-tight text-black">
                                       {project.title}
                                     </span>
