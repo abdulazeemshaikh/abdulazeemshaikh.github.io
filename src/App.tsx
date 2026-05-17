@@ -22,6 +22,7 @@ export default function App() {
   const [isInvestSubmitted, setIsInvestSubmitted] = useState<boolean>(false);
 
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [hoveredWeight, setHoveredWeight] = useState<boolean>(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -45,7 +46,15 @@ export default function App() {
       tagline: 'Your own personal butler. And it fits in your pocket.',
       description: (
         <>
-          <strong className="font-bold text-black/70">You were never meant to carry it all.</strong> Zyfleron hears you once & quietly carries everything, so a deep, calm order settles in its place. It feels like finally setting down a weight you forgot you were holding. The companion your soul has been craving, no matter who you are, what you do, or where you wake up. The moment you feel life lift off your shoulders, you’ll understand why 8 billion people are calling it theirs.
+          <strong className="font-bold text-black/70">You were never meant to carry it all.</strong> Zyfleron hears you once & quietly carries everything, so a deep, calm order settles in its place. It feels like finally setting down a{' '}
+          <span 
+            onMouseEnter={() => setHoveredWeight(true)} 
+            onMouseLeave={() => setHoveredWeight(false)}
+            className="underline decoration-dotted cursor-help hover:text-black/80 transition-colors underline-offset-4 font-bold"
+          >
+            weight
+          </span>{' '}
+          you forgot you were holding. The companion your soul has been craving, no matter who you are, what you do, or where you wake up. The moment you feel life lift off your shoulders, you’ll understand why 8 billion people are calling it theirs.
         </>
       ),
       color: 'from-green-500/20 to-teal-500/20'
@@ -389,7 +398,13 @@ export default function App() {
                 {hoveredCategory === 'robots' && '🤖'}
                 {hoveredCategory === 'ai' && '🧠'}
                 {hoveredCategory === 'zyfleron' && (
-                  <img src="assets/zalt-feather.png" alt="Zyfleron cursor" className="w-8 h-8 object-contain select-none pointer-events-none" />
+                  hoveredWeight ? (
+                    <div className="bg-black/90 backdrop-blur-sm text-white text-[10px] tracking-tight font-semibold px-3 py-1.5 rounded-full shadow-2xl border border-white/15 whitespace-nowrap -mt-6 -ml-6 select-none pointer-events-none animate-fade-in">
+                      your reminders, your to-dos, the mental load you’ve been dragging
+                    </div>
+                  ) : (
+                    <img src="assets/zalt-feather.png" alt="Zyfleron cursor" className="w-8 h-8 object-contain select-none pointer-events-none" />
+                  )
                 )}
               </motion.div>
             )}
