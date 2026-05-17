@@ -388,9 +388,7 @@ export default function App() {
                 {hoveredCategory === 'robots' && '🤖'}
                 {hoveredCategory === 'ai' && '🧠'}
                 {hoveredCategory === 'zyfleron' && (
-                  <div className="w-9 h-9 flex items-center justify-center bg-white/95 backdrop-blur-md rounded-full shadow-xl border border-black/5 p-1.5 -mt-3 -ml-3">
-                    <img src="assets/zalt-feather.png" alt="Zyfleron cursor" className="w-full h-full object-contain" />
-                  </div>
+                  <img src="assets/zalt-feather.png" alt="Zyfleron cursor" className="w-8 h-8 object-contain select-none pointer-events-none" />
                 )}
               </motion.div>
             )}
