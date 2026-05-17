@@ -306,6 +306,8 @@ export default function App() {
                         <div key={project.id} className="flex flex-col gap-4 w-[320px]">
                           <motion.div 
                             variants={cardVariants}
+                            onMouseEnter={() => setHoveredCategory('zyfleron')}
+                            onMouseLeave={() => setHoveredCategory(null)}
                             className={`bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
                           >
                             {/* Soft Gradient Background */}
@@ -385,6 +387,11 @@ export default function App() {
                 {hoveredCategory === 'cars' && '🏎️'}
                 {hoveredCategory === 'robots' && '🤖'}
                 {hoveredCategory === 'ai' && '🧠'}
+                {hoveredCategory === 'zyfleron' && (
+                  <div className="w-9 h-9 flex items-center justify-center bg-white/95 backdrop-blur-md rounded-full shadow-xl border border-black/5 p-1.5 -mt-3 -ml-3">
+                    <img src="assets/zalt-feather.png" alt="Zyfleron cursor" className="w-full h-full object-contain" />
+                  </div>
+                )}
               </motion.div>
             )}
 
