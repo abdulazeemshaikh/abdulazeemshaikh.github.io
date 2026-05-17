@@ -368,30 +368,23 @@ export default function App() {
               <motion.div
                 style={{
                   position: 'fixed',
+                  left: 0,
+                  top: 0,
                   x: cursorX,
                   y: cursorY,
                   pointerEvents: 'none',
                   zIndex: 9999,
-                  translateX: '-50%',
-                  translateY: '-50%',
                 }}
-                initial={{ scale: 0, opacity: 0, rotate: -15 }}
-                animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                exit={{ scale: 0, opacity: 0, rotate: 15 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="w-24 h-24 select-none pointer-events-none filter drop-shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                className="text-3xl filter drop-shadow-md select-none"
               >
-                <img
-                  src={`assets/${
-                    hoveredCategory === 'energy' ? 'energy_3d' :
-                    hoveredCategory === 'space' ? 'space_3d' :
-                    hoveredCategory === 'cars' ? 'cars_3d' :
-                    hoveredCategory === 'robots' ? 'robots_3d' :
-                    'ai_3d'
-                  }.png`}
-                  alt={hoveredCategory}
-                  className="w-full h-full object-contain mix-blend-multiply"
-                />
+                {hoveredCategory === 'energy' && '⚡'}
+                {hoveredCategory === 'space' && '🚀'}
+                {hoveredCategory === 'cars' && '🏎️'}
+                {hoveredCategory === 'robots' && '🤖'}
+                {hoveredCategory === 'ai' && '🧠'}
               </motion.div>
             )}
 
