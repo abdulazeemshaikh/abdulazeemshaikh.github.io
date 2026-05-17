@@ -43,7 +43,11 @@ export default function App() {
       id: 'zalt',
       title: 'ZYFLERON',
       tagline: 'Your own personal butler. And it fits in your pocket.',
-      description: 'Zyfleron handles the little things and the big ones (errands, emails, reminders, reservations) before you even ask. Imagine waking up to a day that just flows, where everything gets done, and your mind stays calm. No stress, no forgetting, no busywork. Just you, living life, while your pocket-sized genius quietly takes care of it all.',
+      description: (
+        <>
+          Zyfleron listens. Then it quietly handles everything you used to juggle, stress over, and forget. The moment you speak, your reminders set themselves, your emails write themselves, your life starts <strong className="font-bold text-black/70">flowing</strong> instead of crashing. It feels like someone just handed you a calmer, lighter, luckier version of your life, and it’s yours right now.
+        </>
+      ),
       color: 'from-green-500/20 to-teal-500/20'
     }
   ];
