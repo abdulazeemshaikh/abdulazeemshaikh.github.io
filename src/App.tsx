@@ -321,9 +321,6 @@ export default function App() {
                               <div className="w-full flex flex-col justify-between shrink-0">
                                 <div className="space-y-4">
                                   <div className="flex items-center gap-1">
-                                    <div className="w-7 h-7 flex items-center justify-center">
-                                      <img src="assets/zalt-feather.png" alt="Zyfleron" className="w-full h-full object-contain" />
-                                    </div>
                                     <span className="text-sm font-bold tracking-tight text-black">
                                       {project.title}
                                     </span>
