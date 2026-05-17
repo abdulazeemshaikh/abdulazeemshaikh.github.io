@@ -252,7 +252,7 @@ export default function App() {
                       </div>
                     </motion.div>
 
-                    <motion.div variants={itemVariants} className="text-xs text-black/50 mt-1 text-center font-medium select-none">
+                    <motion.div variants={itemVariants} className="text-sm text-black/40 mt-1 text-center select-none">
                       I like{' '}
                       <span 
                         onMouseEnter={() => setHoveredCategory('energy')} 
