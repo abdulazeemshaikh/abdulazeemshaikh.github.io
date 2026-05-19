@@ -334,7 +334,16 @@ export default function App() {
                             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                             
-
+                            {/* Arrow to Zyfleron Website */}
+                            <a 
+                               href="https://zyfleron.github.io/"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               className="absolute bottom-6 right-6 text-black/30 hover:text-black transition-all duration-300 z-20 hover:scale-110 active:scale-95"
+                               title="Visit Zyfleron Website"
+                             >
+                               <ArrowUpRight size={22} strokeWidth={1.5} />
+                             </a>
 
                             <div className="flex flex-col gap-8 min-h-[272px] relative z-10">
                               {/* Zalt Info */}
