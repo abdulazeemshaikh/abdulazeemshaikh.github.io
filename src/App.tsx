@@ -92,17 +92,20 @@ export default function App() {
     };
     
     try {
-      const scriptUrl = import.meta.env.VITE_GOOGLE_SHEET_URL;
-      if (scriptUrl) {
-        await fetch(scriptUrl, {
-          method: 'POST',
-          mode: 'no-cors', // Google Apps Script requires no-cors for simple triggers
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(waitlistData),
-        });
-      }
+      const FORMSPREE_ID = 'xgodybnb';
+      const endpoint = `https://formspree.io/f/${FORMSPREE_ID}`;
+      await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'waitlist',
+          name: formName,
+          contact: formContact,
+          _subject: `New Waitlist Signup: ${formName}`
+        }),
+      });
     } catch (error) {
       console.error('Submission failed:', error);
     }
@@ -126,17 +129,21 @@ export default function App() {
     };
     
     try {
-      const scriptUrl = import.meta.env.VITE_GOOGLE_SHEET_URL;
-      if (scriptUrl) {
-        await fetch(scriptUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(investData),
-        });
-      }
+      const FORMSPREE_ID = 'xgodybnb';
+      const endpoint = `https://formspree.io/f/${FORMSPREE_ID}`;
+      await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'invest',
+          name: investFormName,
+          contact: investFormContact,
+          amount: investFormAmount,
+          _subject: `New Investment Interest: ${investFormName}`
+        }),
+      });
     } catch (error) {
       console.error('Investment submission failed:', error);
     }
