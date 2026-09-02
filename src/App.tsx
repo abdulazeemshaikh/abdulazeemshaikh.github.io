@@ -317,7 +317,7 @@ export default function App() {
                       className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full pb-8"
                     >
                       {activeProjects.filter(p => p.id === 'zalt').map((project) => (
-                        <div key={project.id} className="flex flex-col gap-4 w-[320px]">
+                        <div key={project.id} className="flex flex-col gap-4 w-full max-w-[480px]">
                           <motion.div 
                             variants={cardVariants}
                             onMouseEnter={() => setHoveredCategory('zyfleron')}
