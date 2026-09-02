@@ -337,21 +337,28 @@ export default function App() {
                                title="Visit zerodegree.ai.studio"
                              >
                                <ArrowUpRight size={22} strokeWidth={1.5} />
-                             </a>
+                            </a>
 
-                            <div className="flex flex-col gap-8 min-h-[272px] relative z-10">
+                            <div className="flex flex-col gap-6 min-h-[272px] relative z-10">
                               {/* Zalt Info */}
                               <div className="w-full flex flex-col justify-between shrink-0">
                                 <div className="space-y-4">
-                                  <div className="flex items-center justify-center w-full">
+                                  <div className="flex flex-row items-center justify-between gap-3 w-full">
                                     <a
                                       href="https://zerodegree.ai.studio"
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="text-sm font-bold tracking-tight text-black hover:underline cursor-pointer"
+                                      className="text-sm font-bold tracking-tight text-black hover:underline cursor-pointer shrink-0"
                                     >
                                       {project.title}
                                     </a>
+                                    <LiquidMetalButton 
+                                      label="GET EARLY ACCESS"
+                                      width={150}
+                                      onClick={() => {
+                                        window.open('https://zerodegree.ai.studio', '_blank');
+                                      }}
+                                    />
                                   </div>
                                   {project.tagline && (
                                     <h3 className="text-lg font-medium leading-tight text-black/80">
@@ -365,20 +372,7 @@ export default function App() {
                                     </p>
                                   </div>
                                 </div>
-
-                                  <div className="pt-4">
-                                    <LiquidMetalButton 
-                                      label="GET EARLY ACCESS"
-                                      width={160}
-                                      onClick={() => {
-                                        window.open('https://zerodegree.ai.studio', '_blank');
-                                      }}
-                                    />
-                                  </div>
                               </div>
-
-
-
                             </div>
                           </motion.div>
                         </div>
