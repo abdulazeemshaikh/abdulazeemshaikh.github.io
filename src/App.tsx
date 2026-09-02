@@ -42,7 +42,7 @@ export default function App() {
   const projects = [
     {
       id: 'zalt',
-      title: 'ZERODEGREE',
+      title: 'ZERODEGREE (ZD)',
       tagline: '',
       description: (
         <>
