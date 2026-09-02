@@ -42,19 +42,13 @@ export default function App() {
   const projects = [
     {
       id: 'zalt',
-      title: 'ZYFLERON',
-      tagline: 'Your own personal butler. And it fits in your pocket.',
+      title: 'ZD',
+      tagline: '',
       description: (
         <>
-          <strong className="font-bold text-black/70">You were never meant to carry it all.</strong> Zyfleron hears you once & quietly carries everything, so a deep, calm order settles in its place. It feels like finally setting down a{' '}
-          <span 
-            onMouseEnter={() => setHoveredWeight(true)} 
-            onMouseLeave={() => setHoveredWeight(false)}
-            className="underline decoration-dotted cursor-help hover:text-black/80 transition-colors underline-offset-4 font-bold"
-          >
-            weight
-          </span>{' '}
-          you forgot you were holding. The companion your soul has been craving, no matter who you are, what you do, or where you wake up. The moment you feel life lift off your shoulders, you’ll understand why 8 billion people are calling it theirs.
+          ZD is your quiet, capable partner, always close on your phone, laptop, and watch, but never in the way. Talk to it naturally, and it doesn't just answer—it acts. One line can set multiple things in motion: “Order dinner, dim the lights, and text my partner I'm on my way” and it all happens, effortlessly. ZD sits in on meetings for you, takes notes, and gives you a clean summary afterward. Need a fresh system? It spins one up in seconds. It has its own wallet, email, and number, so it can pay, book, and reply like a true assistant. It connects to everything you already use—email, calendar, smart home, files, while keeping your data completely private, right on your device. No cloud, no sharing, no worries. You can type, talk, show a picture, or send a voice note, ZD understands. And it works around the clock, even while you sleep, so you wake up to a day that's already taken care of.
+          <br /><br />
+          <strong className="font-bold text-black/80">ZD. Effortless. Private. Yours.</strong>
         </>
       ),
       color: 'from-green-500/20 to-teal-500/20'
@@ -334,13 +328,13 @@ export default function App() {
                             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                             
-                            {/* Arrow to Zyfleron Website */}
+                            {/* Arrow to zerodegree.ai.studio */}
                             <a 
-                               href="https://zyfleron.github.io/"
+                               href="https://zerodegree.ai.studio"
                                target="_blank"
                                rel="noopener noreferrer"
                                className="absolute bottom-6 right-6 text-black/30 hover:text-black transition-all duration-300 z-20 hover:scale-110 active:scale-95"
-                               title="Visit Zyfleron Website"
+                               title="Visit zerodegree.ai.studio"
                              >
                                <ArrowUpRight size={22} strokeWidth={1.5} />
                              </a>
@@ -350,13 +344,20 @@ export default function App() {
                               <div className="w-full flex flex-col justify-between shrink-0">
                                 <div className="space-y-4">
                                   <div className="flex items-center justify-center w-full">
-                                    <span className="text-sm font-bold tracking-tight text-black">
+                                    <a
+                                      href="https://zerodegree.ai.studio"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-sm font-bold tracking-tight text-black hover:underline cursor-pointer"
+                                    >
                                       {project.title}
-                                    </span>
+                                    </a>
                                   </div>
-                                  <h3 className="text-lg font-medium leading-tight text-black/80">
-                                    {project.tagline}
-                                  </h3>
+                                  {project.tagline && (
+                                    <h3 className="text-lg font-medium leading-tight text-black/80">
+                                      {project.tagline}
+                                    </h3>
+                                  )}
 
                                   <div className="overflow-hidden">
                                     <p className="text-[11px] text-black/50 leading-relaxed font-medium mt-2">
@@ -370,8 +371,7 @@ export default function App() {
                                       label="GET EARLY ACCESS"
                                       width={160}
                                       onClick={() => {
-                                        setShowForm(true);
-                                        setShowInvestForm(false);
+                                        window.open('https://zerodegree.ai.studio', '_blank');
                                       }}
                                     />
                                   </div>
@@ -419,7 +419,7 @@ export default function App() {
                       your reminders, your to-dos, the mental load you’ve been dragging
                     </div>
                   ) : (
-                    <img src="assets/zalt-feather.png" alt="Zyfleron cursor" className="w-8 h-8 object-contain select-none pointer-events-none" />
+                    <img src="assets/zalt-feather.png" alt="ZD cursor" className="w-8 h-8 object-contain select-none pointer-events-none" />
                   )
                 )}
               </motion.div>
