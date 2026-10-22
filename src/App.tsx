@@ -542,8 +542,8 @@ export default function App() {
                         </div>
                       ))}
 
-                      {/* Clean Visual Media Feed (Independent row below Zivai card, no outer wrapper container, no border/bg containers) */}
-                      <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-center gap-8 w-full mt-2">
+                      {/* Clean Visual Media Feed (Left-aligned, beside each other, no containers) */}
+                      <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-start gap-8 w-full max-w-[480px] mt-2">
                         {mediaItems.map((item) => {
                           const isLiked = !!likedPosts[item.id];
                           const likes = postLikes[item.id] || 0;
