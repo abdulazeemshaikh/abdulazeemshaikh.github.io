@@ -588,30 +588,40 @@ export default function App() {
 
                               {/* Buttons starting directly flush with the image left edge */}
                               <div className="pt-2 flex flex-col gap-2 w-full">
-                                <div className="flex items-center gap-3">
-                                  {/* Heart Button */}
+                                <div className="flex items-center gap-2.5">
+                                  {/* Heart Button with like count beside it */}
                                   <button 
                                     onClick={() => handleToggleLike(item.id)}
                                     aria-label="Like post"
-                                    className="flex items-center text-black hover:text-red-500 transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent"
+                                    className="flex items-center gap-1 text-black hover:text-red-500 transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent"
                                   >
                                     <Heart 
-                                      size={18} 
+                                      size={17} 
                                       strokeWidth={1.8}
                                       className={`transition-all duration-200 ${isLiked ? 'fill-red-500 text-red-500 scale-110' : ''}`} 
                                     />
+                                    {likes > 0 && (
+                                      <span className="text-[11px] font-medium text-black/70 leading-none">
+                                        {likes}
+                                      </span>
+                                    )}
                                   </button>
 
-                                  {/* Comment Button */}
+                                  {/* Comment Button (toggles typing bar) */}
                                   <button 
                                     onClick={() => setActiveCommentPostId((prev) => prev === item.id ? null : item.id)}
                                     aria-label="Comment on post"
-                                    className="flex items-center text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent"
+                                    className="flex items-center gap-1 text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent"
                                   >
                                     <MessageCircle 
-                                      size={18} 
+                                      size={17} 
                                       strokeWidth={1.8}
                                     />
+                                    {comments.length > 0 && (
+                                      <span className="text-[11px] font-medium text-black/70 leading-none">
+                                        {comments.length}
+                                      </span>
+                                    )}
                                   </button>
 
                                   {/* Share Button */}
@@ -621,23 +631,19 @@ export default function App() {
                                     className="flex items-center text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent"
                                   >
                                     <Send 
-                                      size={17} 
+                                      size={16} 
                                       strokeWidth={1.8}
                                       className="-rotate-12" 
                                     />
                                   </button>
-                                </div>
 
-                                {/* Left-aligned Views Counter */}
-                                <div className="flex items-center gap-1 text-[11px] text-black/45 font-medium">
-                                  <Eye size={12} className="text-black/45" />
-                                  <span>{views} {views === 1 ? 'view' : 'views'}</span>
-                                  {likes > 0 && (
-                                    <>
-                                      <span className="text-black/25">•</span>
-                                      <span className="text-black/60 font-semibold">{likes} {likes === 1 ? 'like' : 'likes'}</span>
-                                    </>
-                                  )}
+                                  {/* Views Icon with count beside it, positioned beside Share */}
+                                  <div className="flex items-center gap-1 text-black/45 ml-0.5" title={`${views} views`}>
+                                    <Eye size={16} strokeWidth={1.8} className="text-black/55" />
+                                    <span className="text-[11px] font-medium text-black/60 leading-none">
+                                      {views}
+                                    </span>
+                                  </div>
                                 </div>
 
                                 {/* Share confirmation toast */}
@@ -668,8 +674,8 @@ export default function App() {
                                   </div>
                                 )}
 
-                                {/* Fully Rounded Typing Bar (Adapts to image width) */}
-                                {isCommenting ? (
+                                {/* Fully Rounded Typing Bar (Opens on clicking comment icon) */}
+                                {isCommenting && (
                                   <form 
                                     onSubmit={(e) => handleAddComment(item.id, e)} 
                                     className="w-full min-w-[170px] flex items-center bg-black/[0.03] border border-black/10 rounded-full px-3 py-1.5 mt-1 focus-within:border-black/25 transition-colors"
@@ -690,13 +696,6 @@ export default function App() {
                                       Post
                                     </button>
                                   </form>
-                                ) : (
-                                  <button
-                                    onClick={() => setActiveCommentPostId(item.id)}
-                                    className="text-[11px] text-black/35 hover:text-black/60 text-left transition-colors pt-0.5 cursor-pointer w-fit"
-                                  >
-                                    Add a comment...
-                                  </button>
                                 )}
                               </div>
                             </motion.div>
