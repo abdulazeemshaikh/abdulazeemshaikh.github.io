@@ -542,7 +542,7 @@ export default function App() {
                         </div>
                       ))}
 
-                      {/* Clean Visual Media Feed (Left-aligned, beside each other, no containers) */}
+                      {/* Clean Visual Media Feed (Left-aligned, beside each other, adaptive natural dimensions, no fixed boxes) */}
                       <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-start gap-8 w-full max-w-[480px] mt-2">
                         {mediaItems.map((item) => {
                           const isLiked = !!likedPosts[item.id];
@@ -557,17 +557,17 @@ export default function App() {
                             <motion.div
                               key={item.id}
                               variants={cardVariants}
-                              className="flex flex-col w-[200px] max-w-[200px] text-left shrink-0"
+                              className="flex flex-col max-w-[210px] w-auto text-left shrink-0"
                             >
-                              {/* Media Image with Double-Tap to Like (Zero background, zero border, zero hover) */}
+                              {/* Media Image with Double-Tap to Like (Adaptive natural aspect ratio, no container constraints) */}
                               <div 
-                                className="relative w-[200px] h-[200px] flex items-center justify-center overflow-hidden cursor-pointer select-none"
+                                className="relative inline-block overflow-hidden cursor-pointer select-none"
                                 onDoubleClick={() => handleDoubleTap(item.id)}
                               >
                                 <img 
                                   src={item.src} 
                                   alt={item.alt} 
-                                  className="w-full h-full object-contain pointer-events-none" 
+                                  className="w-auto h-auto max-w-[210px] max-h-[260px] object-contain block pointer-events-none" 
                                 />
 
                                 {/* Heart burst on double-tap */}
@@ -587,7 +587,7 @@ export default function App() {
                               </div>
 
                               {/* Buttons starting directly flush with the image left edge */}
-                              <div className="pt-2 flex flex-col gap-2 w-[200px]">
+                              <div className="pt-2 flex flex-col gap-2 w-full">
                                 <div className="flex items-center gap-3">
                                   {/* Heart Button */}
                                   <button 
@@ -668,11 +668,11 @@ export default function App() {
                                   </div>
                                 )}
 
-                                {/* Fully Rounded Typing Bar (Exact same width as image: w-[200px]) */}
+                                {/* Fully Rounded Typing Bar (Adapts to image width) */}
                                 {isCommenting ? (
                                   <form 
                                     onSubmit={(e) => handleAddComment(item.id, e)} 
-                                    className="w-[200px] flex items-center bg-black/[0.03] border border-black/10 rounded-full px-3 py-1.5 mt-1 focus-within:border-black/25 transition-colors"
+                                    className="w-full min-w-[170px] flex items-center bg-black/[0.03] border border-black/10 rounded-full px-3 py-1.5 mt-1 focus-within:border-black/25 transition-colors"
                                   >
                                     <input 
                                       type="text" 
