@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Bookmark, Eye } from 'lucide-react';
+import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Eye } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -540,13 +540,12 @@ export default function App() {
                             </div>
                           </motion.div>
 
-                          {/* Clean Visual Media Feed (No outer card container, compact size, real data) */}
-                          <div className="flex flex-col gap-8 w-full max-w-[340px] mx-auto mt-2">
+                          {/* Clean Visual Media Feed (Beside each other, no outer card container, compact size, real data) */}
+                          <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-center gap-6 w-full mx-auto mt-4">
                             {mediaItems.map((item) => {
                               const isLiked = !!likedPosts[item.id];
                               const likes = postLikes[item.id] || 0;
                               const views = postViews[item.id] || 0;
-                              const isSaved = !!savedPosts[item.id];
                               const comments = postComments[item.id] || [];
                               const isHeartAnim = heartAnimPostId === item.id;
                               const isCommenting = activeCommentPostId === item.id;
@@ -556,17 +555,17 @@ export default function App() {
                                 <motion.div
                                   key={item.id}
                                   variants={cardVariants}
-                                  className="flex flex-col w-full text-left"
+                                  className="flex flex-col w-[220px] max-w-[220px] text-left shrink-0"
                                 >
-                                  {/* Media Image with Double-Tap to Like */}
+                                  {/* Media Image with Double-Tap to Like (No hover scale effect) */}
                                   <div 
-                                    className="relative w-full aspect-square flex items-center justify-center overflow-hidden cursor-pointer select-none group rounded-sm bg-black/[0.02]"
+                                    className="relative w-[220px] h-[220px] flex items-center justify-center overflow-hidden cursor-pointer select-none bg-black/[0.02]"
                                     onDoubleClick={() => handleDoubleTap(item.id)}
                                   >
                                     <img 
                                       src={item.src} 
                                       alt={item.alt} 
-                                      className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                                      className="w-full h-full object-contain"
                                     />
 
                                     {/* Heart burst on double-tap */}
@@ -579,124 +578,112 @@ export default function App() {
                                           transition={{ duration: 0.8, ease: "easeOut" }}
                                           className="absolute inset-0 flex items-center justify-center pointer-events-none z-30"
                                         >
-                                          <Heart size={64} className="fill-white text-white drop-shadow-lg" />
+                                          <Heart size={56} className="fill-white text-white drop-shadow-lg" />
                                         </motion.div>
                                       )}
                                     </AnimatePresence>
                                   </div>
 
-                                  {/* Action Buttons: Heart, Comment, Share, Bookmark */}
-                                  <div className="pt-3 pb-1 flex flex-col gap-2">
-                                    <div className="flex items-center justify-between">
-                                      <div className="flex items-center gap-3.5">
-                                        {/* Heart Button */}
-                                        <button 
-                                          onClick={() => handleToggleLike(item.id)}
-                                          aria-label="Like post"
-                                          className="group/btn flex items-center text-black hover:text-red-500 transition-colors cursor-pointer active:scale-90 duration-150"
-                                        >
-                                          <Heart 
-                                            size={20} 
-                                            strokeWidth={1.8}
-                                            className={`transition-all duration-200 ${isLiked ? 'fill-red-500 text-red-500 scale-110' : 'group-hover/btn:scale-110'}`} 
-                                          />
-                                        </button>
+                                  {/* Action Section: Heart, Comment, Share aligned with left edge of image */}
+                                  <div className="pt-2.5 pb-1 flex flex-col gap-2 w-[220px]">
+                                    <div className="flex items-center gap-3">
+                                      {/* Heart Button */}
+                                      <button 
+                                        onClick={() => handleToggleLike(item.id)}
+                                        aria-label="Like post"
+                                        className="group/btn flex items-center text-black hover:text-red-500 transition-colors cursor-pointer active:scale-90 duration-150 p-0"
+                                      >
+                                        <Heart 
+                                          size={18} 
+                                          strokeWidth={1.8}
+                                          className={`transition-all duration-200 ${isLiked ? 'fill-red-500 text-red-500 scale-110' : ''}`} 
+                                        />
+                                      </button>
 
-                                        {/* Comment Button */}
-                                        <button 
-                                          onClick={() => setActiveCommentPostId((prev) => prev === item.id ? null : item.id)}
-                                          aria-label="Comment on post"
-                                          className="group/btn flex items-center text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150"
-                                        >
-                                          <MessageCircle 
-                                            size={20} 
-                                            strokeWidth={1.8}
-                                            className="group-hover/btn:scale-110 transition-transform duration-200" 
-                                          />
-                                        </button>
+                                      {/* Comment Button */}
+                                      <button 
+                                        onClick={() => setActiveCommentPostId((prev) => prev === item.id ? null : item.id)}
+                                        aria-label="Comment on post"
+                                        className="group/btn flex items-center text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150 p-0"
+                                      >
+                                        <MessageCircle 
+                                          size={18} 
+                                          strokeWidth={1.8}
+                                        />
+                                      </button>
 
-                                        {/* Share Button */}
-                                        <button 
-                                          onClick={handleShare}
-                                          aria-label="Share post"
-                                          className="group/btn flex items-center text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150"
-                                        >
-                                          <Send 
-                                            size={19} 
-                                            strokeWidth={1.8}
-                                            className="group-hover/btn:scale-110 transition-transform duration-200 -rotate-12" 
-                                          />
-                                        </button>
-                                      </div>
-
-                                      {/* Right side: Views count & Bookmark */}
-                                      <div className="flex items-center gap-3">
-                                        <div className="flex items-center gap-1 text-[11px] text-black/40 font-medium">
-                                          <Eye size={12} className="text-black/40" />
-                                          <span>{views} {views === 1 ? 'view' : 'views'}</span>
-                                        </div>
-
-                                        <button 
-                                          onClick={() => handleToggleSave(item.id)}
-                                          aria-label="Save post"
-                                          className="text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150"
-                                        >
-                                          <Bookmark 
-                                            size={19} 
-                                            strokeWidth={1.8}
-                                            className={isSaved ? 'fill-black text-black' : ''} 
-                                          />
-                                        </button>
-                                      </div>
+                                      {/* Share Button */}
+                                      <button 
+                                        onClick={handleShare}
+                                        aria-label="Share post"
+                                        className="group/btn flex items-center text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150 p-0"
+                                      >
+                                        <Send 
+                                          size={17} 
+                                          strokeWidth={1.8}
+                                          className="-rotate-12" 
+                                        />
+                                      </button>
                                     </div>
 
-                                    {/* Share confirmation */}
+                                    {/* Left-aligned Views Counter */}
+                                    <div className="flex items-center gap-1 text-[11px] text-black/45 font-medium">
+                                      <Eye size={12} className="text-black/45" />
+                                      <span>{views} {views === 1 ? 'view' : 'views'}</span>
+                                      {likes > 0 && (
+                                        <>
+                                          <span className="text-black/25">•</span>
+                                          <span className="text-black/60 font-semibold">{likes} {likes === 1 ? 'like' : 'likes'}</span>
+                                        </>
+                                      )}
+                                    </div>
+
+                                    {/* Share confirmation toast */}
                                     <AnimatePresence>
                                       {shareFeedback && (
                                         <motion.div 
                                           initial={{ opacity: 0, y: -4 }}
                                           animate={{ opacity: 1, y: 0 }}
                                           exit={{ opacity: 0, y: -4 }}
-                                          className="text-[10px] font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded border border-green-200 self-start"
+                                          className="text-[10px] font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-full border border-green-200 self-start"
                                         >
                                           ✓ {shareFeedback}
                                         </motion.div>
                                       )}
                                     </AnimatePresence>
 
-                                    {/* Likes Count */}
-                                    {likes > 0 && (
-                                      <div className="text-[11px] font-semibold text-black tracking-tight">
-                                        {likes} {likes === 1 ? 'like' : 'likes'}
-                                      </div>
-                                    )}
-
-                                    {/* Real Comments List (No fake entries) */}
+                                    {/* Comments List (in fully rounded corner bubbles) */}
                                     {comments.length > 0 && (
-                                      <div className="flex flex-col gap-1 pt-0.5">
+                                      <div className="flex flex-col gap-1.5 pt-1">
                                         {comments.map((comm, idx) => (
-                                          <div key={idx} className="text-[11px] text-black/80 flex items-start gap-1.5 break-words">
-                                            <span className="text-black/75">{comm}</span>
+                                          <div 
+                                            key={idx} 
+                                            className="text-[11px] text-black/85 bg-black/[0.04] border border-black/5 px-3 py-1.5 rounded-full max-w-full break-words leading-tight"
+                                          >
+                                            {comm}
                                           </div>
                                         ))}
                                       </div>
                                     )}
 
-                                    {/* Add Comment Input Form */}
+                                    {/* Fully Rounded Typing Bar (Exact same width as image: w-[220px]) */}
                                     {isCommenting ? (
-                                      <form onSubmit={(e) => handleAddComment(item.id, e)} className="flex items-center gap-2 pt-1.5 border-t border-black/5">
+                                      <form 
+                                        onSubmit={(e) => handleAddComment(item.id, e)} 
+                                        className="w-[220px] flex items-center bg-black/[0.03] border border-black/10 rounded-full px-3 py-1.5 mt-1 focus-within:border-black/25 transition-colors"
+                                      >
                                         <input 
                                           type="text" 
                                           value={currentInput}
                                           onChange={(e) => setCommentInputs((prev) => ({ ...prev, [item.id]: e.target.value }))}
-                                          placeholder="Add a comment..."
-                                          className="flex-1 text-xs bg-transparent border-none outline-none text-black placeholder:text-black/30"
+                                          placeholder="Write a comment..."
+                                          className="flex-1 min-w-0 text-[11px] bg-transparent border-none outline-none text-black placeholder:text-black/35"
                                           autoFocus
                                         />
                                         <button 
                                           type="submit"
                                           disabled={!currentInput.trim()}
-                                          className="text-[11px] font-semibold text-blue-600 disabled:text-black/20 hover:text-blue-700 cursor-pointer disabled:cursor-not-allowed transition-colors"
+                                          className="text-[11px] font-semibold text-black disabled:text-black/20 hover:opacity-70 cursor-pointer disabled:cursor-not-allowed transition-opacity ml-1.5 shrink-0"
                                         >
                                           Post
                                         </button>
