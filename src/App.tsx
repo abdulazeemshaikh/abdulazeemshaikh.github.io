@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Bookmark, Eye } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -23,6 +23,104 @@ export default function App() {
 
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [hoveredWeight, setHoveredWeight] = useState<boolean>(false);
+
+  // Instagram-style Media Card State
+  const [isLiked, setIsLiked] = useState<boolean>(() => {
+    return localStorage.getItem('media_post_liked') === 'true';
+  });
+  const [likeCount, setLikeCount] = useState<number>(() => {
+    const saved = localStorage.getItem('media_post_like_count');
+    return saved ? parseInt(saved, 10) : 142;
+  });
+  const [viewCount, setViewCount] = useState<number>(() => {
+    const saved = localStorage.getItem('media_post_views');
+    return saved ? parseInt(saved, 10) : 1840;
+  });
+  const [isSaved, setIsSaved] = useState<boolean>(() => {
+    return localStorage.getItem('media_post_saved') === 'true';
+  });
+  const [showHeartAnim, setShowHeartAnim] = useState<boolean>(false);
+  const [comments, setComments] = useState<string[]>(() => {
+    const saved = localStorage.getItem('media_post_comments');
+    return saved ? JSON.parse(saved) : [
+      'Stunning aesthetic 🌑✨',
+      'Minimal and clean.'
+    ];
+  });
+  const [newComment, setNewComment] = useState<string>('');
+  const [showCommentBox, setShowCommentBox] = useState<boolean>(false);
+  const [shareFeedback, setShareFeedback] = useState<string | null>(null);
+
+  // Increment view count once per session
+  useEffect(() => {
+    const viewedKey = 'media_post_viewed_session';
+    if (!sessionStorage.getItem(viewedKey)) {
+      sessionStorage.setItem(viewedKey, 'true');
+      setViewCount(prev => {
+        const updated = prev + 1;
+        localStorage.setItem('media_post_views', updated.toString());
+        return updated;
+      });
+    }
+  }, []);
+
+  const handleToggleLike = () => {
+    setIsLiked(prev => {
+      const nextState = !prev;
+      const nextCount = nextState ? likeCount + 1 : Math.max(0, likeCount - 1);
+      setLikeCount(nextCount);
+      localStorage.setItem('media_post_liked', String(nextState));
+      localStorage.setItem('media_post_like_count', String(nextCount));
+      if (nextState) {
+        setShowHeartAnim(true);
+        setTimeout(() => setShowHeartAnim(false), 900);
+      }
+      return nextState;
+    });
+  };
+
+  const handleDoubleTap = () => {
+    if (!isLiked) {
+      setIsLiked(true);
+      const nextCount = likeCount + 1;
+      setLikeCount(nextCount);
+      localStorage.setItem('media_post_liked', 'true');
+      localStorage.setItem('media_post_like_count', String(nextCount));
+    }
+    setShowHeartAnim(true);
+    setTimeout(() => setShowHeartAnim(false), 900);
+  };
+
+  const handleAddComment = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+    const updated = [...comments, newComment.trim()];
+    setComments(updated);
+    localStorage.setItem('media_post_comments', JSON.stringify(updated));
+    setNewComment('');
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: 'Moon — Abdulazeem Shaikh',
+      text: 'Check out this moon visual on Abdulazeem Shaikh portfolio',
+      url: window.location.href,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (err) {
+        // User cancelled or unsupported
+      }
+    }
+    // Fallback: Copy link
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setShareFeedback('Link copied to clipboard!');
+      setTimeout(() => setShareFeedback(null), 2500);
+    });
+  };
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -42,7 +140,7 @@ export default function App() {
   const projects = [
     {
       id: 'zalt',
-      title: 'ZERODEGREE (ZD)',
+      title: 'Zivai',
       tagline: '',
       description: (
         <>
@@ -267,7 +365,6 @@ export default function App() {
                     </motion.div>
 
                     <motion.div variants={itemVariants} className="text-sm text-black/40 mt-1 text-center select-none">
-                      I like{' '}
                       <span 
                         onMouseEnter={() => setHoveredCategory('energy')} 
                         onMouseLeave={() => setHoveredCategory(null)} 
@@ -328,13 +425,13 @@ export default function App() {
                             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
                             
-                            {/* Arrow to zerodegree.ai.studio */}
+                            {/* Arrow to https://zivai-hq.ai.studio/ */}
                             <a 
-                               href="https://zerodegree.ai.studio"
+                               href="https://zivai-hq.ai.studio/"
                                target="_blank"
                                rel="noopener noreferrer"
                                className="absolute bottom-6 right-6 text-black/30 hover:text-black transition-all duration-300 z-20 hover:scale-110 active:scale-95"
-                               title="Visit zerodegree.ai.studio"
+                               title="Visit Zivai"
                              >
                                <ArrowUpRight size={22} strokeWidth={1.5} />
                             </a>
@@ -345,7 +442,7 @@ export default function App() {
                                 <div className="space-y-4">
                                   <div className="flex flex-row items-center justify-between gap-3 w-full">
                                     <a
-                                      href="https://zerodegree.ai.studio"
+                                      href="https://zivai-hq.ai.studio/"
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       className="text-sm font-bold tracking-tight text-black hover:underline cursor-pointer shrink-0"
@@ -356,7 +453,7 @@ export default function App() {
                                       label="GET EARLY ACCESS"
                                       width={150}
                                       onClick={() => {
-                                        window.open('https://zerodegree.ai.studio', '_blank');
+                                        window.open('https://zivai-hq.ai.studio/', '_blank');
                                       }}
                                     />
                                   </div>
@@ -372,6 +469,192 @@ export default function App() {
                                     </p>
                                   </div>
                                 </div>
+                              </div>
+                            </div>
+                          </motion.div>
+
+                          {/* Instagram-style Media Card */}
+                          <motion.div
+                            variants={cardVariants}
+                            className="bg-white rounded-none border border-black/5 overflow-hidden text-left flex flex-col w-full shadow-sm"
+                          >
+                            {/* Card Header */}
+                            <div className="flex items-center justify-between px-4 py-3 border-b border-black/5">
+                              <div className="flex items-center gap-2.5">
+                                <div className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center overflow-hidden border border-black/5">
+                                  <img 
+                                    src="assets/moon.png" 
+                                    alt="Avatar" 
+                                    className="w-full h-full object-cover" 
+                                  />
+                                </div>
+                                <div className="flex flex-col">
+                                  <span className="text-xs font-semibold text-black leading-tight">abdulazeem.shaikh</span>
+                                  <span className="text-[10px] text-black/40 leading-tight">Original visual</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-1.5 text-[11px] text-black/45 bg-black/[0.03] px-2.5 py-1 rounded-full font-medium">
+                                <Eye size={13} className="text-black/50" />
+                                <span>{viewCount.toLocaleString()} views</span>
+                              </div>
+                            </div>
+
+                            {/* Media Display with Double-Tap to Like */}
+                            <div 
+                              className="relative bg-black w-full aspect-[4/5] flex items-center justify-center overflow-hidden cursor-pointer select-none group"
+                              onDoubleClick={handleDoubleTap}
+                            >
+                              <img 
+                                src="assets/moon.png" 
+                                alt="Moon visual" 
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                              />
+
+                              {/* Heart pop animation on double tap or like */}
+                              <AnimatePresence>
+                                {showHeartAnim && (
+                                  <motion.div 
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: [0, 1.25, 1], opacity: [0, 1, 0] }}
+                                    exit={{ scale: 0.8, opacity: 0 }}
+                                    transition={{ duration: 0.8, ease: "easeOut" }}
+                                    className="absolute inset-0 flex items-center justify-center pointer-events-none z-30"
+                                  >
+                                    <Heart size={84} className="fill-white text-white drop-shadow-2xl" />
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+
+                            {/* Action Bar (Heart, Comment, Share, Bookmark) */}
+                            <div className="p-4 flex flex-col gap-2.5">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                  {/* Heart Button */}
+                                  <button 
+                                    onClick={handleToggleLike}
+                                    aria-label="Like post"
+                                    className="group/btn flex items-center gap-1.5 text-black hover:text-red-500 transition-colors cursor-pointer active:scale-90 duration-150"
+                                  >
+                                    <Heart 
+                                      size={22} 
+                                      strokeWidth={1.8}
+                                      className={`transition-all duration-200 ${isLiked ? 'fill-red-500 text-red-500 scale-110' : 'group-hover/btn:scale-110'}`} 
+                                    />
+                                  </button>
+
+                                  {/* Comment Button */}
+                                  <button 
+                                    onClick={() => setShowCommentBox(prev => !prev)}
+                                    aria-label="Comment on post"
+                                    className="group/btn flex items-center gap-1.5 text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150"
+                                  >
+                                    <MessageCircle 
+                                      size={22} 
+                                      strokeWidth={1.8}
+                                      className="group-hover/btn:scale-110 transition-transform duration-200" 
+                                    />
+                                  </button>
+
+                                  {/* Share Button */}
+                                  <button 
+                                    onClick={handleShare}
+                                    aria-label="Share post"
+                                    className="group/btn flex items-center gap-1.5 text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150"
+                                  >
+                                    <Send 
+                                      size={21} 
+                                      strokeWidth={1.8}
+                                      className="group-hover/btn:scale-110 transition-transform duration-200 -rotate-12" 
+                                    />
+                                  </button>
+                                </div>
+
+                                {/* Save Button */}
+                                <button 
+                                  onClick={() => {
+                                    setIsSaved(prev => {
+                                      const next = !prev;
+                                      localStorage.setItem('media_post_saved', String(next));
+                                      return next;
+                                    });
+                                  }}
+                                  aria-label="Save post"
+                                  className="text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150"
+                                >
+                                  <Bookmark 
+                                    size={21} 
+                                    strokeWidth={1.8}
+                                    className={isSaved ? 'fill-black text-black' : ''} 
+                                  />
+                                </button>
+                              </div>
+
+                              {/* Share feedback toast */}
+                              <AnimatePresence>
+                                {shareFeedback && (
+                                  <motion.div 
+                                    initial={{ opacity: 0, y: -4 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -4 }}
+                                    className="text-[11px] font-medium text-green-700 bg-green-50 px-2.5 py-1 rounded border border-green-200 inline-block self-start"
+                                  >
+                                    ✓ {shareFeedback}
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+
+                              {/* Likes Count */}
+                              <div className="text-xs font-semibold text-black tracking-tight">
+                                {likeCount.toLocaleString()} {likeCount === 1 ? 'like' : 'likes'}
+                              </div>
+
+                              {/* Caption */}
+                              <div className="text-xs text-black/80 leading-relaxed">
+                                <span className="font-semibold text-black mr-1.5">abdulazeem.shaikh</span>
+                                <span>MOON — Step into a lighter orbit. 🌑✨</span>
+                              </div>
+
+                              {/* Comments Section */}
+                              <div className="pt-1 flex flex-col gap-1.5">
+                                {comments.length > 0 && (
+                                  <div className="flex flex-col gap-1">
+                                    {comments.map((comm, idx) => (
+                                      <div key={idx} className="text-[11px] text-black/75 flex items-start gap-1.5">
+                                        <span className="font-medium text-black">community</span>
+                                        <span className="text-black/70">{comm}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+
+                                {/* Interactive Add Comment Toggle */}
+                                {showCommentBox ? (
+                                  <form onSubmit={handleAddComment} className="flex items-center gap-2 mt-2 pt-2 border-t border-black/5">
+                                    <input 
+                                      type="text" 
+                                      value={newComment}
+                                      onChange={(e) => setNewComment(e.target.value)}
+                                      placeholder="Add a comment..."
+                                      className="flex-1 text-xs bg-transparent border-none outline-none text-black placeholder:text-black/30"
+                                      autoFocus
+                                    />
+                                    <button 
+                                      type="submit"
+                                      disabled={!newComment.trim()}
+                                      className="text-xs font-semibold text-blue-600 disabled:text-black/20 hover:text-blue-700 cursor-pointer disabled:cursor-not-allowed transition-colors"
+                                    >
+                                      Post
+                                    </button>
+                                  </form>
+                                ) : (
+                                  <button
+                                    onClick={() => setShowCommentBox(true)}
+                                    className="text-[11px] text-black/40 hover:text-black/60 text-left transition-colors pt-1 cursor-pointer"
+                                  >
+                                    Add a comment...
+                                  </button>
+                                )}
                               </div>
                             </div>
                           </motion.div>
