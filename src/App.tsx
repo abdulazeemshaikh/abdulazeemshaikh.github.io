@@ -63,6 +63,15 @@ export default function App() {
     }
   });
 
+  const [postShares, setPostShares] = useState<Record<string, number>>(() => {
+    try {
+      const saved = localStorage.getItem('user_post_shares');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
   const [postViews, setPostViews] = useState<Record<string, number>>(() => {
     try {
       const saved = localStorage.getItem('user_post_views');
@@ -95,7 +104,62 @@ export default function App() {
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [shareFeedback, setShareFeedback] = useState<string | null>(null);
 
-  // Track session views per post cleanly (starts from 0 if fresh)
+  const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEET_URL || '';
+
+  const syncToBackend = async (payload: { action: string; postId: string; [key: string]: any }) => {
+    if (!GOOGLE_SCRIPT_URL) return;
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.warn('Sync failed:', err);
+    }
+  };
+
+  const fetchGlobalStats = async () => {
+    if (!GOOGLE_SCRIPT_URL) return;
+    try {
+      const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=getAll&t=${Date.now()}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && typeof data === 'object') {
+        if (data.likes) {
+          setPostLikes(data.likes);
+          localStorage.setItem('user_post_likes', JSON.stringify(data.likes));
+        }
+        if (data.shares) {
+          setPostShares(data.shares);
+          localStorage.setItem('user_post_shares', JSON.stringify(data.shares));
+        }
+        if (data.views) {
+          setPostViews(data.views);
+          localStorage.setItem('user_post_views', JSON.stringify(data.views));
+        }
+        if (data.comments) {
+          setPostComments(data.comments);
+          localStorage.setItem('user_post_comments', JSON.stringify(data.comments));
+        }
+      }
+    } catch {
+      // offline or silent fail
+    }
+  };
+
+  // Poll for global stats from Google Sheet / Apps Script across everyone
+  useEffect(() => {
+    fetchGlobalStats();
+    if (!GOOGLE_SCRIPT_URL) return;
+    const interval = setInterval(fetchGlobalStats, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Track session views per post cleanly across everyone
   useEffect(() => {
     mediaItems.forEach((item) => {
       const sessionKey = `viewed_post_${item.id}`;
@@ -107,6 +171,7 @@ export default function App() {
           localStorage.setItem('user_post_views', JSON.stringify(updated));
           return updated;
         });
+        syncToBackend({ action: 'view', postId: item.id });
       }
     });
   }, []);
@@ -129,6 +194,9 @@ export default function App() {
       if (nextLiked) {
         setHeartAnimPostId(id);
         setTimeout(() => setHeartAnimPostId(null), 900);
+        syncToBackend({ action: 'like', postId: id });
+      } else {
+        syncToBackend({ action: 'unlike', postId: id });
       }
 
       return updatedLiked;
@@ -157,6 +225,7 @@ export default function App() {
       return updated;
     });
 
+    syncToBackend({ action: 'comment', postId: id, comment: text });
     setCommentInputs((prev) => ({ ...prev, [id]: '' }));
   };
 
@@ -168,7 +237,15 @@ export default function App() {
     });
   };
 
-  const handleShare = async () => {
+  const handleShare = async (id: string) => {
+    setPostShares((prev) => {
+      const current = prev[id] || 0;
+      const updated = { ...prev, [id]: current + 1 };
+      localStorage.setItem('user_post_shares', JSON.stringify(updated));
+      return updated;
+    });
+    syncToBackend({ action: 'share', postId: id });
+
     const shareData = {
       title: 'Abdulazeem Shaikh',
       text: 'Explore visuals by Abdulazeem Shaikh',
@@ -547,6 +624,7 @@ export default function App() {
                         {mediaItems.map((item) => {
                           const isLiked = !!likedPosts[item.id];
                           const likes = postLikes[item.id] || 0;
+                          const shares = postShares[item.id] || 0;
                           const views = postViews[item.id] || 0;
                           const comments = postComments[item.id] || [];
                           const isHeartAnim = heartAnimPostId === item.id;
@@ -624,17 +702,22 @@ export default function App() {
                                     )}
                                   </button>
 
-                                  {/* Share Button */}
+                                  {/* Share Button with share count beside it */}
                                   <button 
-                                    onClick={handleShare}
+                                    onClick={() => handleShare(item.id)}
                                     aria-label="Share post"
-                                    className="flex items-center text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent"
+                                    className="flex items-center gap-1 text-black hover:text-black/60 transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent"
                                   >
                                     <Send 
                                       size={16} 
                                       strokeWidth={1.8}
                                       className="-rotate-12" 
                                     />
+                                    {shares > 0 && (
+                                      <span className="text-[11px] font-medium text-black/70 leading-none">
+                                        {shares}
+                                      </span>
+                                    )}
                                   </button>
 
                                   {/* Views Icon with count beside it, positioned beside Share */}
@@ -660,17 +743,22 @@ export default function App() {
                                   )}
                                 </AnimatePresence>
 
-                                {/* Comments List (in fully rounded corner bubbles) */}
+                                {/* Comments List (adaptive dynamic width and corner-radius based on text length) */}
                                 {comments.length > 0 && (
-                                  <div className="flex flex-col gap-1.5 pt-1">
-                                    {comments.map((comm, idx) => (
-                                      <div 
-                                        key={idx} 
-                                        className="text-[11px] text-black/85 bg-black/[0.04] border border-black/5 px-3 py-1.5 rounded-full max-w-full break-words leading-tight"
-                                      >
-                                        {comm}
-                                      </div>
-                                    ))}
+                                  <div className="flex flex-col items-start gap-1.5 pt-1">
+                                    {comments.map((comm, idx) => {
+                                      const isLong = comm.length > 35;
+                                      return (
+                                        <div 
+                                          key={idx} 
+                                          className={`text-[11px] text-black/85 bg-black/[0.04] border border-black/5 px-3 py-1.5 w-fit max-w-full break-words leading-tight ${
+                                            isLong ? 'rounded-[14px]' : 'rounded-full'
+                                          }`}
+                                        >
+                                          {comm}
+                                        </div>
+                                      );
+                                    })}
                                   </div>
                                 )}
 
