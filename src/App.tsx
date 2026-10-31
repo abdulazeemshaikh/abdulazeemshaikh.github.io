@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Eye } from 'lucide-react';
+import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -81,14 +81,42 @@ export default function App() {
     }
   });
 
-  const [postComments, setPostComments] = useState<Record<string, string[]>>(() => {
+  interface CommentItem {
+    id: string;
+    text: string;
+  }
+
+  const [postComments, setPostComments] = useState<Record<string, CommentItem[]>>(() => {
     try {
       const saved = localStorage.getItem('user_post_comments');
-      return saved ? JSON.parse(saved) : {};
+      if (!saved) return {};
+      const parsed = JSON.parse(saved);
+      const converted: Record<string, CommentItem[]> = {};
+      Object.keys(parsed).forEach((k) => {
+        const arr = parsed[k];
+        if (Array.isArray(arr)) {
+          converted[k] = arr.map((c, i) =>
+            typeof c === 'string' ? { id: `local_${k}_${i}`, text: c } : c
+          );
+        }
+      });
+      return converted;
     } catch {
       return {};
     }
   });
+
+  const [myCommentIds, setMyCommentIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('user_my_comment_ids');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
+  const [editingCommentText, setEditingCommentText] = useState<string>('');
 
   const [savedPosts, setSavedPosts] = useState<Record<string, boolean>>(() => {
     try {
@@ -142,8 +170,20 @@ export default function App() {
           localStorage.setItem('user_post_views', JSON.stringify(data.views));
         }
         if (data.comments) {
-          setPostComments(data.comments);
-          localStorage.setItem('user_post_comments', JSON.stringify(data.comments));
+          const formattedComments: Record<string, CommentItem[]> = {};
+          Object.keys(data.comments).forEach((postId) => {
+            const list = data.comments[postId];
+            if (Array.isArray(list)) {
+              formattedComments[postId] = list.map((item: any, idx: number) => {
+                if (typeof item === 'string') {
+                  return { id: `c_${postId}_${idx}`, text: item };
+                }
+                return { id: item.id || `c_${postId}_${idx}`, text: item.text || '' };
+              });
+            }
+          });
+          setPostComments(formattedComments);
+          localStorage.setItem('user_post_comments', JSON.stringify(formattedComments));
         }
       }
     } catch {
@@ -159,12 +199,12 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Track session views per post cleanly across everyone
+  // Track permanent view per visitor (one view per person is always one, even if they view many times)
   useEffect(() => {
     mediaItems.forEach((item) => {
-      const sessionKey = `viewed_post_${item.id}`;
-      if (!sessionStorage.getItem(sessionKey)) {
-        sessionStorage.setItem(sessionKey, 'true');
+      const permanentKey = `viewed_post_permanent_${item.id}`;
+      if (!localStorage.getItem(permanentKey)) {
+        localStorage.setItem(permanentKey, 'true');
         setPostViews((prev) => {
           const current = prev[item.id] || 0;
           const updated = { ...prev, [item.id]: current + 1 };
@@ -217,16 +257,71 @@ export default function App() {
     const text = (commentInputs[id] || '').trim();
     if (!text) return;
 
+    const newCommentId = `comment_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+    const newCommentItem: CommentItem = { id: newCommentId, text };
+
     setPostComments((prev) => {
       const currentList = prev[id] || [];
-      const updatedList = [...currentList, text];
+      const updatedList = [...currentList, newCommentItem];
       const updated = { ...prev, [id]: updatedList };
       localStorage.setItem('user_post_comments', JSON.stringify(updated));
       return updated;
     });
 
-    syncToBackend({ action: 'comment', postId: id, comment: text });
+    setMyCommentIds((prev) => {
+      const updated = [...prev, newCommentId];
+      localStorage.setItem('user_my_comment_ids', JSON.stringify(updated));
+      return updated;
+    });
+
+    syncToBackend({ action: 'comment', postId: id, commentId: newCommentId, comment: text });
     setCommentInputs((prev) => ({ ...prev, [id]: '' }));
+  };
+
+  const handleStartEditComment = (commentId: string, currentText: string) => {
+    setEditingCommentId(commentId);
+    setEditingCommentText(currentText);
+  };
+
+  const handleSaveEditComment = (postId: string, commentId: string) => {
+    const trimmed = editingCommentText.trim();
+    if (!trimmed) return;
+
+    setPostComments((prev) => {
+      const currentList = prev[postId] || [];
+      const updatedList = currentList.map((c) =>
+        c.id === commentId ? { ...c, text: trimmed } : c
+      );
+      const updated = { ...prev, [postId]: updatedList };
+      localStorage.setItem('user_post_comments', JSON.stringify(updated));
+      return updated;
+    });
+
+    syncToBackend({ action: 'editComment', postId, commentId, newText: trimmed });
+    setEditingCommentId(null);
+    setEditingCommentText('');
+  };
+
+  const handleDeleteComment = (postId: string, commentId: string) => {
+    setPostComments((prev) => {
+      const currentList = prev[postId] || [];
+      const updatedList = currentList.filter((c) => c.id !== commentId);
+      const updated = { ...prev, [postId]: updatedList };
+      localStorage.setItem('user_post_comments', JSON.stringify(updated));
+      return updated;
+    });
+
+    setMyCommentIds((prev) => {
+      const updated = prev.filter((id) => id !== commentId);
+      localStorage.setItem('user_my_comment_ids', JSON.stringify(updated));
+      return updated;
+    });
+
+    syncToBackend({ action: 'deleteComment', postId, commentId });
+    if (editingCommentId === commentId) {
+      setEditingCommentId(null);
+      setEditingCommentText('');
+    }
   };
 
   const handleToggleSave = (id: string) => {
@@ -238,13 +333,19 @@ export default function App() {
   };
 
   const handleShare = async (id: string) => {
-    setPostShares((prev) => {
-      const current = prev[id] || 0;
-      const updated = { ...prev, [id]: current + 1 };
-      localStorage.setItem('user_post_shares', JSON.stringify(updated));
-      return updated;
-    });
-    syncToBackend({ action: 'share', postId: id });
+    const permanentShareKey = `shared_post_permanent_${id}`;
+    const alreadyShared = !!localStorage.getItem(permanentShareKey);
+
+    if (!alreadyShared) {
+      localStorage.setItem(permanentShareKey, 'true');
+      setPostShares((prev) => {
+        const current = prev[id] || 0;
+        const updated = { ...prev, [id]: current + 1 };
+        localStorage.setItem('user_post_shares', JSON.stringify(updated));
+        return updated;
+      });
+      syncToBackend({ action: 'share', postId: id });
+    }
 
     const shareData = {
       title: 'Abdulazeem Shaikh',
@@ -619,6 +720,72 @@ export default function App() {
                         </div>
                       ))}
 
+                      {/* Translucent / Blurry Card 1: Evie */}
+                      <div className="flex flex-col gap-4 w-full max-w-[480px]">
+                        <motion.div 
+                          variants={cardVariants}
+                          className="bg-white/40 backdrop-blur-xl p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/10 shadow-sm"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-transparent opacity-60 blur-3xl -z-10" />
+                          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white/30 to-transparent -z-10" />
+                          
+                          <div className="flex flex-col gap-6 min-h-[272px] relative z-10">
+                            <div className="w-full flex flex-col justify-between shrink-0">
+                              <div className="space-y-4">
+                                <div className="flex flex-row items-center justify-between gap-3 w-full">
+                                  <span className="text-sm font-bold tracking-tight text-black shrink-0">
+                                    Evie
+                                  </span>
+                                  <LiquidMetalButton 
+                                    label="GET EARLY ACCESS"
+                                    width={150}
+                                    onClick={() => setShowForm(true)}
+                                  />
+                                </div>
+                                <div className="overflow-hidden">
+                                  <p className="text-[11px] text-black/50 leading-relaxed font-medium mt-2">
+                                    Adaptive intelligence woven quietly into your daily flow. Real-time context, ambient understanding, and frictionless execution without distraction.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      {/* Translucent / Blurry Card 2: Celeste */}
+                      <div className="flex flex-col gap-4 w-full max-w-[480px]">
+                        <motion.div 
+                          variants={cardVariants}
+                          className="bg-white/40 backdrop-blur-xl p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/10 shadow-sm"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-transparent opacity-60 blur-3xl -z-10" />
+                          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white/30 to-transparent -z-10" />
+                          
+                          <div className="flex flex-col gap-6 min-h-[272px] relative z-10">
+                            <div className="w-full flex flex-col justify-between shrink-0">
+                              <div className="space-y-4">
+                                <div className="flex flex-row items-center justify-between gap-3 w-full">
+                                  <span className="text-sm font-bold tracking-tight text-black shrink-0">
+                                    celeste
+                                  </span>
+                                  <LiquidMetalButton 
+                                    label="GET EARLY ACCESS"
+                                    width={150}
+                                    onClick={() => setShowForm(true)}
+                                  />
+                                </div>
+                                <div className="overflow-hidden">
+                                  <p className="text-[11px] text-black/50 leading-relaxed font-medium mt-2">
+                                    Next-generation spatial computation and intuitive synthesis. Seamlessly bridging ideas and reality across your ecosystem.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </div>
+
                       {/* Clean Visual Media Feed (Left-aligned, beside each other, adaptive natural dimensions, no fixed boxes) */}
                       <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-start gap-8 w-full max-w-[480px] mt-2">
                         {mediaItems.map((item) => {
@@ -743,19 +910,76 @@ export default function App() {
                                   )}
                                 </AnimatePresence>
 
-                                {/* Comments List (adaptive dynamic width and corner-radius based on text length) */}
+                                {/* Comments List (adaptive dynamic width and corner-radius based on text length + edit/delete for author) */}
                                 {comments.length > 0 && (
-                                  <div className="flex flex-col items-start gap-1.5 pt-1">
-                                    {comments.map((comm, idx) => {
-                                      const isLong = comm.length > 35;
+                                  <div className="flex flex-col items-start gap-1.5 pt-1 w-full">
+                                    {comments.map((comm) => {
+                                      const isLong = comm.text.length > 35;
+                                      const isMyComment = myCommentIds.includes(comm.id);
+                                      const isEditing = editingCommentId === comm.id;
+
+                                      if (isEditing) {
+                                        return (
+                                          <div key={comm.id} className="w-full flex flex-col gap-1.5 bg-black/[0.03] border border-black/10 rounded-2xl p-2.5">
+                                            <input
+                                              type="text"
+                                              value={editingCommentText}
+                                              onChange={(e) => setEditingCommentText(e.target.value)}
+                                              className="text-[11px] bg-white border border-black/10 rounded-full px-2.5 py-1 text-black outline-none w-full"
+                                              autoFocus
+                                            />
+                                            <div className="flex items-center justify-end gap-1.5">
+                                              <button
+                                                type="button"
+                                                onClick={() => {
+                                                  setEditingCommentId(null);
+                                                  setEditingCommentText('');
+                                                }}
+                                                className="text-[10px] text-black/50 hover:text-black px-2 py-0.5 rounded-full"
+                                              >
+                                                Cancel
+                                              </button>
+                                              <button
+                                                type="button"
+                                                onClick={() => handleSaveEditComment(item.id, comm.id)}
+                                                disabled={!editingCommentText.trim()}
+                                                className="text-[10px] font-medium bg-black text-white px-2.5 py-0.5 rounded-full disabled:opacity-30"
+                                              >
+                                                Save
+                                              </button>
+                                            </div>
+                                          </div>
+                                        );
+                                      }
+
                                       return (
                                         <div 
-                                          key={idx} 
-                                          className={`text-[11px] text-black/85 bg-black/[0.04] border border-black/5 px-3 py-1.5 w-fit max-w-full break-words leading-tight ${
+                                          key={comm.id} 
+                                          className={`group relative text-[11px] text-black/85 bg-black/[0.04] border border-black/5 px-3 py-1.5 w-fit max-w-full break-words leading-tight flex items-center gap-1.5 ${
                                             isLong ? 'rounded-[14px]' : 'rounded-full'
                                           }`}
                                         >
-                                          {comm}
+                                          <span>{comm.text}</span>
+                                          {isMyComment && (
+                                            <span className="inline-flex items-center gap-1 ml-1 opacity-70 group-hover:opacity-100 transition-opacity">
+                                              <button
+                                                type="button"
+                                                onClick={() => handleStartEditComment(comm.id, comm.text)}
+                                                className="text-black/40 hover:text-black transition-colors p-0.5"
+                                                title="Edit comment"
+                                              >
+                                                <Pencil size={10} />
+                                              </button>
+                                              <button
+                                                type="button"
+                                                onClick={() => handleDeleteComment(item.id, comm.id)}
+                                                className="text-black/40 hover:text-red-500 transition-colors p-0.5"
+                                                title="Delete comment"
+                                              >
+                                                <Trash2 size={10} />
+                                              </button>
+                                            </span>
+                                          )}
                                         </div>
                                       );
                                     })}

@@ -1,8 +1,8 @@
 // Google Apps Script code to paste into Extensions > Apps Script in Google Sheets
-// After pasting, click "Deploy" > "New deployment" > Select type "Web app":
+// After pasting, click "Deploy" > "New deployment" (or "Manage deployments" > edit to New version):
 // - Execute as: "Me"
 // - Who has access: "Anyone"
-// Copy the Web App URL and set it as GitHub Secret VITE_GOOGLE_SHEET_URL (or provide it).
+// Copy the Web App URL and set it as GitHub Secret VITE_GOOGLE_SHEET_URL.
 
 function setupSheets() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -18,7 +18,7 @@ function setupSheets() {
   let commentsSheet = ss.getSheetByName('Comments');
   if (!commentsSheet) {
     commentsSheet = ss.insertSheet('Comments');
-    commentsSheet.appendRow(['timestamp', 'postId', 'comment']);
+    commentsSheet.appendRow(['commentId', 'postId', 'comment', 'timestamp']);
   }
 }
 
@@ -46,10 +46,13 @@ function doGet(e) {
   const commentsData = commentsSheet.getDataRange().getValues();
   const comments = {};
   for (let i = 1; i < commentsData.length; i++) {
-    const [, postId, commentText] = commentsData[i];
+    const [commentId, postId, commentText] = commentsData[i];
     if (postId && commentText) {
       if (!comments[postId]) comments[postId] = [];
-      comments[postId].push(String(commentText));
+      comments[postId].push({
+        id: String(commentId || ('c_' + i)),
+        text: String(commentText)
+      });
     }
   }
   
@@ -72,9 +75,9 @@ function doPost(e) {
     setupSheets();
     
     const body = e.postData && e.postData.contents ? JSON.parse(e.postData.contents) : {};
-    const { action, postId, comment } = body;
+    const { action, postId, comment, commentId, newText } = body;
     
-    if (!postId) {
+    if (!postId && action !== 'editComment' && action !== 'deleteComment') {
       return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: 'Missing postId' }))
         .setMimeType(ContentService.MimeType.JSON);
     }
@@ -83,16 +86,17 @@ function doPost(e) {
     const statsData = statsSheet.getDataRange().getValues();
     let rowIndex = -1;
     
-    for (let i = 1; i < statsData.length; i++) {
-      if (statsData[i][0] === postId) {
-        rowIndex = i + 1;
-        break;
+    if (postId) {
+      for (let i = 1; i < statsData.length; i++) {
+        if (statsData[i][0] === postId) {
+          rowIndex = i + 1;
+          break;
+        }
       }
-    }
-    
-    if (rowIndex === -1) {
-      statsSheet.appendRow([postId, 0, 0, 0]);
-      rowIndex = statsSheet.getLastRow();
+      if (rowIndex === -1) {
+        statsSheet.appendRow([postId, 0, 0, 0]);
+        rowIndex = statsSheet.getLastRow();
+      }
     }
     
     if (action === 'like') {
@@ -107,9 +111,27 @@ function doPost(e) {
     } else if (action === 'view') {
       const current = Number(statsSheet.getRange(rowIndex, 4).getValue()) || 0;
       statsSheet.getRange(rowIndex, 4).setValue(current + 1);
-    } else if (action === 'comment' && comment) {
+    } else if (action === 'comment' && comment && commentId) {
       const commentsSheet = ss.getSheetByName('Comments');
-      commentsSheet.appendRow([new Date().toISOString(), postId, comment]);
+      commentsSheet.appendRow([String(commentId), postId, String(comment), new Date().toISOString()]);
+    } else if (action === 'editComment' && commentId && newText) {
+      const commentsSheet = ss.getSheetByName('Comments');
+      const rows = commentsSheet.getDataRange().getValues();
+      for (let r = 1; r < rows.length; r++) {
+        if (String(rows[r][0]) === String(commentId)) {
+          commentsSheet.getRange(r + 1, 3).setValue(String(newText));
+          break;
+        }
+      }
+    } else if (action === 'deleteComment' && commentId) {
+      const commentsSheet = ss.getSheetByName('Comments');
+      const rows = commentsSheet.getDataRange().getValues();
+      for (let r = 1; r < rows.length; r++) {
+        if (String(rows[r][0]) === String(commentId)) {
+          commentsSheet.deleteRow(r + 1);
+          break;
+        }
+      }
     }
     
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
