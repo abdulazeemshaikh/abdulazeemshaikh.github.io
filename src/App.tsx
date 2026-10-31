@@ -713,78 +713,53 @@ export default function App() {
                                       {project.description}
                                     </p>
                                   </div>
+
+                                  {/* Sub-cards inside Zivai card: Evie and celeste (compact, translucent, blurry background) */}
+                                  <div className="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full">
+                                    {/* Evie Card */}
+                                    <div className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs">
+                                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-transparent opacity-50 blur-xl -z-10" />
+                                      <div className="flex items-center justify-between gap-2">
+                                        <span className="text-xs font-bold text-black tracking-tight">
+                                          Evie
+                                        </span>
+                                        <button
+                                          onClick={() => setShowForm(true)}
+                                          className="text-[9px] font-semibold text-black/80 hover:text-black bg-black/5 hover:bg-black/10 px-2 py-0.5 rounded-full transition-colors"
+                                        >
+                                          EARLY ACCESS
+                                        </button>
+                                      </div>
+                                      <p className="text-[10px] text-black/55 leading-tight">
+                                        Adaptive intelligence woven quietly into your daily flow.
+                                      </p>
+                                    </div>
+
+                                    {/* Celeste Card */}
+                                    <div className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs">
+                                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-transparent opacity-50 blur-xl -z-10" />
+                                      <div className="flex items-center justify-between gap-2">
+                                        <span className="text-xs font-bold text-black tracking-tight">
+                                          celeste
+                                        </span>
+                                        <button
+                                          onClick={() => setShowForm(true)}
+                                          className="text-[9px] font-semibold text-black/80 hover:text-black bg-black/5 hover:bg-black/10 px-2 py-0.5 rounded-full transition-colors"
+                                        >
+                                          EARLY ACCESS
+                                        </button>
+                                      </div>
+                                      <p className="text-[10px] text-black/55 leading-tight">
+                                        Spatial computation and intuitive synthesis across your ecosystem.
+                                      </p>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </motion.div>
                         </div>
                       ))}
-
-                      {/* Translucent / Blurry Card 1: Evie */}
-                      <div className="flex flex-col gap-4 w-full max-w-[480px]">
-                        <motion.div 
-                          variants={cardVariants}
-                          className="bg-white/40 backdrop-blur-xl p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/10 shadow-sm"
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-transparent opacity-60 blur-3xl -z-10" />
-                          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white/30 to-transparent -z-10" />
-                          
-                          <div className="flex flex-col gap-6 min-h-[272px] relative z-10">
-                            <div className="w-full flex flex-col justify-between shrink-0">
-                              <div className="space-y-4">
-                                <div className="flex flex-row items-center justify-between gap-3 w-full">
-                                  <span className="text-sm font-bold tracking-tight text-black shrink-0">
-                                    Evie
-                                  </span>
-                                  <LiquidMetalButton 
-                                    label="GET EARLY ACCESS"
-                                    width={150}
-                                    onClick={() => setShowForm(true)}
-                                  />
-                                </div>
-                                <div className="overflow-hidden">
-                                  <p className="text-[11px] text-black/50 leading-relaxed font-medium mt-2">
-                                    Adaptive intelligence woven quietly into your daily flow. Real-time context, ambient understanding, and frictionless execution without distraction.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      </div>
-
-                      {/* Translucent / Blurry Card 2: Celeste */}
-                      <div className="flex flex-col gap-4 w-full max-w-[480px]">
-                        <motion.div 
-                          variants={cardVariants}
-                          className="bg-white/40 backdrop-blur-xl p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/10 shadow-sm"
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-transparent opacity-60 blur-3xl -z-10" />
-                          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white/30 to-transparent -z-10" />
-                          
-                          <div className="flex flex-col gap-6 min-h-[272px] relative z-10">
-                            <div className="w-full flex flex-col justify-between shrink-0">
-                              <div className="space-y-4">
-                                <div className="flex flex-row items-center justify-between gap-3 w-full">
-                                  <span className="text-sm font-bold tracking-tight text-black shrink-0">
-                                    celeste
-                                  </span>
-                                  <LiquidMetalButton 
-                                    label="GET EARLY ACCESS"
-                                    width={150}
-                                    onClick={() => setShowForm(true)}
-                                  />
-                                </div>
-                                <div className="overflow-hidden">
-                                  <p className="text-[11px] text-black/50 leading-relaxed font-medium mt-2">
-                                    Next-generation spatial computation and intuitive synthesis. Seamlessly bridging ideas and reality across your ecosystem.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      </div>
 
                       {/* Clean Visual Media Feed (Left-aligned, beside each other, adaptive natural dimensions, no fixed boxes) */}
                       <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-start gap-8 w-full max-w-[480px] mt-2">
