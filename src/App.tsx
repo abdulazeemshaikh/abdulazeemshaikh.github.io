@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Eye, Pencil, Trash2, Maximize2 } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -131,6 +131,7 @@ export default function App() {
   const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(null);
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [shareFeedback, setShareFeedback] = useState<string | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
 
   const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEET_URL || '';
 
@@ -869,6 +870,16 @@ export default function App() {
                                       {views}
                                     </span>
                                   </div>
+
+                                  {/* Expand / Big Pop-up Button */}
+                                  <button
+                                    onClick={() => setLightboxImage({ src: item.src, alt: item.alt })}
+                                    aria-label="View large"
+                                    title="View large popup"
+                                    className="flex items-center text-black/45 hover:text-black transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent ml-auto"
+                                  >
+                                    <Maximize2 size={15} strokeWidth={1.8} />
+                                  </button>
                                 </div>
 
                                 {/* Share confirmation toast */}
@@ -1238,6 +1249,39 @@ export default function App() {
                     </motion.div>
                   </motion.form>
                 )}
+              </motion.div>
+            )}
+
+            {/* Big Image Lightbox Pop-up */}
+            {lightboxImage && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setLightboxImage(null)}
+                className="fixed inset-0 bg-black/85 backdrop-blur-md z-[120] flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
+              >
+                <button
+                  onClick={() => setLightboxImage(null)}
+                  className="absolute top-6 right-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all duration-200"
+                  aria-label="Close full view"
+                >
+                  <X size={22} />
+                </button>
+                <motion.div
+                  initial={{ scale: 0.85, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.85, opacity: 0 }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="relative max-w-[90vw] max-h-[88vh] flex items-center justify-center"
+                >
+                  <img
+                    src={lightboxImage.src}
+                    alt={lightboxImage.alt}
+                    className="max-w-[90vw] max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl select-none"
+                  />
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
