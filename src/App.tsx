@@ -131,7 +131,7 @@ export default function App() {
   const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(null);
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [shareFeedback, setShareFeedback] = useState<string | null>(null);
-  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string; id: string } | null>(null);
 
   const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEET_URL || '';
 
@@ -873,7 +873,7 @@ export default function App() {
 
                                   {/* Expand / Big Pop-up Button */}
                                   <button
-                                    onClick={() => setLightboxImage({ src: item.src, alt: item.alt })}
+                                    onClick={() => setLightboxImage({ src: item.src, alt: item.alt, id: item.id })}
                                     aria-label="View large"
                                     title="View large popup"
                                     className="flex items-center text-black/45 hover:text-black transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent ml-auto"
@@ -1253,37 +1253,95 @@ export default function App() {
             )}
 
             {/* Big Image Lightbox Pop-up */}
-            {lightboxImage && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setLightboxImage(null)}
-                className="fixed inset-0 bg-black/85 backdrop-blur-md z-[120] flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
-              >
-                <button
-                  onClick={() => setLightboxImage(null)}
-                  className="absolute top-6 right-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all duration-200"
-                  aria-label="Close full view"
-                >
-                  <X size={22} />
-                </button>
+            {lightboxImage && (() => {
+              const lbId = lightboxImage.id;
+              const lbLikes = postLikes[lbId] || 0;
+              const lbIsLiked = !!likedPosts[lbId];
+              const lbComments = postComments[lbId] || [];
+              const lbShares = postShares[lbId] || 0;
+              const lbViews = postViews[lbId] || 0;
+              return (
                 <motion.div
-                  initial={{ scale: 0.85, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.85, opacity: 0 }}
-                  transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-                  onClick={(e) => e.stopPropagation()}
-                  className="relative max-w-[90vw] max-h-[88vh] flex items-center justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setLightboxImage(null)}
+                  className="fixed inset-0 bg-black/85 backdrop-blur-md z-[120] flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
                 >
-                  <img
-                    src={lightboxImage.src}
-                    alt={lightboxImage.alt}
-                    className="max-w-[90vw] max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl select-none"
-                  />
+                  <button
+                    onClick={() => setLightboxImage(null)}
+                    className="absolute top-6 right-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all duration-200"
+                    aria-label="Close full view"
+                  >
+                    <X size={22} />
+                  </button>
+                  <motion.div
+                    initial={{ scale: 0.85, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.85, opacity: 0 }}
+                    transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="relative flex flex-row items-center gap-6 max-h-[88vh]"
+                  >
+                    {/* Image */}
+                    <img
+                      src={lightboxImage.src}
+                      alt={lightboxImage.alt}
+                      className="max-w-[80vw] max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl select-none"
+                    />
+
+                    {/* Vertical action sidebar */}
+                    <div className="flex flex-col items-center gap-6">
+                      {/* Like */}
+                      <button
+                        onClick={() => handleToggleLike(lbId)}
+                        className="flex flex-col items-center gap-1.5 cursor-pointer active:scale-90 transition-transform duration-150 bg-transparent border-none p-0"
+                        aria-label="Like"
+                      >
+                        <Heart
+                          size={26}
+                          strokeWidth={1.8}
+                          className={lbIsLiked ? 'fill-red-500 text-red-500' : 'text-white/80'}
+                        />
+                        {lbLikes > 0 && (
+                          <span className="text-[12px] font-medium text-white/70 leading-none">{lbLikes}</span>
+                        )}
+                      </button>
+
+                      {/* Comment */}
+                      <button
+                        onClick={() => { setLightboxImage(null); setActiveCommentPostId(lbId); }}
+                        className="flex flex-col items-center gap-1.5 cursor-pointer active:scale-90 transition-transform duration-150 bg-transparent border-none p-0 text-white/80 hover:text-white"
+                        aria-label="Comment"
+                      >
+                        <MessageCircle size={26} strokeWidth={1.8} />
+                        {lbComments.length > 0 && (
+                          <span className="text-[12px] font-medium text-white/70 leading-none">{lbComments.length}</span>
+                        )}
+                      </button>
+
+                      {/* Share */}
+                      <button
+                        onClick={() => handleShare(lbId)}
+                        className="flex flex-col items-center gap-1.5 cursor-pointer active:scale-90 transition-transform duration-150 bg-transparent border-none p-0 text-white/80 hover:text-white"
+                        aria-label="Share"
+                      >
+                        <Send size={24} strokeWidth={1.8} className="-rotate-12" />
+                        {lbShares > 0 && (
+                          <span className="text-[12px] font-medium text-white/70 leading-none">{lbShares}</span>
+                        )}
+                      </button>
+
+                      {/* Views (read-only) */}
+                      <div className="flex flex-col items-center gap-1.5 text-white/50" title={`${lbViews} views`}>
+                        <Eye size={24} strokeWidth={1.8} />
+                        <span className="text-[12px] font-medium leading-none">{lbViews}</span>
+                      </div>
+                    </div>
+                  </motion.div>
                 </motion.div>
-              </motion.div>
-            )}
+              );
+            })()}
           </AnimatePresence>
         </motion.div>
       </main>
