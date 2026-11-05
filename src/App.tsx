@@ -552,7 +552,7 @@ export default function App() {
 
 
   return (
-    <div className="min-h-screen w-full bg-[#FDFDFD] text-zinc-900 font-sans overflow-y-auto flex">
+    <div className="min-h-screen w-full bg-[#FDFDFD] text-zinc-900 font-sans overflow-y-auto flex flex-col">
       {/* Full Screen Ambient Glow */}
       <div className="fixed inset-0 pointer-events-none z-0">
       </div>
@@ -1068,20 +1068,6 @@ export default function App() {
                         </div>
                     </motion.div>
 
-                    {/* Total visitors — end of the website, bottom right */}
-                    <div className="w-full max-w-7xl mx-auto flex justify-end mt-2 pr-1">
-                      <div
-                        className="flex items-center gap-1.5 bg-white/85 backdrop-blur-md border border-black/10 rounded-full pl-2.5 pr-3 py-1.5 shadow-sm select-none"
-                        title="Total visitors to this website"
-                      >
-                        <Eye size={12} strokeWidth={1.8} className="text-black/35" />
-                        <span className="text-[10px] font-semibold text-black/70 tabular-nums">
-                          {typeof totalVisitors === 'number' ? totalVisitors.toLocaleString('en-US') : '—'}
-                        </span>
-                        <span className="text-[10px] text-black/40">visitors</span>
-                      </div>
-                    </div>
-
                   </div>
               }
             />
@@ -1424,6 +1410,20 @@ export default function App() {
           </AnimatePresence>
         </motion.div>
       </main>
+
+      {/* Total visitors — bottom edge of the website */}
+      <footer className="w-full max-w-7xl mx-auto flex justify-end px-4 md:px-12 pb-3 md:pb-4 z-10 shrink-0">
+        <div
+          className="flex items-center gap-1.5 bg-white/85 backdrop-blur-md border border-black/10 rounded-full pl-2.5 pr-3 py-1.5 shadow-sm select-none"
+          title="Total visitors to this website"
+        >
+          <Eye size={12} strokeWidth={1.8} className="text-black/35" />
+          <span className="text-[10px] font-semibold text-black/70 tabular-nums">
+            {typeof totalVisitors === 'number' ? totalVisitors.toLocaleString('en-US') : '—'}
+          </span>
+          <span className="text-[10px] text-black/40">visitors</span>
+        </div>
+      </footer>
 
       {/* Background Ambient Glow removed */}
     </div>
