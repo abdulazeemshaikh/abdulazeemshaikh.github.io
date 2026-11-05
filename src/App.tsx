@@ -6,6 +6,7 @@ import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
 import { UnicornBackground } from './components/UnicornBackground';
 import { SplineBackground } from './components/SplineBackground';
+import CertificatesCarousel from './components/CertificatesCarousel';
 // ...
 
 export default function App() {
@@ -1000,6 +1001,9 @@ export default function App() {
                           );
                         })}
                       </div>
+
+                      {/* Certificates carousel */}
+                      <CertificatesCarousel />
                     </motion.div>
 
 
