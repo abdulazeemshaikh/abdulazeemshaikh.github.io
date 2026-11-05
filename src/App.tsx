@@ -201,6 +201,23 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Total visitors counter — uses the site's existing global stats backend.
+  // Counts each browser once, then keeps reading the running total.
+  useEffect(() => {
+    if (!GOOGLE_SCRIPT_URL) return;
+    const VISITOR_KEY = 'visitor_counted_v1';
+    if (localStorage.getItem(VISITOR_KEY)) return;
+
+    localStorage.setItem(VISITOR_KEY, 'true');
+    syncToBackend({ action: 'view', postId: 'site-visitors' });
+
+    // Refresh shortly after the visit is recorded.
+    const refresh = window.setTimeout(() => {
+      fetchGlobalStats();
+    }, 2500);
+    return () => window.clearTimeout(refresh);
+  }, []);
+
   // Track permanent view per visitor (one view per person is always one, even if they view many times)
   useEffect(() => {
     mediaItems.forEach((item) => {
@@ -401,6 +418,7 @@ export default function App() {
   ];
 
   const activeProjects = projects.filter(p => p.id === 'zalt');
+  const totalVisitors = postViews['site-visitors'];
 
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -540,18 +558,18 @@ export default function App() {
       </div>
 
       {/* Central Content Area */}
-      <main className="flex-1 relative flex flex-col items-center justify-start py-12 md:py-24 px-4 md:px-12 z-10">
+      <main className="flex-1 min-w-0 relative flex flex-col items-center justify-start py-12 md:py-24 px-4 md:px-12 z-10">
         <motion.div
           key="default"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="w-full flex items-center justify-center"
+          className="w-full min-w-0 flex items-center justify-center"
         >
-          <div className="flex flex-col gap-4 w-full max-w-7xl mx-auto items-center">
+          <div className="flex flex-col gap-4 w-full min-w-0 max-w-7xl mx-auto items-center">
             <ResponsiveHeroBanner 
               greetingNode={
-                  <div className="flex flex-col items-center justify-center gap-1">
+                  <div className="flex flex-col w-full min-w-0 items-center justify-center gap-1">
                     <motion.div variants={itemVariants} className="text-lg text-black/60 whitespace-nowrap">
                       <TextShimmer>
                         {`${getGreeting()}!`}
@@ -658,7 +676,7 @@ export default function App() {
                     
                     <motion.div 
                       variants={containerVariants}
-                      className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full pb-8"
+                      className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full min-w-0 pb-8"
                     >
                       {activeProjects.filter(p => p.id === 'zalt').map((project) => (
                         <div key={project.id} className="flex flex-col gap-4 w-full max-w-[480px]">
@@ -763,8 +781,13 @@ export default function App() {
                         </div>
                       ))}
 
-                      {/* Clean Visual Media Feed (Left-aligned, beside each other, adaptive natural dimensions, no fixed boxes) */}
-                      <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-start gap-8 w-full max-w-[480px] mt-2">
+                      {/* Right column: certificates above the moon/logo images, media feed, then advertising */}
+                      <div className="flex flex-col gap-6 w-full max-w-[480px]">
+                        {/* Certificates carousel */}
+                        <CertificatesCarousel />
+
+                        {/* Clean Visual Media Feed (Left-aligned, beside each other, adaptive natural dimensions, no fixed boxes) */}
+                        <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-start gap-8 w-full max-w-[480px]">
                         {mediaItems.map((item) => {
                           const isLiked = !!likedPosts[item.id];
                           const likes = postLikes[item.id] || 0;
@@ -1000,10 +1023,37 @@ export default function App() {
                             </motion.div>
                           );
                         })}
-                      </div>
+                        </div>
 
-                      {/* Certificates carousel */}
-                      <CertificatesCarousel />
+                        {/* Advertising space — opens Instagram DM to book the spot */}
+                        <a
+                          href="https://ig.me/m/abdulazeemshaikhh"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group relative flex items-center gap-3.5 w-full min-h-[112px] p-4 bg-black/[0.02] border border-dashed border-black/15 hover:border-black/30 hover:bg-black/[0.035] transition-all duration-300 text-left"
+                          aria-label="Advertise here — send a message on Instagram"
+                        >
+                          <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-black/10 flex items-center justify-center text-black/60 group-hover:text-black transition-colors">
+                            <Instagram size={18} strokeWidth={1.6} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[9px] uppercase tracking-[0.16em] font-semibold text-black/35">
+                              Advertising space
+                            </p>
+                            <h3 className="text-[13px] font-semibold text-black leading-tight mt-1">
+                              Feature your brand here
+                            </h3>
+                            <p className="text-[10px] text-black/45 leading-snug mt-1">
+                              Send your photos and a message to <span className="text-black/65">@abdulazeemshaikhh</span> on Instagram to book this spot.
+                            </p>
+                          </div>
+                          <ArrowUpRight
+                            size={18}
+                            strokeWidth={1.6}
+                            className="shrink-0 text-black/30 group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+                          />
+                        </a>
+                      </div>
                     </motion.div>
 
 
@@ -1349,6 +1399,20 @@ export default function App() {
           </AnimatePresence>
         </motion.div>
       </main>
+
+      {/* Total visitors */}
+      {typeof totalVisitors === 'number' && totalVisitors > 0 && (
+        <div
+          className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[60] flex items-center gap-1.5 bg-white/85 backdrop-blur-md border border-black/10 rounded-full pl-2.5 pr-3 py-1.5 shadow-sm select-none"
+          title="Total visitors to this website"
+        >
+          <Eye size={12} strokeWidth={1.8} className="text-black/35" />
+          <span className="text-[10px] font-semibold text-black/70 tabular-nums">
+            {totalVisitors.toLocaleString('en-US')}
+          </span>
+          <span className="text-[10px] text-black/40">visitors</span>
+        </div>
+      )}
 
       {/* Background Ambient Glow removed */}
     </div>

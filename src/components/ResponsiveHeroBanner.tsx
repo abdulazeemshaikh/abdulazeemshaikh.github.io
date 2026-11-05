@@ -11,10 +11,10 @@ const ResponsiveHeroBanner: React.FC<{
 }) => {
     return (
         <section 
-            className="w-full relative flex flex-col items-center justify-center gap-2"
+            className="w-full min-w-0 max-w-full relative flex flex-col items-center justify-center gap-2"
         >
             {greetingNode && (
-                <div className="relative z-50">
+                <div className="relative w-full min-w-0 z-50">
                     {greetingNode}
                 </div>
             )}
