@@ -679,7 +679,7 @@ export default function App() {
                       className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full min-w-0 pb-8"
                     >
                       {activeProjects.filter(p => p.id === 'zalt').map((project) => (
-                        <div key={project.id} className="flex flex-col gap-4 w-full max-w-[480px]">
+                        <div key={project.id} className="flex flex-col gap-4 order-1 w-full max-w-[480px]">
                           <motion.div 
                             variants={cardVariants}
                             onMouseEnter={() => setHoveredCategory('zyfleron')}
@@ -781,13 +781,55 @@ export default function App() {
                         </div>
                       ))}
 
-                      {/* Right column: certificates above the moon/logo images, media feed, then advertising */}
-                      <div className="flex flex-col gap-6 w-full max-w-[480px]">
-                        {/* Certificates carousel */}
-                        <CertificatesCarousel />
+                      {/* Advertising space — beside the Zivai card, opens Instagram DM */}
+                      <a
+                        href="https://ig.me/m/abdulazeemshaikhh"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group relative flex flex-col justify-between order-4 sm:order-2 w-full max-w-[480px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 overflow-hidden text-left transition-all duration-500"
+                        aria-label="Advertise here — send a message on Instagram"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-rose-500/5 to-transparent opacity-60 blur-3xl -z-10" />
+                        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
 
-                        {/* Clean Visual Media Feed (Left-aligned, beside each other, adaptive natural dimensions, no fixed boxes) */}
-                        <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-start gap-8 w-full max-w-[480px]">
+                        <div className="flex flex-row items-center justify-between gap-3 w-full relative z-10">
+                          <span className="text-sm font-bold tracking-tight text-black">Advertising</span>
+                          <span className="text-[9px] font-semibold text-black/70 bg-black/5 px-2 py-0.5 rounded-full uppercase tracking-[0.12em]">
+                            Open spot
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col items-center justify-center text-center gap-3 py-8 relative z-10">
+                          <div className="w-12 h-12 rounded-full bg-black/[0.03] border border-black/10 flex items-center justify-center text-black/60 group-hover:text-black group-hover:scale-105 transition-all duration-300">
+                            <Instagram size={22} strokeWidth={1.5} />
+                          </div>
+                          <h3 className="text-base font-semibold text-black leading-tight">
+                            Feature your brand here
+                          </h3>
+                          <p className="text-[11px] text-black/50 leading-relaxed max-w-[280px]">
+                            Send your photos and a message to <span className="text-black/70">@abdulazeemshaikhh</span> on Instagram to book this spot.
+                          </p>
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-white bg-black px-4 py-2 rounded-full mt-1 group-hover:bg-black/85 transition-colors">
+                            Send a DM
+                            <ArrowUpRight size={13} strokeWidth={1.8} />
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-3 text-[9px] text-black/30 uppercase tracking-[0.14em] relative z-10">
+                          <span>Your photo · your link · your brand</span>
+                          <ArrowUpRight
+                            size={14}
+                            strokeWidth={1.6}
+                            className="shrink-0 group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+                          />
+                        </div>
+                      </a>
+
+                      {/* Certificates carousel — below the Zivai card */}
+                      <CertificatesCarousel />
+
+                      {/* Clean Visual Media Feed — below the certificates */}
+                      <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-start gap-8 w-full max-w-[480px] mt-2 order-3 sm:order-4">
                         {mediaItems.map((item) => {
                           const isLiked = !!likedPosts[item.id];
                           const likes = postLikes[item.id] || 0;
@@ -1024,38 +1066,21 @@ export default function App() {
                           );
                         })}
                         </div>
-
-                        {/* Advertising space — opens Instagram DM to book the spot */}
-                        <a
-                          href="https://ig.me/m/abdulazeemshaikhh"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group relative flex items-center gap-3.5 w-full min-h-[112px] p-4 bg-black/[0.02] border border-dashed border-black/15 hover:border-black/30 hover:bg-black/[0.035] transition-all duration-300 text-left"
-                          aria-label="Advertise here — send a message on Instagram"
-                        >
-                          <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-black/10 flex items-center justify-center text-black/60 group-hover:text-black transition-colors">
-                            <Instagram size={18} strokeWidth={1.6} />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-[9px] uppercase tracking-[0.16em] font-semibold text-black/35">
-                              Advertising space
-                            </p>
-                            <h3 className="text-[13px] font-semibold text-black leading-tight mt-1">
-                              Feature your brand here
-                            </h3>
-                            <p className="text-[10px] text-black/45 leading-snug mt-1">
-                              Send your photos and a message to <span className="text-black/65">@abdulazeemshaikhh</span> on Instagram to book this spot.
-                            </p>
-                          </div>
-                          <ArrowUpRight
-                            size={18}
-                            strokeWidth={1.6}
-                            className="shrink-0 text-black/30 group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
-                          />
-                        </a>
-                      </div>
                     </motion.div>
 
+                    {/* Total visitors — end of the website, bottom right */}
+                    <div className="w-full max-w-7xl mx-auto flex justify-end mt-2 pr-1">
+                      <div
+                        className="flex items-center gap-1.5 bg-white/85 backdrop-blur-md border border-black/10 rounded-full pl-2.5 pr-3 py-1.5 shadow-sm select-none"
+                        title="Total visitors to this website"
+                      >
+                        <Eye size={12} strokeWidth={1.8} className="text-black/35" />
+                        <span className="text-[10px] font-semibold text-black/70 tabular-nums">
+                          {typeof totalVisitors === 'number' ? totalVisitors.toLocaleString('en-US') : '—'}
+                        </span>
+                        <span className="text-[10px] text-black/40">visitors</span>
+                      </div>
+                    </div>
 
                   </div>
               }
@@ -1399,20 +1424,6 @@ export default function App() {
           </AnimatePresence>
         </motion.div>
       </main>
-
-      {/* Total visitors */}
-      {typeof totalVisitors === 'number' && totalVisitors > 0 && (
-        <div
-          className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[60] flex items-center gap-1.5 bg-white/85 backdrop-blur-md border border-black/10 rounded-full pl-2.5 pr-3 py-1.5 shadow-sm select-none"
-          title="Total visitors to this website"
-        >
-          <Eye size={12} strokeWidth={1.8} className="text-black/35" />
-          <span className="text-[10px] font-semibold text-black/70 tabular-nums">
-            {totalVisitors.toLocaleString('en-US')}
-          </span>
-          <span className="text-[10px] text-black/40">visitors</span>
-        </div>
-      )}
 
       {/* Background Ambient Glow removed */}
     </div>

@@ -63,7 +63,7 @@ export const CertificatesCarousel: React.FC = () => {
   const activeCertificate = activeIndex === null ? null : CERTIFICATES[activeIndex];
 
   return (
-    <section className="w-full max-w-[480px]">
+    <section className="w-full max-w-7xl order-2 sm:order-3">
       {/* Header */}
       <div className="flex items-end justify-between gap-4 w-full mb-4">
         <div className="text-left">
@@ -112,7 +112,7 @@ export const CertificatesCarousel: React.FC = () => {
             data-cert-card
             type="button"
             onClick={() => setActiveIndex(index)}
-            className="snap-start shrink-0 w-[190px] sm:w-[210px] text-left group cursor-pointer"
+            className="snap-start shrink-0 w-[210px] sm:w-[240px] text-left group cursor-pointer"
             aria-label={`View ${certificate.title} certificate`}
           >
             <div className="relative aspect-[1.414/1] overflow-hidden bg-white border border-black/5 group-hover:border-black/15 transition-colors">
