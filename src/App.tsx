@@ -679,7 +679,7 @@ export default function App() {
                       className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full min-w-0 pb-8"
                     >
                       {activeProjects.filter(p => p.id === 'zalt').map((project) => (
-                        <div key={project.id} className="flex flex-col gap-4 order-1 w-full max-w-[480px]">
+                        <div key={project.id} className="flex flex-col gap-4 order-1 w-full md:w-[calc(50%-0.5rem)] max-w-[480px]">
                           <motion.div 
                             variants={cardVariants}
                             onMouseEnter={() => setHoveredCategory('zyfleron')}
@@ -786,7 +786,7 @@ export default function App() {
                         href="https://ig.me/m/abdulazeemshaikhh"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group relative flex flex-col justify-between order-4 sm:order-2 w-full max-w-[480px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 overflow-hidden text-left transition-all duration-500"
+                        className="group relative flex flex-col justify-between order-4 sm:order-2 w-full md:w-[calc(50%-0.5rem)] max-w-[480px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 overflow-hidden text-left transition-all duration-500"
                         aria-label="Advertise here — send a message on Instagram"
                       >
                         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-rose-500/5 to-transparent opacity-60 blur-3xl -z-10" />
