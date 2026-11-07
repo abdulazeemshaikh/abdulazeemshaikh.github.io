@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Award, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { CERTIFICATES } from '../data/certificates';
 
 export const CertificatesCarousel: React.FC = () => {
@@ -63,13 +63,10 @@ export const CertificatesCarousel: React.FC = () => {
   const activeCertificate = activeIndex === null ? null : CERTIFICATES[activeIndex];
 
   return (
-    <section className="w-full max-w-7xl order-2 sm:order-3 min-w-0">
+    <section className="w-full max-w-[976px] order-2 sm:order-3 min-w-0">
       {/* Header */}
       <div className="flex items-center justify-between gap-4 w-full mb-4">
-        <div className="flex items-center gap-2">
-          <Award size={14} strokeWidth={1.8} className="text-black/35" />
-          <h2 className="text-sm font-bold tracking-tight text-black">Certificates</h2>
-        </div>
+        <h2 className="text-sm font-bold tracking-tight text-black">Certificates</h2>
 
         <div className="flex items-center gap-1.5 shrink-0">
           <button
