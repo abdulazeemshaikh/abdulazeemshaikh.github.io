@@ -183,7 +183,7 @@ export default function App() {
           const visitorIds = new Set<string>();
           visitorEntries.forEach((entry: any) => {
             const id = typeof entry === 'string' ? entry : entry?.id || entry?.text;
-            if (typeof id === 'string' && id.startsWith('vip_')) visitorIds.add(id);
+            if (typeof id === 'string' && id.startsWith('visitor_v2_')) visitorIds.add(id);
           });
           setUniqueVisitors(visitorIds.size);
 
@@ -216,42 +216,42 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Total visitors counter — one count per unique visitor IP.
-  // The visitor list lives in the existing backend so refreshes, new tabs,
-  // other browsers and cleared storage on the same network never add a new count.
+  // Total visitors counter — one count per person/device.
+  // A stable device ID is kept in localStorage and a long-lived cookie so
+  // refreshes and visits from the same browser never add another count, while
+  // different people on the same network are still counted separately.
   useEffect(() => {
     if (!GOOGLE_SCRIPT_URL || visitorCheckStarted.current) return;
     visitorCheckStarted.current = true;
 
-    const registerVisitor = async () => {
-      let visitorId = '';
+    const getOrCreateVisitorId = () => {
+      let visitorId = localStorage.getItem('visitor_device_id_v2') || '';
 
-      try {
-        const res = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
-        const data = await res.json();
-        const ip = data && typeof data.ip === 'string' ? data.ip : '';
-        if (ip && window.crypto?.subtle) {
-          const digest = await window.crypto.subtle.digest(
-            'SHA-256',
-            new TextEncoder().encode(`aas-visitor-2026:${ip}`)
-          );
-          const hash = Array.from(new Uint8Array(digest))
-            .map((byte) => byte.toString(16).padStart(2, '0'))
-            .join('')
-            .slice(0, 32);
-          visitorId = `vip_${hash}`;
+      if (!visitorId) {
+        const cookieMatch = document.cookie.match(/(?:^|;\s*)aas_visitor_v2=([^;]+)/);
+        if (cookieMatch) {
+          visitorId = decodeURIComponent(cookieMatch[1]);
         }
-      } catch {
-        // IP lookup can be blocked — fall back to a stable per-browser ID.
       }
 
       if (!visitorId) {
-        visitorId = localStorage.getItem('visitor_id_v1') || '';
-        if (!visitorId) {
-          visitorId = `vip_local_${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
-          localStorage.setItem('visitor_id_v1', visitorId);
-        }
+        visitorId = `visitor_v2_${
+          window.crypto?.randomUUID
+            ? window.crypto.randomUUID().replace(/-/g, '')
+            : `${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`
+        }`;
       }
+
+      localStorage.setItem('visitor_device_id_v2', visitorId);
+      document.cookie = `aas_visitor_v2=${encodeURIComponent(visitorId)}; Max-Age=63072000; Path=/; SameSite=Lax${
+        window.location.protocol === 'https:' ? '; Secure' : ''
+      }`;
+
+      return visitorId;
+    };
+
+    const registerVisitor = async () => {
+      const visitorId = getOrCreateVisitorId();
 
       try {
         const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=getAll&t=${Date.now()}`);
@@ -270,7 +270,7 @@ export default function App() {
             postId: 'site-visitors-ips',
             commentId: visitorId,
             // The deployed backend returns comment text only, so the visitor
-            // hash is written as the text as well as the comment id.
+            // ID is written as the text as well as the comment id.
             comment: visitorId,
           });
         }
