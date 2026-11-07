@@ -112,7 +112,7 @@ export const CertificatesCarousel: React.FC = () => {
                 src={certificate.preview}
                 alt={`${certificate.title} certificate`}
                 loading="lazy"
-                className="w-full h-full object-cover object-top select-none"
+                className="w-full h-full object-contain select-none"
               />
             </div>
           </button>
