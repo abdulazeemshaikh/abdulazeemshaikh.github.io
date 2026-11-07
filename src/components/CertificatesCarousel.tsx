@@ -93,7 +93,7 @@ export const CertificatesCarousel: React.FC = () => {
       {/* Horizontal snap carousel — extends to the right edge of the viewport */}
       <div
         ref={scrollerRef}
-        className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-1 w-[calc(100%_+_(100vw_-_100%)/2)]"
+        className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-1 w-[calc(100%_+_(100vw_-_100%))] ml-[calc((100%_-_100vw)/2)]"
       >
         {CERTIFICATES.map((certificate, index) => (
           <button
