@@ -82,6 +82,9 @@ export default function App() {
     }
   });
 
+  const [uniqueVisitors, setUniqueVisitors] = useState<number | null>(null);
+  const visitorCheckStarted = useRef(false);
+
   interface CommentItem {
     id: string;
     text: string;
@@ -173,6 +176,17 @@ export default function App() {
           localStorage.setItem('user_post_views', JSON.stringify(data.views));
         }
         if (data.comments) {
+          // Unique visitors are stored as hashed visitor IDs in the comments store.
+          const visitorEntries = Array.isArray(data.comments['site-visitors-ips'])
+            ? data.comments['site-visitors-ips']
+            : [];
+          const visitorIds = new Set<string>();
+          visitorEntries.forEach((entry: any) => {
+            const id = typeof entry === 'string' ? entry : entry?.id || entry?.text;
+            if (typeof id === 'string' && id.startsWith('vip_')) visitorIds.add(id);
+          });
+          setUniqueVisitors(visitorIds.size);
+
           const formattedComments: Record<string, CommentItem[]> = {};
           Object.keys(data.comments).forEach((postId) => {
             const list = data.comments[postId];
@@ -202,21 +216,75 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Total visitors counter — uses the site's existing global stats backend.
-  // Counts each browser once, then keeps reading the running total.
+  // Total visitors counter — one count per unique visitor IP.
+  // The visitor list lives in the existing backend so refreshes, new tabs,
+  // other browsers and cleared storage on the same network never add a new count.
   useEffect(() => {
-    if (!GOOGLE_SCRIPT_URL) return;
-    const VISITOR_KEY = 'visitor_counted_v1';
-    if (localStorage.getItem(VISITOR_KEY)) return;
+    if (!GOOGLE_SCRIPT_URL || visitorCheckStarted.current) return;
+    visitorCheckStarted.current = true;
 
-    localStorage.setItem(VISITOR_KEY, 'true');
-    syncToBackend({ action: 'view', postId: 'site-visitors' });
+    const registerVisitor = async () => {
+      let visitorId = '';
 
-    // Refresh shortly after the visit is recorded.
-    const refresh = window.setTimeout(() => {
-      fetchGlobalStats();
-    }, 2500);
-    return () => window.clearTimeout(refresh);
+      try {
+        const res = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
+        const data = await res.json();
+        const ip = data && typeof data.ip === 'string' ? data.ip : '';
+        if (ip && window.crypto?.subtle) {
+          const digest = await window.crypto.subtle.digest(
+            'SHA-256',
+            new TextEncoder().encode(`aas-visitor-2026:${ip}`)
+          );
+          const hash = Array.from(new Uint8Array(digest))
+            .map((byte) => byte.toString(16).padStart(2, '0'))
+            .join('')
+            .slice(0, 32);
+          visitorId = `vip_${hash}`;
+        }
+      } catch {
+        // IP lookup can be blocked — fall back to a stable per-browser ID.
+      }
+
+      if (!visitorId) {
+        visitorId = localStorage.getItem('visitor_id_v1') || '';
+        if (!visitorId) {
+          visitorId = `vip_local_${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
+          localStorage.setItem('visitor_id_v1', visitorId);
+        }
+      }
+
+      try {
+        const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=getAll&t=${Date.now()}`);
+        const data = await res.json();
+        const existing = Array.isArray(data?.comments?.['site-visitors-ips'])
+          ? data.comments['site-visitors-ips']
+          : [];
+        const alreadyCounted = existing.some((entry: any) => {
+          const id = typeof entry === 'string' ? entry : entry?.id || entry?.text;
+          return id === visitorId;
+        });
+
+        if (!alreadyCounted) {
+          await syncToBackend({
+            action: 'comment',
+            postId: 'site-visitors-ips',
+            commentId: visitorId,
+            // The deployed backend returns comment text only, so the visitor
+            // hash is written as the text as well as the comment id.
+            comment: visitorId,
+          });
+        }
+      } catch {
+        // If the check fails, do not add a possibly duplicate count.
+        return;
+      }
+
+      // Refresh after the write has had time to land.
+      window.setTimeout(fetchGlobalStats, 1500);
+      window.setTimeout(fetchGlobalStats, 5000);
+    };
+
+    registerVisitor();
   }, []);
 
   // Track permanent view per visitor (one view per person is always one, even if they view many times)
@@ -421,7 +489,7 @@ export default function App() {
   ];
 
   const activeProjects = projects.filter(p => p.id === 'zalt');
-  const totalVisitors = postViews['site-visitors'];
+  const totalVisitors = uniqueVisitors;
 
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
