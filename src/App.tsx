@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Eye, Pencil, Trash2, Maximize2 } from 'lucide-react';
+import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -133,6 +133,7 @@ export default function App() {
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [shareFeedback, setShareFeedback] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string; id: string } | null>(null);
+  const mediaClickTimeout = useRef<number | null>(null);
 
   const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEET_URL || '';
 
@@ -843,7 +844,20 @@ export default function App() {
                               {/* Media Image with Double-Tap to Like (Adaptive natural aspect ratio, no container constraints) */}
                               <div 
                                 className="relative inline-block overflow-hidden cursor-pointer select-none"
-                                onDoubleClick={() => handleDoubleTap(item.id)}
+                                onClick={() => {
+                                  if (mediaClickTimeout.current !== null) return;
+                                  mediaClickTimeout.current = window.setTimeout(() => {
+                                    mediaClickTimeout.current = null;
+                                    setLightboxImage({ src: item.src, alt: item.alt, id: item.id });
+                                  }, 220);
+                                }}
+                                onDoubleClick={() => {
+                                  if (mediaClickTimeout.current !== null) {
+                                    window.clearTimeout(mediaClickTimeout.current);
+                                    mediaClickTimeout.current = null;
+                                  }
+                                  handleDoubleTap(item.id);
+                                }}
                               >
                                 <img 
                                   src={item.src} 
@@ -930,16 +944,6 @@ export default function App() {
                                       {views}
                                     </span>
                                   </div>
-
-                                  {/* Expand / Big Pop-up Button */}
-                                  <button
-                                    onClick={() => setLightboxImage({ src: item.src, alt: item.alt, id: item.id })}
-                                    aria-label="View large"
-                                    title="View large popup"
-                                    className="flex items-center text-black/45 hover:text-black transition-colors cursor-pointer active:scale-90 duration-150 p-0 border-none bg-transparent ml-auto"
-                                  >
-                                    <Maximize2 size={15} strokeWidth={1.8} />
-                                  </button>
                                 </div>
 
                                 {/* Share confirmation toast */}
