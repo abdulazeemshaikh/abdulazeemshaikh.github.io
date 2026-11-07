@@ -788,10 +788,31 @@ export default function App() {
                         href="https://ig.me/m/abdulazeemshaikhh"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group relative flex items-center justify-center order-4 sm:order-2 w-full md:w-[calc(50%-0.5rem)] max-w-[480px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 overflow-hidden text-center transition-all duration-500"
+                        className="group relative flex flex-col justify-between gap-6 order-4 sm:order-2 w-full md:w-[calc(50%-0.5rem)] max-w-[480px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 overflow-hidden text-left transition-all duration-500"
                         aria-label="Feature your brand here — send a message on Instagram"
                       >
-                        <span className="inline-flex items-center justify-center text-sm font-semibold text-white bg-black px-6 py-3 rounded-full group-hover:bg-black/85 transition-colors">
+                        <div className="flex flex-col gap-2.5 relative z-10">
+                          <div className="flex flex-row items-center justify-between gap-3 w-full">
+                            <span className="text-sm font-bold tracking-tight text-black">Advertising</span>
+                            <span className="text-[9px] font-semibold text-black/70 bg-black/5 px-2 py-0.5 rounded-full uppercase tracking-[0.12em]">
+                              Open spot
+                            </span>
+                          </div>
+
+                          <h3 className="text-[15px] font-semibold text-black leading-snug">
+                            Stop Buying Banners, start Building Experiences.
+                          </h3>
+
+                          <p className="text-[11px] text-black/50 leading-relaxed">
+                            Traditional ads are broken. Users scroll past static images, mute videos, and install ad-blockers. They don't want to look at billboards anymore.
+                          </p>
+
+                          <p className="text-[11px] text-black/50 leading-relaxed">
+                            Welcome to The Living Pixel, a premium, interactive digital playground built directly into the fabric of our website. This is a lease high-engagement real estate where your brand can create living, breathing digital installations.
+                          </p>
+                        </div>
+
+                        <span className="inline-flex items-center justify-center text-sm font-semibold text-white bg-black px-6 py-3 rounded-full self-start group-hover:bg-black/85 transition-colors relative z-10">
                           Feature your brand here
                         </span>
                       </a>
