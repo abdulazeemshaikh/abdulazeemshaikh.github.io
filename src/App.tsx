@@ -552,7 +552,7 @@ export default function App() {
 
 
   return (
-    <div className="min-h-screen w-full bg-[#FDFDFD] text-zinc-900 font-sans overflow-y-auto flex flex-col">
+    <div className="min-h-screen w-full bg-[#FDFDFD] text-zinc-900 font-sans overflow-y-auto overflow-x-hidden flex flex-col">
       {/* Full Screen Ambient Glow */}
       <div className="fixed inset-0 pointer-events-none z-0">
       </div>
