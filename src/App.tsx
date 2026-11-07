@@ -1412,9 +1412,9 @@ export default function App() {
       </main>
 
       {/* Total visitors — bottom edge of the website */}
-      <footer className="w-full max-w-7xl mx-auto flex justify-end px-4 md:px-12 pb-3 md:pb-4 z-10 shrink-0">
+      <footer className="w-full flex justify-end pr-2 pb-2 z-10 shrink-0">
         <div
-          className="flex items-center gap-1.5 bg-white/85 backdrop-blur-md border border-black/10 rounded-full pl-2.5 pr-3 py-1.5 shadow-sm select-none"
+          className="flex items-center gap-1.5 text-black/45 select-none"
           title="Total visitors to this website"
         >
           <Eye size={12} strokeWidth={1.8} className="text-black/35" />
