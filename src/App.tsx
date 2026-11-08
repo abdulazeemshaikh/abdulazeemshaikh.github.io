@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -8,6 +8,36 @@ import { UnicornBackground } from './components/UnicornBackground';
 import { SplineBackground } from './components/SplineBackground';
 import CertificatesCarousel from './components/CertificatesCarousel';
 // ...
+
+// Stable per-person/device ID used for unique visitor and view counting.
+// It lives in localStorage and a long-lived cookie so refreshes and repeat
+// visits from the same browser never add another count, while different
+// people on the same network are still counted separately.
+const getOrCreateDeviceId = () => {
+  let visitorId = localStorage.getItem('visitor_device_id_v2') || '';
+
+  if (!visitorId) {
+    const cookieMatch = document.cookie.match(/(?:^|;\s*)aas_visitor_v2=([^;]+)/);
+    if (cookieMatch) {
+      visitorId = decodeURIComponent(cookieMatch[1]);
+    }
+  }
+
+  if (!visitorId) {
+    visitorId = `visitor_v2_${
+      window.crypto?.randomUUID
+        ? window.crypto.randomUUID().replace(/-/g, '')
+        : `${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`
+    }`;
+  }
+
+  localStorage.setItem('visitor_device_id_v2', visitorId);
+  document.cookie = `aas_visitor_v2=${encodeURIComponent(visitorId)}; Max-Age=63072000; Path=/; SameSite=Lax${
+    window.location.protocol === 'https:' ? '; Secure' : ''
+  }`;
+
+  return visitorId;
+};
 
 export default function App() {
   const [formName, setFormName] = useState<string>('');
@@ -31,6 +61,7 @@ export default function App() {
     src: string;
     alt: string;
     caption?: string;
+    images?: string[];
   }
 
   const mediaItems: MediaItemData[] = [
@@ -38,6 +69,15 @@ export default function App() {
       id: 'moon',
       src: 'assets/moon.png',
       alt: 'Moon visual',
+      images: [
+        'assets/moon.png',
+        'assets/moon-carousel/moon-1.jpg',
+        'assets/moon-carousel/moon-2.jpg',
+        'assets/moon-carousel/moon-3.jpg',
+        'assets/moon-carousel/moon-4.jpg',
+        'assets/moon-carousel/moon-5.jpg',
+        'assets/moon-carousel/moon-6.jpg',
+      ],
     },
     {
       id: 'silver-emblem',
@@ -73,14 +113,7 @@ export default function App() {
     }
   });
 
-  const [postViews, setPostViews] = useState<Record<string, number>>(() => {
-    try {
-      const saved = localStorage.getItem('user_post_views');
-      return saved ? JSON.parse(saved) : {};
-    } catch {
-      return {};
-    }
-  });
+  const [postViews, setPostViews] = useState<Record<string, number>>({});
 
   const [uniqueVisitors, setUniqueVisitors] = useState<number | null>(null);
   const visitorCheckStarted = useRef(false);
@@ -135,8 +168,17 @@ export default function App() {
   const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(null);
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [shareFeedback, setShareFeedback] = useState<string | null>(null);
-  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string; id: string } | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<{
+    src: string;
+    alt: string;
+    id: string;
+    images?: string[];
+    index?: number;
+  } | null>(null);
   const mediaClickTimeout = useRef<number | null>(null);
+  const [mediaSlideIndex, setMediaSlideIndex] = useState<Record<string, number>>({});
+  const mediaTrackRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const postViewsCheckStarted = useRef(false);
 
   const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SHEET_URL || '';
 
@@ -171,10 +213,6 @@ export default function App() {
           setPostShares(data.shares);
           localStorage.setItem('user_post_shares', JSON.stringify(data.shares));
         }
-        if (data.views) {
-          setPostViews(data.views);
-          localStorage.setItem('user_post_views', JSON.stringify(data.views));
-        }
         if (data.comments) {
           // Unique visitors are stored as hashed visitor IDs in the comments store.
           const visitorEntries = Array.isArray(data.comments['site-visitors-ips'])
@@ -187,8 +225,26 @@ export default function App() {
           });
           setUniqueVisitors(visitorIds.size);
 
+          // Unique post views are stored per post as device IDs under
+          // `post-views-<postId>`, so refreshes and repeat visits never inflate them.
+          const viewCounts: Record<string, number> = {};
+          Object.keys(data.comments).forEach((key) => {
+            if (!key.startsWith('post-views-')) return;
+            const list = data.comments[key];
+            if (!Array.isArray(list)) return;
+            const postId = key.slice('post-views-'.length);
+            const ids = new Set<string>();
+            list.forEach((entry: any) => {
+              const id = typeof entry === 'string' ? entry : entry?.id || entry?.text;
+              if (typeof id === 'string' && id.startsWith('visitor_v2_')) ids.add(id);
+            });
+            viewCounts[postId] = ids.size;
+          });
+          setPostViews(viewCounts);
+
           const formattedComments: Record<string, CommentItem[]> = {};
           Object.keys(data.comments).forEach((postId) => {
+            if (postId === 'site-visitors-ips' || postId.startsWith('post-views-')) return;
             const list = data.comments[postId];
             if (Array.isArray(list)) {
               formattedComments[postId] = list.map((item: any, idx: number) => {
@@ -224,34 +280,8 @@ export default function App() {
     if (!GOOGLE_SCRIPT_URL || visitorCheckStarted.current) return;
     visitorCheckStarted.current = true;
 
-    const getOrCreateVisitorId = () => {
-      let visitorId = localStorage.getItem('visitor_device_id_v2') || '';
-
-      if (!visitorId) {
-        const cookieMatch = document.cookie.match(/(?:^|;\s*)aas_visitor_v2=([^;]+)/);
-        if (cookieMatch) {
-          visitorId = decodeURIComponent(cookieMatch[1]);
-        }
-      }
-
-      if (!visitorId) {
-        visitorId = `visitor_v2_${
-          window.crypto?.randomUUID
-            ? window.crypto.randomUUID().replace(/-/g, '')
-            : `${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`
-        }`;
-      }
-
-      localStorage.setItem('visitor_device_id_v2', visitorId);
-      document.cookie = `aas_visitor_v2=${encodeURIComponent(visitorId)}; Max-Age=63072000; Path=/; SameSite=Lax${
-        window.location.protocol === 'https:' ? '; Secure' : ''
-      }`;
-
-      return visitorId;
-    };
-
     const registerVisitor = async () => {
-      const visitorId = getOrCreateVisitorId();
+      const visitorId = getOrCreateDeviceId();
 
       try {
         const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=getAll&t=${Date.now()}`);
@@ -287,21 +317,62 @@ export default function App() {
     registerVisitor();
   }, []);
 
-  // Track permanent view per visitor (one view per person is always one, even if they view many times)
+  // Track unique views per post — one view per person/device per post.
+  // The device ID is stored once in the backend for each post, so refreshes,
+  // new tabs and other browsers on the same network never inflate the count.
   useEffect(() => {
-    mediaItems.forEach((item) => {
-      const permanentKey = `viewed_post_permanent_${item.id}`;
-      if (!localStorage.getItem(permanentKey)) {
-        localStorage.setItem(permanentKey, 'true');
-        setPostViews((prev) => {
-          const current = prev[item.id] || 0;
-          const updated = { ...prev, [item.id]: current + 1 };
-          localStorage.setItem('user_post_views', JSON.stringify(updated));
-          return updated;
-        });
-        syncToBackend({ action: 'view', postId: item.id });
+    if (!GOOGLE_SCRIPT_URL || postViewsCheckStarted.current) return;
+    postViewsCheckStarted.current = true;
+    let cancelled = false;
+
+    const registerPostViews = async () => {
+      const deviceId = getOrCreateDeviceId();
+
+      try {
+        const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=getAll&t=${Date.now()}`);
+        const data = await res.json();
+        const comments = data?.comments || {};
+        const viewCounts: Record<string, number> = {};
+        let wrote = false;
+
+        for (const item of mediaItems) {
+          const key = `post-views-${item.id}`;
+          const list = Array.isArray(comments[key]) ? comments[key] : [];
+          const ids = new Set<string>();
+          list.forEach((entry: any) => {
+            const id = typeof entry === 'string' ? entry : entry?.id || entry?.text;
+            if (typeof id === 'string' && id.startsWith('visitor_v2_')) ids.add(id);
+          });
+
+          if (!ids.has(deviceId)) {
+            wrote = true;
+            await syncToBackend({
+              action: 'comment',
+              postId: key,
+              commentId: deviceId,
+              comment: deviceId,
+            });
+            ids.add(deviceId);
+          }
+
+          viewCounts[item.id] = ids.size;
+        }
+
+        if (!cancelled) setPostViews(viewCounts);
+
+        if (wrote) {
+          window.setTimeout(fetchGlobalStats, 1500);
+          window.setTimeout(fetchGlobalStats, 5000);
+        }
+      } catch {
+        // If the check fails, leave the existing counts untouched.
       }
-    });
+    };
+
+    registerPostViews();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const handleToggleLike = (id: string) => {
@@ -338,6 +409,14 @@ export default function App() {
       setHeartAnimPostId(id);
       setTimeout(() => setHeartAnimPostId(null), 900);
     }
+  };
+
+  const goToMediaSlide = (itemId: string, index: number) => {
+    const track = mediaTrackRefs.current[itemId];
+    if (track) {
+      track.scrollTo({ left: track.clientWidth * index, behavior: 'smooth' });
+    }
+    setMediaSlideIndex((prev) => ({ ...prev, [itemId]: index }));
   };
 
   const handleAddComment = (id: string, e: React.FormEvent) => {
@@ -902,6 +981,9 @@ export default function App() {
                           const isHeartAnim = heartAnimPostId === item.id;
                           const isCommenting = activeCommentPostId === item.id;
                           const currentInput = commentInputs[item.id] || '';
+                          const slides = item.images && item.images.length > 0 ? item.images : [item.src];
+                          const isCarousel = slides.length > 1;
+                          const slideIndex = Math.min(mediaSlideIndex[item.id] || 0, slides.length - 1);
 
                           return (
                             <motion.div
@@ -916,7 +998,13 @@ export default function App() {
                                   if (mediaClickTimeout.current !== null) return;
                                   mediaClickTimeout.current = window.setTimeout(() => {
                                     mediaClickTimeout.current = null;
-                                    setLightboxImage({ src: item.src, alt: item.alt, id: item.id });
+                                    setLightboxImage({
+                                      src: isCarousel ? slides[slideIndex] : item.src,
+                                      alt: item.alt,
+                                      id: item.id,
+                                      images: isCarousel ? slides : undefined,
+                                      index: isCarousel ? slideIndex : undefined,
+                                    });
                                   }, 220);
                                 }}
                                 onDoubleClick={() => {
@@ -927,11 +1015,83 @@ export default function App() {
                                   handleDoubleTap(item.id);
                                 }}
                               >
-                                <img 
-                                  src={item.src} 
-                                  alt={item.alt} 
-                                  className="w-auto h-auto max-w-[210px] max-h-[260px] object-contain block pointer-events-none" 
-                                />
+                                {isCarousel ? (
+                                  <div className="relative w-[210px]">
+                                    <div
+                                      ref={(el) => {
+                                        mediaTrackRefs.current[item.id] = el;
+                                      }}
+                                      onScroll={(e) => {
+                                        const track = e.currentTarget;
+                                        const idx = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+                                        setMediaSlideIndex((prev) =>
+                                          prev[item.id] === idx ? prev : { ...prev, [item.id]: idx }
+                                        );
+                                      }}
+                                      className="no-scrollbar flex overflow-x-auto snap-x snap-mandatory w-[210px] aspect-[4/5]"
+                                    >
+                                      {slides.map((src, idx) => (
+                                        <div
+                                          key={`${item.id}-${idx}`}
+                                          className="w-full h-full shrink-0 snap-start flex items-center justify-center"
+                                        >
+                                          <img
+                                            src={src}
+                                            alt={`${item.alt} ${idx + 1}`}
+                                            draggable={false}
+                                            className="w-full h-full object-contain block pointer-events-none"
+                                          />
+                                        </div>
+                                      ))}
+                                    </div>
+
+                                    <button
+                                      type="button"
+                                      aria-label="Previous image"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        goToMediaSlide(item.id, (slideIndex - 1 + slides.length) % slides.length);
+                                      }}
+                                      className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-7 h-7 rounded-full bg-black/45 text-white backdrop-blur-sm hover:bg-black/65 transition-colors active:scale-90"
+                                    >
+                                      <ChevronLeft size={16} strokeWidth={2} />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      aria-label="Next image"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        goToMediaSlide(item.id, (slideIndex + 1) % slides.length);
+                                      }}
+                                      className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-7 h-7 rounded-full bg-black/45 text-white backdrop-blur-sm hover:bg-black/65 transition-colors active:scale-90"
+                                    >
+                                      <ChevronRight size={16} strokeWidth={2} />
+                                    </button>
+
+                                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1">
+                                      {slides.map((_, idx) => (
+                                        <button
+                                          key={`dot-${item.id}-${idx}`}
+                                          type="button"
+                                          aria-label={`Go to image ${idx + 1}`}
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            goToMediaSlide(item.id, idx);
+                                          }}
+                                          className={`h-1.5 rounded-full transition-all duration-200 ${
+                                            idx === slideIndex ? 'w-3.5 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/75'
+                                          }`}
+                                        />
+                                      ))}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <img 
+                                    src={item.src} 
+                                    alt={item.alt} 
+                                    className="w-auto h-auto max-w-[210px] max-h-[260px] object-contain block pointer-events-none" 
+                                  />
+                                )}
 
                                 {/* Heart burst on double-tap */}
                                 <AnimatePresence>
@@ -1391,6 +1551,13 @@ export default function App() {
               const lbComments = postComments[lbId] || [];
               const lbShares = postShares[lbId] || 0;
               const lbViews = postViews[lbId] || 0;
+              const lbImages = lightboxImage.images || [];
+              const lbIndex = lightboxImage.index ?? 0;
+              const changeLightboxSlide = (dir: number) => {
+                if (lbImages.length < 2) return;
+                const next = (lbIndex + dir + lbImages.length) % lbImages.length;
+                setLightboxImage({ ...lightboxImage, src: lbImages[next], index: next });
+              };
               return (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -1415,11 +1582,52 @@ export default function App() {
                     className="relative flex flex-row items-center gap-6 max-h-[88vh]"
                   >
                     {/* Image */}
-                    <img
-                      src={lightboxImage.src}
-                      alt={lightboxImage.alt}
-                      className="max-w-[80vw] max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl select-none"
-                    />
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="relative">
+                        <img
+                          src={lightboxImage.src}
+                          alt={lightboxImage.alt}
+                          className="max-w-[80vw] max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl select-none"
+                        />
+
+                        {lbImages.length > 1 && (
+                          <>
+                            <button
+                              type="button"
+                              aria-label="Previous image"
+                              onClick={() => changeLightboxSlide(-1)}
+                              className="absolute left-2 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors active:scale-90"
+                            >
+                              <ChevronLeft size={20} strokeWidth={2} />
+                            </button>
+                            <button
+                              type="button"
+                              aria-label="Next image"
+                              onClick={() => changeLightboxSlide(1)}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors active:scale-90"
+                            >
+                              <ChevronRight size={20} strokeWidth={2} />
+                            </button>
+                          </>
+                        )}
+                      </div>
+
+                      {lbImages.length > 1 && (
+                        <div className="flex items-center gap-1.5">
+                          {lbImages.map((_, idx) => (
+                            <button
+                              key={`lb-dot-${idx}`}
+                              type="button"
+                              aria-label={`Go to image ${idx + 1}`}
+                              onClick={() => setLightboxImage({ ...lightboxImage, src: lbImages[idx], index: idx })}
+                              className={`h-1.5 rounded-full transition-all duration-200 ${
+                                idx === lbIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/40 hover:bg-white/70'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
 
                     {/* Vertical action sidebar */}
                     <div className="flex flex-col items-center gap-6">
