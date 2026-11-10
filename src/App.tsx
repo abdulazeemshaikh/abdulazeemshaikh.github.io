@@ -861,19 +861,16 @@ export default function App() {
                               <div className="w-full flex flex-col justify-between shrink-0">
                                 <div className="space-y-4">
                                   <div className="flex flex-row items-center justify-between gap-3 w-full">
-                                    <a
-                                      href="https://zivai-hq.ai.studio/"
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="shrink-0 flex items-center hover:opacity-80 transition-opacity cursor-pointer"
+                                    <div
+                                      className="shrink-0 flex items-center"
                                       aria-label="Zivai"
                                     >
                                       <img
                                         src="assets/logos/zivai-logo.png"
                                         alt="Zivai"
-                                        className="h-7 w-auto object-contain"
+                                        className="h-10 w-auto object-contain"
                                       />
-                                    </a>
+                                    </div>
                                     <LiquidMetalButton 
                                       label="GET EARLY ACCESS"
                                       width={150}
@@ -909,7 +906,7 @@ export default function App() {
                                           <img
                                             src="assets/logos/akra-mark.png"
                                             alt="AKRA"
-                                            className="w-7 h-7 object-contain shrink-0"
+                                            className="w-9 h-9 object-contain shrink-0"
                                           />
                                           <span className="text-xs font-bold text-black tracking-tight">
                                             AKRA
@@ -934,7 +931,7 @@ export default function App() {
                                           <img
                                             src="assets/logos/celeste-mark.png"
                                             alt="CELESTE"
-                                            className="w-7 h-7 object-contain shrink-0"
+                                            className="w-9 h-9 object-contain shrink-0"
                                           />
                                           <span className="text-xs font-bold text-black tracking-tight">
                                             CELESTE
