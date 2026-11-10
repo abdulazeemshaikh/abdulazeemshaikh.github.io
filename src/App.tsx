@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Instagram, Mail, ArrowUpRight, Copy, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -804,7 +804,7 @@ export default function App() {
                               )}
                             </AnimatePresence>
                             <span className="text-[11px]">abdulazeemshaikhbusiness@gmail.com</span>
-                            <ArrowUpRight 
+                            <Copy 
                               size={12} 
                               strokeWidth={2}
                               className="w-0 opacity-0 -translate-x-1 translate-y-1 group-hover/link:w-3 group-hover/link:opacity-100 group-hover/link:translate-x-0 group-hover/link:translate-y-0 transition-all duration-200 ease-out shrink-0" 
