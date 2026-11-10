@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -728,41 +728,56 @@ export default function App() {
 
                     <motion.div variants={itemVariants} className="flex flex-row flex-wrap items-center justify-center gap-1 text-black/40">
                       <span className="text-sm mr-2">Abdul Azeem Shaikh</span>
-                      <div className="flex flex-wrap items-center justify-center gap-0.5">
+                      <div className="flex flex-wrap items-center justify-center gap-2">
                         <a 
                           href="https://www.instagram.com/abdulazeemshaikhh/" 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="hover:text-black transition-all flex items-center gap-1.5 px-1.5 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                          className="group/link hover:text-black transition-colors flex items-center gap-1 text-black/50 py-1"
                           title="Instagram"
                         >
-                          <Instagram size={17} strokeWidth={1.5} />
+                          <Instagram size={16} strokeWidth={1.5} />
                           <span className="text-[11px]">@abdulazeemshaikhh</span>
+                          <ArrowUpRight 
+                            size={12} 
+                            strokeWidth={2}
+                            className="w-0 opacity-0 -translate-x-1 translate-y-1 group-hover/link:w-3 group-hover/link:opacity-100 group-hover/link:translate-x-0 group-hover/link:translate-y-0 transition-all duration-200 ease-out shrink-0" 
+                          />
                         </a>
                         <a 
                           href="https://www.instagram.com/zivaihq" 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="hover:text-black transition-all flex items-center gap-1.5 px-1.5 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                          className="group/link hover:text-black transition-colors flex items-center gap-1 text-black/50 py-1"
                           title="Zivai on Instagram"
                         >
-                          <Instagram size={17} strokeWidth={1.5} />
+                          <Instagram size={16} strokeWidth={1.5} />
                           <span className="text-[11px]">@zivaihq</span>
+                          <ArrowUpRight 
+                            size={12} 
+                            strokeWidth={2}
+                            className="w-0 opacity-0 -translate-x-1 translate-y-1 group-hover/link:w-3 group-hover/link:opacity-100 group-hover/link:translate-x-0 group-hover/link:translate-y-0 transition-all duration-200 ease-out shrink-0" 
+                          />
                         </a>
                         <a 
                           href="https://x.com/abdulazeem_s" 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="hover:text-black transition-all flex items-center gap-1.5 px-1.5 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                          className="group/link hover:text-black transition-colors flex items-center gap-1 text-black/50 py-1"
                           title="X"
                         >
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
                           <span className="text-[11px]">@abdulazeem_s</span>
+                          <ArrowUpRight 
+                            size={12} 
+                            strokeWidth={2}
+                            className="w-0 opacity-0 -translate-x-1 translate-y-1 group-hover/link:w-3 group-hover/link:opacity-100 group-hover/link:translate-x-0 group-hover/link:translate-y-0 transition-all duration-200 ease-out shrink-0" 
+                          />
                         </a>
                         <div className="relative flex items-center">
                           <button 
                             onClick={handleCopyEmail}
-                            className="hover:text-black transition-all relative group/mail flex items-center gap-1.5 px-1.5 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                            className="group/link hover:text-black transition-colors relative flex items-center gap-1 text-black/50 py-1 cursor-pointer bg-transparent border-none"
                             title="Copy email"
                           >
                             <AnimatePresence mode="wait">
@@ -774,7 +789,7 @@ export default function App() {
                                   exit={{ scale: 0, opacity: 0, rotate: 45 }}
                                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                                 >
-                                  <Check size={17} strokeWidth={2} className="text-green-600" />
+                                  <Check size={16} strokeWidth={2} className="text-green-600" />
                                 </motion.div>
                               ) : (
                                 <motion.div
@@ -784,11 +799,16 @@ export default function App() {
                                   exit={{ scale: 0.8, opacity: 0 }}
                                   transition={{ duration: 0.2 }}
                                 >
-                                  <Mail size={17} strokeWidth={1.5} />
+                                  <Mail size={16} strokeWidth={1.5} />
                                 </motion.div>
                               )}
                             </AnimatePresence>
                             <span className="text-[11px]">abdulazeemshaikhbusiness@gmail.com</span>
+                            <ArrowUpRight 
+                              size={12} 
+                              strokeWidth={2}
+                              className="w-0 opacity-0 -translate-x-1 translate-y-1 group-hover/link:w-3 group-hover/link:opacity-100 group-hover/link:translate-x-0 group-hover/link:translate-y-0 transition-all duration-200 ease-out shrink-0" 
+                            />
                           </button>
                         </div>
                       </div>
