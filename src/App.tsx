@@ -53,7 +53,6 @@ export default function App() {
   const [isInvestSubmitted, setIsInvestSubmitted] = useState<boolean>(false);
 
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
-  const [hoveredWeight, setHoveredWeight] = useState<boolean>(false);
 
   // Instagram-style Media Items State
   interface MediaItemData {
@@ -848,8 +847,6 @@ export default function App() {
                         <div key={project.id} className="flex flex-col gap-4 order-1 w-full md:w-[calc(50%-0.5rem)] max-w-[480px]">
                           <motion.div 
                             variants={cardVariants}
-                            onMouseEnter={() => setHoveredCategory('zyfleron')}
-                            onMouseLeave={() => setHoveredCategory(null)}
                             className={`bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
                           >
                             {/* Soft Gradient Background */}
@@ -1336,15 +1333,6 @@ export default function App() {
                 {hoveredCategory === 'cars' && '🏎️'}
                 {hoveredCategory === 'robots' && '🤖'}
                 {hoveredCategory === 'ai' && '🧠'}
-                {hoveredCategory === 'zyfleron' && (
-                  hoveredWeight ? (
-                    <div className="bg-black/90 backdrop-blur-sm text-white text-[10px] tracking-tight font-semibold px-3 py-1.5 rounded-full shadow-2xl border border-white/15 whitespace-nowrap -mt-6 -ml-6 select-none pointer-events-none animate-fade-in">
-                      your reminders, your to-dos, the mental load you’ve been dragging
-                    </div>
-                  ) : (
-                    <img src="assets/zalt-feather.png" alt="ZD cursor" className="w-8 h-8 object-contain select-none pointer-events-none" />
-                  )
-                )}
               </motion.div>
             )}
 
