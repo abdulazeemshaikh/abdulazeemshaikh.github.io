@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, ArrowUpRight, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -727,29 +727,44 @@ export default function App() {
                     </motion.div>
                     
 
-                    <motion.div variants={itemVariants} className="flex flex-row items-center gap-1 text-black/40">
+                    <motion.div variants={itemVariants} className="flex flex-row flex-wrap items-center justify-center gap-1 text-black/40">
                       <span className="text-sm mr-2">Abdul Azeem Shaikh</span>
-                      <div className="flex items-center gap-0.5">
+                      <div className="flex flex-wrap items-center justify-center gap-0.5">
                         <a 
                           href="https://www.instagram.com/abdulazeemshaikhh/" 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="hover:text-black transition-all flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                          className="hover:text-black transition-all flex items-center gap-1.5 px-1.5 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                          title="Instagram"
                         >
-                          <Instagram size={18} strokeWidth={1.5} />
+                          <Instagram size={17} strokeWidth={1.5} />
+                          <span className="text-[11px]">Instagram</span>
+                        </a>
+                        <a 
+                          href="https://www.instagram.com/zivaihq" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="hover:text-black transition-all flex items-center gap-1.5 px-1.5 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                          title="Zivai on Instagram"
+                        >
+                          <Instagram size={17} strokeWidth={1.5} />
+                          <span className="text-[11px]">@zivaihq</span>
                         </a>
                         <a 
                           href="https://x.com/abdulazeem_s" 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="hover:text-black transition-all flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                          className="hover:text-black transition-all flex items-center gap-1.5 px-1.5 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                          title="X"
                         >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+                          <span className="text-[11px]">X</span>
                         </a>
                         <div className="relative flex items-center">
                           <button 
                             onClick={handleCopyEmail}
-                            className="hover:text-black transition-all relative group/mail flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                            className="hover:text-black transition-all relative group/mail flex items-center gap-1.5 px-1.5 h-8 rounded-full hover:bg-black/5 active:scale-95"
+                            title="Copy email"
                           >
                             <AnimatePresence mode="wait">
                               {copied ? (
@@ -760,7 +775,7 @@ export default function App() {
                                   exit={{ scale: 0, opacity: 0, rotate: 45 }}
                                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                                 >
-                                  <Check size={18} strokeWidth={2} className="text-green-600" />
+                                  <Check size={17} strokeWidth={2} className="text-green-600" />
                                 </motion.div>
                               ) : (
                                 <motion.div
@@ -770,10 +785,11 @@ export default function App() {
                                   exit={{ scale: 0.8, opacity: 0 }}
                                   transition={{ duration: 0.2 }}
                                 >
-                                  <Mail size={18} strokeWidth={1.5} />
+                                  <Mail size={17} strokeWidth={1.5} />
                                 </motion.div>
                               )}
                             </AnimatePresence>
+                            <span className="text-[11px]">Email</span>
                           </button>
                         </div>
                       </div>
@@ -839,17 +855,6 @@ export default function App() {
                             {/* Soft Gradient Background */}
                             <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 blur-3xl -z-10`} />
                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent -z-10" />
-                            
-                            {/* Arrow to https://zivai-hq.ai.studio/ */}
-                            <a 
-                               href="https://zivai-hq.ai.studio/"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               className="absolute bottom-6 right-6 text-black/30 hover:text-black transition-all duration-300 z-20 hover:scale-110 active:scale-95"
-                               title="Visit Zivai"
-                             >
-                               <ArrowUpRight size={22} strokeWidth={1.5} />
-                            </a>
 
                             <div className="flex flex-col gap-6 min-h-[272px] relative z-10">
                               {/* Zalt Info */}
@@ -884,45 +889,43 @@ export default function App() {
                                     </p>
                                   </div>
 
-                                  {/* Sub-cards inside Zivai card: Evie and celeste (compact, translucent, blurry background) */}
+                                  {/* Sub-cards inside Zivai card: AKRA and CELESTE */}
                                   <div className="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full">
-                                    {/* Evie Card */}
-                                    <div className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs">
+                                    {/* AKRA Card */}
+                                    <a
+                                      href="https://zivaihq.ai.studio/akra"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs hover:bg-white/60 transition-colors"
+                                    >
                                       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-transparent opacity-50 blur-xl -z-10" />
                                       <div className="flex items-center justify-between gap-2">
                                         <span className="text-xs font-bold text-black tracking-tight">
-                                          Evie
+                                          AKRA
                                         </span>
-                                        <button
-                                          onClick={() => setShowForm(true)}
-                                          className="text-[9px] font-semibold text-black/80 hover:text-black bg-black/5 hover:bg-black/10 px-2 py-0.5 rounded-full transition-colors"
-                                        >
-                                          EARLY ACCESS
-                                        </button>
                                       </div>
                                       <p className="text-[10px] text-black/55 leading-tight">
-                                        Adaptive intelligence woven quietly into your daily flow.
+                                        The last app & AI you'll ever need
                                       </p>
-                                    </div>
+                                    </a>
 
-                                    {/* Celeste Card */}
-                                    <div className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs">
+                                    {/* CELESTE Card */}
+                                    <a
+                                      href="https://zivaihq.ai.studio/celeste"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs hover:bg-white/60 transition-colors"
+                                    >
                                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-transparent opacity-50 blur-xl -z-10" />
                                       <div className="flex items-center justify-between gap-2">
                                         <span className="text-xs font-bold text-black tracking-tight">
-                                          celeste
+                                          CELESTE
                                         </span>
-                                        <button
-                                          onClick={() => setShowForm(true)}
-                                          className="text-[9px] font-semibold text-black/80 hover:text-black bg-black/5 hover:bg-black/10 px-2 py-0.5 rounded-full transition-colors"
-                                        >
-                                          EARLY ACCESS
-                                        </button>
                                       </div>
                                       <p className="text-[10px] text-black/55 leading-tight">
-                                        Spatial computation and intuitive synthesis across your ecosystem.
+                                        A new paradigm of education
                                       </p>
-                                    </div>
+                                    </a>
                                   </div>
                                 </div>
                               </div>

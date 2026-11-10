@@ -153,6 +153,17 @@
     @apply border-border outline-ring/50;
     font-weight: 400 !important;
   }
+  html,
+  body,
+  #root {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  #root::-webkit-scrollbar {
+    display: none;
+  }
   body {
     @apply bg-background text-foreground;
   }
