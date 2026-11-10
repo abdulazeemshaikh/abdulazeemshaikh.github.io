@@ -901,17 +901,15 @@ export default function App() {
                                       className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs hover:bg-white/60 transition-colors"
                                     >
                                       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-transparent opacity-50 blur-xl -z-10" />
-                                      <div className="flex items-center justify-between gap-2">
-                                        <div className="flex items-center gap-2 min-w-0">
-                                          <img
-                                            src="assets/logos/akra-mark.png"
-                                            alt="AKRA"
-                                            className="w-9 h-9 object-contain shrink-0"
-                                          />
-                                          <span className="text-xs font-bold text-black tracking-tight">
-                                            AKRA
-                                          </span>
-                                        </div>
+                                      <div className="flex flex-col items-start gap-1.5">
+                                        <img
+                                          src="assets/logos/akra-mark.png"
+                                          alt="AKRA"
+                                          className="w-9 h-9 object-contain shrink-0"
+                                        />
+                                        <span className="text-xs font-bold text-black tracking-tight">
+                                          AKRA
+                                        </span>
                                       </div>
                                       <p className="text-[10px] text-black/55 leading-tight">
                                         The last app & AI you'll ever need
@@ -926,17 +924,15 @@ export default function App() {
                                       className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs hover:bg-white/60 transition-colors"
                                     >
                                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-transparent opacity-50 blur-xl -z-10" />
-                                      <div className="flex items-center justify-between gap-2">
-                                        <div className="flex items-center gap-2 min-w-0">
-                                          <img
-                                            src="assets/logos/celeste-mark.png"
-                                            alt="CELESTE"
-                                            className="w-9 h-9 object-contain shrink-0"
-                                          />
-                                          <span className="text-xs font-bold text-black tracking-tight">
-                                            CELESTE
-                                          </span>
-                                        </div>
+                                      <div className="flex flex-col items-start gap-1.5">
+                                        <img
+                                          src="assets/logos/celeste-mark.png"
+                                          alt="CELESTE"
+                                          className="w-9 h-9 object-contain shrink-0"
+                                        />
+                                        <span className="text-xs font-bold text-black tracking-tight">
+                                          CELESTE
+                                        </span>
                                       </div>
                                       <p className="text-[10px] text-black/55 leading-tight">
                                         A new paradigm of education
