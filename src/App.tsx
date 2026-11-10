@@ -865,9 +865,14 @@ export default function App() {
                                       href="https://zivai-hq.ai.studio/"
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="text-sm font-bold tracking-tight text-black hover:underline cursor-pointer shrink-0"
+                                      className="shrink-0 flex items-center hover:opacity-80 transition-opacity cursor-pointer"
+                                      aria-label="Zivai"
                                     >
-                                      {project.title}
+                                      <img
+                                        src="assets/logos/zivai-logo.png"
+                                        alt="Zivai"
+                                        className="h-7 w-auto object-contain"
+                                      />
                                     </a>
                                     <LiquidMetalButton 
                                       label="GET EARLY ACCESS"
@@ -900,9 +905,16 @@ export default function App() {
                                     >
                                       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-transparent opacity-50 blur-xl -z-10" />
                                       <div className="flex items-center justify-between gap-2">
-                                        <span className="text-xs font-bold text-black tracking-tight">
-                                          AKRA
-                                        </span>
+                                        <div className="flex items-center gap-2 min-w-0">
+                                          <img
+                                            src="assets/logos/akra-mark.png"
+                                            alt="AKRA"
+                                            className="w-7 h-7 object-contain shrink-0"
+                                          />
+                                          <span className="text-xs font-bold text-black tracking-tight">
+                                            AKRA
+                                          </span>
+                                        </div>
                                       </div>
                                       <p className="text-[10px] text-black/55 leading-tight">
                                         The last app & AI you'll ever need
@@ -918,9 +930,16 @@ export default function App() {
                                     >
                                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-transparent opacity-50 blur-xl -z-10" />
                                       <div className="flex items-center justify-between gap-2">
-                                        <span className="text-xs font-bold text-black tracking-tight">
-                                          CELESTE
-                                        </span>
+                                        <div className="flex items-center gap-2 min-w-0">
+                                          <img
+                                            src="assets/logos/celeste-mark.png"
+                                            alt="CELESTE"
+                                            className="w-7 h-7 object-contain shrink-0"
+                                          />
+                                          <span className="text-xs font-bold text-black tracking-tight">
+                                            CELESTE
+                                          </span>
+                                        </div>
                                       </div>
                                       <p className="text-[10px] text-black/55 leading-tight">
                                         A new paradigm of education
