@@ -899,7 +899,7 @@ export default function App() {
                                    onMouseEnter={() => setHovered(true)}
                                    onMouseLeave={() => setHovered(false)}
                                  >
-                                   <Instagram size={16} strokeWidth={1.5} />
+                                   <Instagram size={16} strokeWidth={1.5} className="shrink-0" />
                                    <span className="text-xs font-medium">@abdulazeemshaikhh</span>
                                    <motion.span
                                      initial={{ opacity: 0, x: -4, y: 4 }}
@@ -925,7 +925,7 @@ export default function App() {
                                    onMouseEnter={() => setHovered(true)}
                                    onMouseLeave={() => setHovered(false)}
                                  >
-                                   <Instagram size={16} strokeWidth={1.5} />
+                                   <Instagram size={16} strokeWidth={1.5} className="shrink-0" />
                                    <span className="text-xs font-medium">@zivaihq</span>
                                    <motion.span
                                      initial={{ opacity: 0, x: -4, y: 4 }}
@@ -951,7 +951,7 @@ export default function App() {
                                    onMouseEnter={() => setHovered(true)}
                                    onMouseLeave={() => setHovered(false)}
                                  >
-                                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+                                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="shrink-0"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
                                    <span className="text-xs font-medium">@abdulazeem_s</span>
                                    <motion.span
                                      initial={{ opacity: 0, x: -4, y: 4 }}
@@ -975,8 +975,8 @@ export default function App() {
                                    onMouseEnter={() => setHovered(true)}
                                    onMouseLeave={() => setHovered(false)}
                                  >
-                                   <Mail size={16} strokeWidth={1.5} />
-                                   <span className="text-xs font-medium">abdulazeemshaikhbusiness@gmail.com</span>
+                                   <Mail size={16} strokeWidth={1.5} className="shrink-0" />
+                                   <span className="text-[11px] font-medium leading-tight whitespace-nowrap">abdulazeemshaikhbusiness@gmail.com</span>
                                    <AnimatePresence mode="wait">
                                      {copied ? (
                                        <motion.span
