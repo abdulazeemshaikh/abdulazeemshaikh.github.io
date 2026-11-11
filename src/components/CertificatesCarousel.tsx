@@ -63,7 +63,7 @@ export const CertificatesCarousel: React.FC = () => {
   const activeCertificate = activeIndex === null ? null : CERTIFICATES[activeIndex];
 
   return (
-    <section className="w-full max-w-[976px] order-2 sm:order-3 min-w-0">
+    <section className="w-full max-w-[976px] order-3 sm:order-3 min-w-0">
       {/* Header */}
       <div className="flex items-center justify-between gap-4 w-full mb-4">
         <h2 className="text-sm font-bold tracking-tight text-black">Certificates</h2>
