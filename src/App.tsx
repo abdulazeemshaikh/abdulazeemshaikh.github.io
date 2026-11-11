@@ -1021,16 +1021,8 @@ export default function App() {
                             </span>
                           </div>
 
-                          <h3 className="text-[15px] font-semibold text-black leading-snug">
-                            Stop Buying Banners, start Building Experiences.
-                          </h3>
-
                           <p className="text-[11px] text-black/50 leading-relaxed">
-                            Traditional ads are broken. Users scroll past static images, mute videos, and install ad-blockers. They don't want to look at billboards anymore.
-                          </p>
-
-                          <p className="text-[11px] text-black/50 leading-relaxed">
-                            Welcome to The Living Pixel, a premium, interactive digital playground built directly into the fabric of our website. This is a lease high-engagement real estate where your brand can create living, breathing digital installations.
+                            Welcome to The Living Pixel, a premium, interactive place to advertise your brand. This is a lease high-engagement real estate where your brand can create living, breathing digital installations so people can feel your brand.
                           </p>
                         </div>
 
