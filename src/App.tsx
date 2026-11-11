@@ -883,12 +883,10 @@ export default function App() {
                        {/* Connect card — beside the Zivai card */}
                        <motion.div
                          variants={cardVariants}
-                         className="order-2 w-full md:w-[calc(50%-0.5rem)] max-w-[480px] self-stretch bg-white p-6 border border-black/5 min-h-[320px] flex flex-col justify-between"
+                         className="order-2 w-full md:w-[300px] md:max-w-[300px] self-stretch bg-white p-6 border border-black/5 min-h-[320px] flex flex-col justify-between"
                        >
                          <div className="flex flex-col gap-2.5">
-                           <span className="text-sm font-bold tracking-tight text-black">Connect</span>
-
-                           <div className="flex flex-col gap-3 mt-3">
+                           <div className="flex flex-col gap-3">
                              {/* Instagram @abdulazeemshaikhh */}
                              {(() => {
                                const [hovered, setHovered] = React.useState(false);
@@ -907,7 +905,7 @@ export default function App() {
                                      initial={{ opacity: 0, x: -4, y: 4 }}
                                      animate={hovered ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -4, y: 4 }}
                                      transition={{ duration: 0.2, ease: 'easeOut' }}
-                                     className="ml-auto"
+                                     className="inline-flex ml-0.5"
                                    >
                                      <ArrowUpRight size={14} strokeWidth={2} />
                                    </motion.span>
@@ -933,7 +931,7 @@ export default function App() {
                                      initial={{ opacity: 0, x: -4, y: 4 }}
                                      animate={hovered ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -4, y: 4 }}
                                      transition={{ duration: 0.2, ease: 'easeOut' }}
-                                     className="ml-auto"
+                                     className="inline-flex ml-0.5"
                                    >
                                      <ArrowUpRight size={14} strokeWidth={2} />
                                    </motion.span>
@@ -953,13 +951,13 @@ export default function App() {
                                    onMouseEnter={() => setHovered(true)}
                                    onMouseLeave={() => setHovered(false)}
                                  >
-                                   <X size={16} strokeWidth={1.5} />
+                                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
                                    <span className="text-xs font-medium">@abdulazeem_s</span>
                                    <motion.span
                                      initial={{ opacity: 0, x: -4, y: 4 }}
                                      animate={hovered ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -4, y: 4 }}
                                      transition={{ duration: 0.2, ease: 'easeOut' }}
-                                     className="ml-auto"
+                                     className="inline-flex ml-0.5"
                                    >
                                      <ArrowUpRight size={14} strokeWidth={2} />
                                    </motion.span>
@@ -987,7 +985,7 @@ export default function App() {
                                          animate={{ opacity: 1, scale: 1 }}
                                          exit={{ opacity: 0, scale: 0.5 }}
                                          transition={{ duration: 0.15 }}
-                                         className="ml-auto text-green-600"
+                                         className="inline-flex ml-0.5 text-green-600"
                                        >
                                          <Check size={14} strokeWidth={2} />
                                        </motion.span>
@@ -998,7 +996,7 @@ export default function App() {
                                          animate={hovered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
                                          exit={{ opacity: 0, scale: 0.8 }}
                                          transition={{ duration: 0.2, ease: 'easeOut' }}
-                                         className="ml-auto"
+                                         className="inline-flex ml-0.5"
                                        >
                                          <Copy size={14} strokeWidth={2} />
                                        </motion.span>
@@ -1013,7 +1011,7 @@ export default function App() {
 
                        {/* Advertising space — opens Instagram DM */}
                       <div
-                        className="relative flex flex-col justify-between gap-6 order-4 sm:order-4 w-full md:w-[calc(50%-0.5rem)] max-w-[480px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 overflow-hidden text-left transition-all duration-500"
+                        className="relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 overflow-hidden text-left transition-all duration-500"
                       >
                         <div className="flex flex-col gap-2.5 relative z-10">
                           <div className="flex flex-row items-center justify-between gap-3 w-full">
