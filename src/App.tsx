@@ -1038,8 +1038,8 @@ export default function App() {
                               seed={23}
                               height="480px"
                               email="orders@example.com"
-                              newsletter={{ label: "new prints, every other friday", placeholder: "your@email" }}
-                              status={{ label: "taking print orders" }}
+                              newsletter={null}
+                              status={null}
                               mark="run 0412"
                               timeZone="Europe/Berlin"
                               timeLabel="BER"
@@ -1047,18 +1047,7 @@ export default function App() {
                                 { icon: "ig", label: "Instagram", href: "#" },
                                 { icon: "x", label: "X", href: "#" },
                               ]}
-                              columns={[
-                                {
-                                  title: "shop",
-                                  links: [{ label: "Zines", href: "#" }, { label: "Posters", href: "#" }, { label: "Paper", href: "#" }],
-                                  cta: { label: "shop.", href: "#" },
-                                },
-                                {
-                                  title: "studio",
-                                  links: [{ label: "Stockists", href: "#" }, { label: "Wholesale", href: "#" }, { label: "Visit", href: "#" }],
-                                  cta: { label: "order.", href: "mailto:orders@example.com" },
-                                },
-                              ]}
+                              columns={[]}
                               sideLinks={[
                                 { icon: "globe", label: "shipping", href: "#" },
                                 { icon: "doc", label: "terms", href: "#" },
