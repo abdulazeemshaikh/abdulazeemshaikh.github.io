@@ -124,12 +124,12 @@ export const CertificatesCarousel: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setActiveIndex(null)}
-            className="fixed inset-0 bg-black/85 backdrop-blur-md z-[130] flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
+            className="fixed inset-0 bg-transparent backdrop-blur-xl z-[130] flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
           >
             <button
               type="button"
               onClick={() => setActiveIndex(null)}
-              className="absolute top-5 right-5 sm:top-6 sm:right-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all duration-200 z-20"
+              className="absolute top-5 right-5 sm:top-6 sm:right-6 text-black/70 hover:text-black bg-black/5 hover:bg-black/10 border border-black/10 p-2.5 rounded-full transition-all duration-200 z-20 shadow-sm"
               aria-label="Close certificate"
             >
               <X size={20} />
@@ -146,7 +146,7 @@ export const CertificatesCarousel: React.FC = () => {
                     );
                   }}
                   aria-label="Previous certificate"
-                  className="absolute left-2 sm:left-5 top-1/2 -translate-y-1/2 z-20 text-white/60 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all duration-200 active:scale-95"
+                  className="absolute left-2 sm:left-5 top-1/2 -translate-y-1/2 z-20 text-black/70 hover:text-black bg-black/5 hover:bg-black/10 border border-black/10 p-2.5 rounded-full transition-all duration-200 active:scale-95 shadow-sm"
                 >
                   <ChevronLeft size={22} />
                 </button>
@@ -157,7 +157,7 @@ export const CertificatesCarousel: React.FC = () => {
                     setActiveIndex((i) => (i === null ? null : (i + 1) % CERTIFICATES.length));
                   }}
                   aria-label="Next certificate"
-                  className="absolute right-2 sm:right-5 top-1/2 -translate-y-1/2 z-20 text-white/60 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all duration-200 active:scale-95"
+                  className="absolute right-2 sm:right-5 top-1/2 -translate-y-1/2 z-20 text-black/70 hover:text-black bg-black/5 hover:bg-black/10 border border-black/10 p-2.5 rounded-full transition-all duration-200 active:scale-95 shadow-sm"
                 >
                   <ChevronRight size={22} />
                 </button>
