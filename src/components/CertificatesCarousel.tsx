@@ -164,17 +164,21 @@ export const CertificatesCarousel: React.FC = () => {
               </>
             )}
 
-            <motion.img
+            <motion.div
               key={activeCertificate.id}
               initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.92, opacity: 0 }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              src={activeCertificate.preview}
-              alt={`${activeCertificate.title} certificate`}
               onClick={(e) => e.stopPropagation()}
-              className="max-w-[92vw] max-h-[88vh] w-auto h-auto object-contain rounded-lg shadow-2xl select-none"
-            />
+              className="w-[92vw] sm:w-[86vw] max-w-[900px] aspect-[1.414/1] bg-white rounded-lg shadow-2xl border border-black/10 overflow-hidden flex items-center justify-center select-none"
+            >
+              <img
+                src={activeCertificate.preview}
+                alt={`${activeCertificate.title} certificate`}
+                className="w-full h-full object-contain pointer-events-none"
+              />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
