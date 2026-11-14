@@ -1028,15 +1028,16 @@ export default function App() {
 
                           <div className="w-full mt-3 overflow-hidden rounded-xl border border-black/10">
                             <PushpinTearFooter
-                              brand="ink."
-                              name="riso co."
+                              brand="zivai"
+                              name="Loading the best thing you'll see all week"
                               logoHref="#"
-                              logo={<span style={{ fontSize: "1.5em", fontWeight: 600, letterSpacing: "-0.03em" }}>ink.</span>}
+                              logo={<span style={{ fontSize: "1.5em", fontWeight: 600, letterSpacing: "-0.03em" }}>zivai</span>}
                               sheet="#ff4a1c"
                               paper="#f1ede4"
                               paperInk="#1b1712"
                               seed={23}
                               height="340px"
+                              showBackToTop={false}
                               email=""
                               newsletter={null}
                               status={null}

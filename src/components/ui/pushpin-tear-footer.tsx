@@ -221,6 +221,7 @@ export type PushpinTearFooterProps = {
   fontSans?: string
   onSubscribe?: (email: string) => void
   onRepin?: (seed: number) => void
+  showBackToTop?: boolean
   className?: string
 }
 
@@ -581,6 +582,7 @@ export default function PushpinTearFooter({
   fontSans = '"Helvetica Neue", Helvetica, Arial, system-ui, sans-serif',
   onSubscribe,
   onRepin,
+  showBackToTop = true,
   className = "",
 }: PushpinTearFooterProps) {
   const uid = React.useId().replace(/[^a-zA-Z0-9]/g, "")
@@ -925,10 +927,12 @@ export default function PushpinTearFooter({
       {/* ---- on the sheet ---- */}
       <div className="tpf-z tpf-top">
         <div className="tpf-row tpf-h" style={H(0)}>
-          <button type="button" className="tpf-ib tpf-up" onClick={toTop} aria-label="Back to top" title="Back to top">
-            <Icon name="chevL" />
-          </button>
-          {socials && socials.length > 0 && <span style={{ width: ".6em" }} />}
+          {showBackToTop && (
+            <button type="button" className="tpf-ib tpf-up" onClick={toTop} aria-label="Back to top" title="Back to top">
+              <Icon name="chevL" />
+            </button>
+          )}
+          {showBackToTop && socials && socials.length > 0 && <span style={{ width: ".6em" }} />}
           {socials?.map((l, i) => (
             <A key={i} href={l.href} className="tpf-ib" label={l.label}>
               <Icon name={l.icon} />
