@@ -14,6 +14,16 @@ const CDN = 'assets/certificates';
 
 export const CERTIFICATES: Certificate[] = [
   {
+    id: 'hp-life-social-media-marketing',
+    title: 'Social Media Marketing',
+    issuer: 'HP LIFE | HP Foundation',
+    date: 'Nov 14, 2026',
+    preview: `${CDN}/hp-life-social-media-marketing.jpg`,
+    file: `${CDN}/hp-life-social-media-marketing.pdf`,
+    fileType: 'pdf',
+    credentialId: '63f391aa-6c38-49da-beaf-60747a381f4c',
+  },
+  {
     id: 'canva-social-video',
     title: 'Using Video in Social Media Posts with Canva',
     issuer: 'Coursera Project Network',
