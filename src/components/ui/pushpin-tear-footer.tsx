@@ -210,8 +210,8 @@ export type PushpinTearFooterProps = {
   /** Two links either side of the wordmark. */
   sideLinks?: IconLink[]
   copyright?: string
-  credit?: string
-  handle?: TearLink
+  credit?: string | null
+  handle?: TearLink | null
   sheet?: string
   paper?: string
   sheetInk?: string
@@ -375,7 +375,7 @@ function useReducedMotion() {
 }
 
 const CSS =
-  ".tpf{position:relative;overflow:hidden;container-type:size;min-height:620px;background:var(--tpf-sheet);color:var(--tpf-on-sheet);font-family:var(--tpf-sans);isolation:isolate;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;--ease:cubic-bezier(.22,1,.36,1);--fs:max(12px,1.85cqmin)}" +
+  ".tpf{position:relative;overflow:hidden;container-type:size;min-height:300px;background:var(--tpf-sheet);color:var(--tpf-on-sheet);font-family:var(--tpf-sans);isolation:isolate;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;--ease:cubic-bezier(.22,1,.36,1);--fs:max(12px,1.85cqmin)}" +
   ".tpf *,.tpf *::before,.tpf *::after{box-sizing:border-box}" +
   ":where(.tpf) a{color:inherit;text-decoration:none}" +
   ":where(.tpf) button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer}" +
@@ -928,8 +928,8 @@ export default function PushpinTearFooter({
           <button type="button" className="tpf-ib tpf-up" onClick={toTop} aria-label="Back to top" title="Back to top">
             <Icon name="chevL" />
           </button>
-          <span style={{ width: ".6em" }} />
-          {socials.map((l, i) => (
+          {socials && socials.length > 0 && <span style={{ width: ".6em" }} />}
+          {socials?.map((l, i) => (
             <A key={i} href={l.href} className="tpf-ib" label={l.label}>
               <Icon name={l.icon} />
             </A>
@@ -938,15 +938,17 @@ export default function PushpinTearFooter({
         <A href={logoHref} className="tpf-logo tpf-h" label={name + ", home"} style={H(1)}>
           {logo ?? <KMark />}
         </A>
-        <div className="tpf-h" style={{ ...H(2), position: "relative" }}>
-          <button type="button" className="tpf-mail" onClick={copyEmail} aria-label={"Copy " + email} title="Copy email">
-            <span>{email}</span>
-            <Icon name="copy" />
-          </button>
-          <span className={"tpf-toast" + (toast ? " on" : "")} role="status" aria-live="polite">
-            {toast}
-          </span>
-        </div>
+        {email && (
+          <div className="tpf-h" style={{ ...H(2), position: "relative" }}>
+            <button type="button" className="tpf-mail" onClick={copyEmail} aria-label={"Copy " + email} title="Copy email">
+              <span>{email}</span>
+              <Icon name="copy" />
+            </button>
+            <span className={"tpf-toast" + (toast ? " on" : "")} role="status" aria-live="polite">
+              {toast}
+            </span>
+          </div>
+        )}
       </div>
 
       {newsletter && (
@@ -1048,11 +1050,13 @@ export default function PushpinTearFooter({
         </A>
       ))}
 
-      <div className="tpf-z tpf-foot tpf-ink">
-        <span className="tpf-p" style={H(3)}>{copyright}</span>
-        {credit && <span className="tpf-credit tpf-p" style={H(4)}>{credit}</span>}
-        <A href={handle.href} className="tpf-handle tpf-p" style={H(5)}>{handle.label}</A>
-      </div>
+      {(copyright || credit || handle) && (
+        <div className="tpf-z tpf-foot tpf-ink">
+          {copyright && <span className="tpf-p" style={H(3)}>{copyright}</span>}
+          {credit && <span className="tpf-credit tpf-p" style={H(4)}>{credit}</span>}
+          {handle && <A href={handle.href} className="tpf-handle tpf-p" style={H(5)}>{handle.label}</A>}
+        </div>
+      )}
     </footer>
   )
 }

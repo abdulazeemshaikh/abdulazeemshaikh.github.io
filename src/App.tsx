@@ -1036,26 +1036,20 @@ export default function App() {
                               paper="#f1ede4"
                               paperInk="#1b1712"
                               seed={23}
-                              height="480px"
-                              email="orders@example.com"
+                              height="340px"
+                              email=""
                               newsletter={null}
                               status={null}
                               mark="run 0412"
                               timeZone="Europe/Berlin"
                               timeLabel="BER"
-                              socials={[
-                                { icon: "ig", label: "Instagram", href: "#" },
-                                { icon: "x", label: "X", href: "#" },
-                              ]}
+                              socials={[]}
                               columns={[]}
-                              sideLinks={[
-                                { icon: "globe", label: "shipping", href: "#" },
-                                { icon: "doc", label: "terms", href: "#" },
-                              ]}
+                              sideLinks={[]}
                               chat={{ label: "order" }}
-                              copyright="© 2026 ink. riso co."
-                              credit="printed in berlin"
-                              handle={{ label: "@ink.riso", href: "#" }}
+                              copyright=""
+                              credit=""
+                              handle={null}
                             />
                           </div>
                         </div>
