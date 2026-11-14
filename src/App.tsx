@@ -1752,7 +1752,6 @@ export default function App() {
           className="flex items-center gap-1.5 text-black/45 select-none"
           title="Total visitors to this website"
         >
-          <Eye size={12} strokeWidth={1.8} className="text-black/35" />
           <span className="text-[10px] font-semibold text-black/70 tabular-nums">
             {typeof totalVisitors === 'number' ? totalVisitors.toLocaleString('en-US') : '—'}
           </span>
