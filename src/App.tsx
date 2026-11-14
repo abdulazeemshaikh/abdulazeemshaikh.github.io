@@ -7,7 +7,7 @@ import { LiquidMetalButton } from './components/LiquidMetalButton';
 import { UnicornBackground } from './components/UnicornBackground';
 import { SplineBackground } from './components/SplineBackground';
 import CertificatesCarousel from './components/CertificatesCarousel';
-import PushpinTearFooter from './components/ui/pushpin-tear-footer';
+import CareersValues from './components/ui/interactive-values-grid';
 // ...
 
 // Stable per-person/device ID used for unique visitor and view counting.
@@ -1027,31 +1027,7 @@ export default function App() {
                           </p>
 
                           <div className="w-full mt-3 overflow-hidden rounded-xl border border-black/10">
-                            <PushpinTearFooter
-                              brand="zivai"
-                              name="Loading the best thing you'll see all week"
-                              logoHref="#"
-                              logo={<span style={{ fontSize: "1.5em", fontWeight: 600, letterSpacing: "-0.03em" }}>zivai</span>}
-                              sheet="#ff4a1c"
-                              paper="#f1ede4"
-                              paperInk="#1b1712"
-                              seed={23}
-                              height="340px"
-                              showBackToTop={false}
-                              email=""
-                              newsletter={null}
-                              status={null}
-                              mark="run 0412"
-                              timeZone="Europe/Berlin"
-                              timeLabel="BER"
-                              socials={[]}
-                              columns={[]}
-                              sideLinks={[]}
-                              chat={{ label: "order" }}
-                              copyright=""
-                              credit=""
-                              handle={null}
-                            />
+                            <CareersValues />
                           </div>
                         </div>
 
