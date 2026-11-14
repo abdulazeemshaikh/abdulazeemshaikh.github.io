@@ -7,6 +7,7 @@ import { LiquidMetalButton } from './components/LiquidMetalButton';
 import { UnicornBackground } from './components/UnicornBackground';
 import { SplineBackground } from './components/SplineBackground';
 import CertificatesCarousel from './components/CertificatesCarousel';
+import PushpinTearFooter from './components/ui/pushpin-tear-footer';
 // ...
 
 // Stable per-person/device ID used for unique visitor and view counting.
@@ -1024,6 +1025,50 @@ export default function App() {
                           <p className="text-[11px] text-black/50 leading-relaxed">
                             Welcome to The Living Pixel, a premium, interactive place to advertise your brand. This is a lease high-engagement real estate where your brand can create living, breathing digital installations so people can feel your brand.
                           </p>
+
+                          <div className="w-full mt-3 overflow-hidden rounded-xl border border-black/10">
+                            <PushpinTearFooter
+                              brand="ink."
+                              name="riso co."
+                              logoHref="#"
+                              logo={<span style={{ fontSize: "1.5em", fontWeight: 600, letterSpacing: "-0.03em" }}>ink.</span>}
+                              sheet="#ff4a1c"
+                              paper="#f1ede4"
+                              paperInk="#1b1712"
+                              seed={23}
+                              height="480px"
+                              email="orders@example.com"
+                              newsletter={{ label: "new prints, every other friday", placeholder: "your@email" }}
+                              status={{ label: "taking print orders" }}
+                              mark="run 0412"
+                              timeZone="Europe/Berlin"
+                              timeLabel="BER"
+                              socials={[
+                                { icon: "ig", label: "Instagram", href: "#" },
+                                { icon: "x", label: "X", href: "#" },
+                              ]}
+                              columns={[
+                                {
+                                  title: "shop",
+                                  links: [{ label: "Zines", href: "#" }, { label: "Posters", href: "#" }, { label: "Paper", href: "#" }],
+                                  cta: { label: "shop.", href: "#" },
+                                },
+                                {
+                                  title: "studio",
+                                  links: [{ label: "Stockists", href: "#" }, { label: "Wholesale", href: "#" }, { label: "Visit", href: "#" }],
+                                  cta: { label: "order.", href: "mailto:orders@example.com" },
+                                },
+                              ]}
+                              sideLinks={[
+                                { icon: "globe", label: "shipping", href: "#" },
+                                { icon: "doc", label: "terms", href: "#" },
+                              ]}
+                              chat={{ label: "order" }}
+                              copyright="© 2026 ink. riso co."
+                              credit="printed in berlin"
+                              handle={{ label: "@ink.riso", href: "#" }}
+                            />
+                          </div>
                         </div>
 
                         <div className="self-start relative z-10">
