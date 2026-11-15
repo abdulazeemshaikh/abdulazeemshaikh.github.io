@@ -1056,8 +1056,8 @@ export default function App() {
                           </AnimatePresence>
                         </div>
 
-                        {/* Slide dots — outside the card, vertically on the left */}
-                        <div className="absolute -left-2 top-1/2 -translate-x-full -translate-y-1/2 flex flex-col items-center gap-1.5 z-20">
+                        {/* Slide dots — outside the card, vertically on the right */}
+                        <div className="absolute -right-2 top-1/2 translate-x-full -translate-y-1/2 flex flex-col items-center gap-1.5 z-20">
                           {[0, 1].map((index) => (
                             <button
                               key={`ad-dot-${index}`}
