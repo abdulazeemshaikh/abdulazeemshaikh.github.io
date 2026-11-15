@@ -7,7 +7,7 @@ import { LiquidMetalButton } from './components/LiquidMetalButton';
 import { UnicornBackground } from './components/UnicornBackground';
 import { SplineBackground } from './components/SplineBackground';
 import CertificatesCarousel from './components/CertificatesCarousel';
-import CareersValues from './components/ui/interactive-values-grid';
+import { GlossCluster } from './components/ui/gloss-cluster';
 // ...
 
 // Stable per-person/device ID used for unique visitor and view counting.
@@ -54,6 +54,7 @@ export default function App() {
   const [isInvestSubmitted, setIsInvestSubmitted] = useState<boolean>(false);
 
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [adSlide, setAdSlide] = useState<number>(0);
 
   // Instagram-style Media Items State
   interface MediaItemData {
@@ -263,6 +264,14 @@ export default function App() {
       // offline or silent fail
     }
   };
+
+  // Advertising card carousel: rotate between the ad copy and the GlossCluster visual.
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setAdSlide((slide) => (slide + 1) % 2);
+    }, 9000);
+    return () => window.clearInterval(interval);
+  }, []);
 
   // Poll for global stats from Google Sheet / Apps Script across everyone
   useEffect(() => {
@@ -1012,22 +1021,94 @@ export default function App() {
 
                        {/* Advertising space — opens Instagram DM */}
                       <div
-                        className="relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 overflow-hidden text-left transition-all duration-500"
+                        className="relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 bg-sky-50 border border-black/5 overflow-hidden text-left transition-all duration-500"
                       >
-                        <div className="flex flex-col gap-2.5 relative z-10">
+                        <img
+                          src="assets/clouds.png"
+                          alt=""
+                          aria-hidden="true"
+                          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-white/65 to-white/80 pointer-events-none" />
+
+                        <div className="flex flex-col gap-2.5 relative z-10 flex-1">
                           <div className="flex flex-row items-center justify-between gap-3 w-full">
                             <span className="text-sm font-bold tracking-tight text-black">Advertising</span>
-                            <span className="text-[9px] font-semibold text-black/70 bg-black/5 px-2 py-0.5 rounded-full uppercase tracking-[0.12em]">
+                            <span className="text-[9px] font-semibold text-black/70 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded-full uppercase tracking-[0.12em]">
                               Open spot
                             </span>
                           </div>
 
-                          <p className="text-[11px] text-black/50 leading-relaxed">
-                            Welcome to The Living Pixel, a premium, interactive place to advertise your brand. This is a lease high-engagement real estate where your brand can create living, breathing digital installations so people can feel your brand.
-                          </p>
+                          <div className="relative flex-1 min-h-[170px] mt-1">
+                            <AnimatePresence mode="wait" initial={false}>
+                              {adSlide === 0 ? (
+                                <motion.div
+                                  key="ad-copy"
+                                  initial={{ opacity: 0, x: 16 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  exit={{ opacity: 0, x: -16 }}
+                                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                                  className="absolute inset-0 flex items-start"
+                                >
+                                  <p className="text-[11px] text-black/55 leading-relaxed">
+                                    Welcome to The Living Pixel, a premium, interactive place to advertise your brand. This is a lease high-engagement real estate where your brand can create living, breathing digital installations so people can feel your brand.
+                                  </p>
+                                </motion.div>
+                              ) : (
+                                <motion.div
+                                  key="ad-gloss"
+                                  initial={{ opacity: 0, x: 16 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  exit={{ opacity: 0, x: -16 }}
+                                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                                  className="absolute inset-0 overflow-hidden rounded-xl border border-black/10 shadow-sm"
+                                >
+                                  <GlossCluster
+                                    wordmark="THE LIVING PIXEL"
+                                    number="01"
+                                    background="#08080c"
+                                    sequence="full"
+                                    speed={1}
+                                    className="h-full w-full"
+                                  />
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
 
-                          <div className="w-full mt-3 overflow-hidden rounded-xl border border-black/10">
-                            <CareersValues />
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-1.5">
+                              {[0, 1].map((index) => (
+                                <button
+                                  key={`ad-dot-${index}`}
+                                  type="button"
+                                  onClick={() => setAdSlide(index)}
+                                  aria-label={`Show advertising slide ${index + 1}`}
+                                  aria-pressed={adSlide === index}
+                                  className={`h-1.5 rounded-full transition-all duration-200 ${
+                                    adSlide === index ? 'w-4 bg-black/70' : 'w-1.5 bg-black/20 hover:bg-black/40'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() => setAdSlide((slide) => (slide - 1 + 2) % 2)}
+                                aria-label="Previous advertising slide"
+                                className="flex items-center justify-center w-6 h-6 rounded-full border border-black/10 bg-white/50 text-black/50 hover:text-black hover:border-black/25 transition-colors active:scale-95"
+                              >
+                                <ChevronLeft size={13} strokeWidth={2} />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setAdSlide((slide) => (slide + 1) % 2)}
+                                aria-label="Next advertising slide"
+                                className="flex items-center justify-center w-6 h-6 rounded-full border border-black/10 bg-white/50 text-black/50 hover:text-black hover:border-black/25 transition-colors active:scale-95"
+                              >
+                                <ChevronRight size={13} strokeWidth={2} />
+                              </button>
+                            </div>
                           </div>
                         </div>
 
