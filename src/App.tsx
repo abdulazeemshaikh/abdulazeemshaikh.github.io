@@ -1031,17 +1031,40 @@ export default function App() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-white/65 to-white/80 pointer-events-none" />
 
+                        <AnimatePresence>
+                          {adSlide === 1 && (
+                            <motion.div
+                              key="ad-gloss-bg"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.4, ease: 'easeOut' }}
+                              className="absolute inset-0 z-0"
+                            >
+                              <GlossCluster
+                                wordmark="THE LIVING PIXEL"
+                                number="01"
+                                background="#08080c"
+                                sequence="full"
+                                speed={1}
+                                className="h-full w-full"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/60 pointer-events-none" />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
                         <div className="flex flex-col gap-2.5 relative z-10 flex-1">
                           <div className="flex flex-row items-center justify-between gap-3 w-full">
-                            <span className="text-sm font-bold tracking-tight text-black">Advertising</span>
-                            <span className="text-[9px] font-semibold text-black/70 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded-full uppercase tracking-[0.12em]">
+                            <span className={`text-sm font-bold tracking-tight transition-colors duration-300 ${adSlide === 1 ? 'text-white' : 'text-black'}`}>Advertising</span>
+                            <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-[0.12em] backdrop-blur-sm transition-colors duration-300 ${adSlide === 1 ? 'text-white/80 bg-white/10 border border-white/15' : 'text-black/70 bg-white/60'}`}>
                               Open spot
                             </span>
                           </div>
 
                           <div className="relative flex-1 min-h-[170px] mt-1">
                             <AnimatePresence mode="wait" initial={false}>
-                              {adSlide === 0 ? (
+                              {adSlide === 0 && (
                                 <motion.div
                                   key="ad-copy"
                                   initial={{ opacity: 0, x: 16 }}
@@ -1053,24 +1076,6 @@ export default function App() {
                                   <p className="text-[11px] text-black/55 leading-relaxed">
                                     Welcome to The Living Pixel, a premium, interactive place to advertise your brand. This is a lease high-engagement real estate where your brand can create living, breathing digital installations so people can feel your brand.
                                   </p>
-                                </motion.div>
-                              ) : (
-                                <motion.div
-                                  key="ad-gloss"
-                                  initial={{ opacity: 0, x: 16 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  exit={{ opacity: 0, x: -16 }}
-                                  transition={{ duration: 0.35, ease: 'easeOut' }}
-                                  className="absolute inset-0 overflow-hidden rounded-xl border border-black/10 shadow-sm"
-                                >
-                                  <GlossCluster
-                                    wordmark="THE LIVING PIXEL"
-                                    number="01"
-                                    background="#08080c"
-                                    sequence="full"
-                                    speed={1}
-                                    className="h-full w-full"
-                                  />
                                 </motion.div>
                               )}
                             </AnimatePresence>
@@ -1086,7 +1091,9 @@ export default function App() {
                                   aria-label={`Show advertising slide ${index + 1}`}
                                   aria-pressed={adSlide === index}
                                   className={`h-1.5 rounded-full transition-all duration-200 ${
-                                    adSlide === index ? 'w-4 bg-black/70' : 'w-1.5 bg-black/20 hover:bg-black/40'
+                                    adSlide === index
+                                      ? `w-4 ${adSlide === 1 ? 'bg-white/80' : 'bg-black/70'}`
+                                      : `w-1.5 ${adSlide === 1 ? 'bg-white/25 hover:bg-white/50' : 'bg-black/20 hover:bg-black/40'}`
                                   }`}
                                 />
                               ))}
@@ -1096,7 +1103,11 @@ export default function App() {
                                 type="button"
                                 onClick={() => setAdSlide((slide) => (slide - 1 + 2) % 2)}
                                 aria-label="Previous advertising slide"
-                                className="flex items-center justify-center w-6 h-6 rounded-full border border-black/10 bg-white/50 text-black/50 hover:text-black hover:border-black/25 transition-colors active:scale-95"
+                                className={`flex items-center justify-center w-6 h-6 rounded-full border transition-colors active:scale-95 ${
+                                  adSlide === 1
+                                    ? 'border-white/20 bg-white/10 text-white/70 hover:text-white hover:border-white/40'
+                                    : 'border-black/10 bg-white/50 text-black/50 hover:text-black hover:border-black/25'
+                                }`}
                               >
                                 <ChevronLeft size={13} strokeWidth={2} />
                               </button>
@@ -1104,7 +1115,11 @@ export default function App() {
                                 type="button"
                                 onClick={() => setAdSlide((slide) => (slide + 1) % 2)}
                                 aria-label="Next advertising slide"
-                                className="flex items-center justify-center w-6 h-6 rounded-full border border-black/10 bg-white/50 text-black/50 hover:text-black hover:border-black/25 transition-colors active:scale-95"
+                                className={`flex items-center justify-center w-6 h-6 rounded-full border transition-colors active:scale-95 ${
+                                  adSlide === 1
+                                    ? 'border-white/20 bg-white/10 text-white/70 hover:text-white hover:border-white/40'
+                                    : 'border-black/10 bg-white/50 text-black/50 hover:text-black hover:border-black/25'
+                                }`}
                               >
                                 <ChevronRight size={13} strokeWidth={2} />
                               </button>
@@ -1112,7 +1127,7 @@ export default function App() {
                           </div>
                         </div>
 
-                        <div className="self-start relative z-10">
+                        <div className={`self-start relative z-10 rounded-full transition-all duration-300 ${adSlide === 1 ? 'p-1 bg-white/10 border border-white/15 backdrop-blur-sm' : ''}`}>
                           <LiquidMetalButton
                             label="Feature your brand here"
                             width={190}
