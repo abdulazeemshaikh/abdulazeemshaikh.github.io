@@ -1021,38 +1021,58 @@ export default function App() {
 
                        {/* Advertising space — opens Instagram DM */}
                       <div
-                        className="relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 bg-sky-50 border border-black/5 overflow-hidden text-left transition-all duration-500"
+                        className="relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 bg-sky-50 border border-black/5 text-left transition-all duration-500"
                       >
-                        <img
-                          src="assets/clouds.png"
-                          alt=""
-                          aria-hidden="true"
-                          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-white/65 to-white/80 pointer-events-none" />
+                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                          <img
+                            src="assets/clouds.png"
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-white/65 to-white/80 pointer-events-none" />
 
-                        <AnimatePresence>
-                          {adSlide === 1 && (
-                            <motion.div
-                              key="ad-gloss-bg"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.4, ease: 'easeOut' }}
-                              className="absolute inset-0 z-0"
-                            >
-                              <GlossCluster
-                                wordmark="THE LIVING PIXEL"
-                                number="01"
-                                background="#08080c"
-                                sequence="full"
-                                speed={1}
-                                className="h-full w-full"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/60 pointer-events-none" />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                          <AnimatePresence>
+                            {adSlide === 1 && (
+                              <motion.div
+                                key="ad-gloss-bg"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.4, ease: 'easeOut' }}
+                                className="absolute inset-0 z-0"
+                              >
+                                <GlossCluster
+                                  wordmark="THE LIVING PIXEL"
+                                  number="01"
+                                  background="#08080c"
+                                  sequence="full"
+                                  speed={1}
+                                  className="h-full w-full"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/60 pointer-events-none" />
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+
+                        {/* Slide dots — outside the card, vertically on the left */}
+                        <div className="absolute -left-2 top-1/2 -translate-x-full -translate-y-1/2 flex flex-col items-center gap-1.5 z-20">
+                          {[0, 1].map((index) => (
+                            <button
+                              key={`ad-dot-${index}`}
+                              type="button"
+                              onClick={() => setAdSlide(index)}
+                              aria-label={`Show advertising slide ${index + 1}`}
+                              aria-pressed={adSlide === index}
+                              className={`w-1.5 rounded-full transition-all duration-200 ${
+                                adSlide === index
+                                  ? 'h-4 bg-black/70'
+                                  : 'h-1.5 bg-black/20 hover:bg-black/40'
+                              }`}
+                            />
+                          ))}
+                        </div>
 
                         <div className="flex flex-col gap-2.5 relative z-10 flex-1">
                           <div className="flex flex-row items-center justify-between gap-3 w-full">
@@ -1080,54 +1100,9 @@ export default function App() {
                               )}
                             </AnimatePresence>
                           </div>
-
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="flex items-center gap-1.5">
-                              {[0, 1].map((index) => (
-                                <button
-                                  key={`ad-dot-${index}`}
-                                  type="button"
-                                  onClick={() => setAdSlide(index)}
-                                  aria-label={`Show advertising slide ${index + 1}`}
-                                  aria-pressed={adSlide === index}
-                                  className={`h-1.5 rounded-full transition-all duration-200 ${
-                                    adSlide === index
-                                      ? `w-4 ${adSlide === 1 ? 'bg-white/80' : 'bg-black/70'}`
-                                      : `w-1.5 ${adSlide === 1 ? 'bg-white/25 hover:bg-white/50' : 'bg-black/20 hover:bg-black/40'}`
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <button
-                                type="button"
-                                onClick={() => setAdSlide((slide) => (slide - 1 + 2) % 2)}
-                                aria-label="Previous advertising slide"
-                                className={`flex items-center justify-center w-6 h-6 rounded-full border transition-colors active:scale-95 ${
-                                  adSlide === 1
-                                    ? 'border-white/20 bg-white/10 text-white/70 hover:text-white hover:border-white/40'
-                                    : 'border-black/10 bg-white/50 text-black/50 hover:text-black hover:border-black/25'
-                                }`}
-                              >
-                                <ChevronLeft size={13} strokeWidth={2} />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setAdSlide((slide) => (slide + 1) % 2)}
-                                aria-label="Next advertising slide"
-                                className={`flex items-center justify-center w-6 h-6 rounded-full border transition-colors active:scale-95 ${
-                                  adSlide === 1
-                                    ? 'border-white/20 bg-white/10 text-white/70 hover:text-white hover:border-white/40'
-                                    : 'border-black/10 bg-white/50 text-black/50 hover:text-black hover:border-black/25'
-                                }`}
-                              >
-                                <ChevronRight size={13} strokeWidth={2} />
-                              </button>
-                            </div>
-                          </div>
                         </div>
 
-                        <div className={`self-start relative z-10 rounded-full transition-all duration-300 ${adSlide === 1 ? 'p-1 bg-white/10 border border-white/15 backdrop-blur-sm' : ''}`}>
+                        <div className="self-start relative z-10">
                           <LiquidMetalButton
                             label="Feature your brand here"
                             width={190}
