@@ -266,12 +266,14 @@ export default function App() {
   };
 
   // Advertising card carousel: rotate between the ad copy and the GlossCluster visual.
+  // The GlossCluster slide lingers longer so its reel can play through.
   useEffect(() => {
-    const interval = window.setInterval(() => {
+    const delay = adSlide === 1 ? 18000 : 9000;
+    const timer = window.setTimeout(() => {
       setAdSlide((slide) => (slide + 1) % 2);
-    }, 9000);
-    return () => window.clearInterval(interval);
-  }, []);
+    }, delay);
+    return () => window.clearTimeout(timer);
+  }, [adSlide]);
 
   // Poll for global stats from Google Sheet / Apps Script across everyone
   useEffect(() => {
@@ -1021,16 +1023,20 @@ export default function App() {
 
                        {/* Advertising space — opens Instagram DM */}
                       <div
-                        className="relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 bg-sky-50 border border-black/5 text-left transition-all duration-500"
+                        className="relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 text-left transition-all duration-500"
                       >
                         <div className="absolute inset-0 overflow-hidden pointer-events-none">
                           <img
                             src="assets/clouds.png"
                             alt=""
                             aria-hidden="true"
+                            style={{
+                              WebkitMaskImage: 'radial-gradient(ellipse at center, #000 38%, rgba(0,0,0,0.7) 58%, transparent 78%)',
+                              maskImage: 'radial-gradient(ellipse at center, #000 38%, rgba(0,0,0,0.7) 58%, transparent 78%)',
+                            }}
                             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-white/65 to-white/80 pointer-events-none" />
+                          <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/30 to-white/45 pointer-events-none" />
 
                           <AnimatePresence>
                             {adSlide === 1 && (
@@ -1043,14 +1049,13 @@ export default function App() {
                                 className="absolute inset-0 z-0"
                               >
                                 <GlossCluster
-                                  wordmark="THE LIVING PIXEL"
+                                  wordmark="ZIVAI"
                                   number="01"
                                   background="#08080c"
                                   sequence="full"
                                   speed={1}
                                   className="h-full w-full"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/60 pointer-events-none" />
                               </motion.div>
                             )}
                           </AnimatePresence>
@@ -1074,13 +1079,15 @@ export default function App() {
                           ))}
                         </div>
 
-                        <div className="flex flex-col gap-2.5 relative z-10 flex-1">
-                          <div className="flex flex-row items-center justify-between gap-3 w-full">
-                            <span className={`text-sm font-bold tracking-tight transition-colors duration-300 ${adSlide === 1 ? 'text-white' : 'text-black'}`}>Advertising</span>
-                            <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-[0.12em] backdrop-blur-sm transition-colors duration-300 ${adSlide === 1 ? 'text-white/80 bg-white/10 border border-white/15' : 'text-black/70 bg-white/60'}`}>
-                              Open spot
-                            </span>
-                          </div>
+                        <div className="flex flex-col gap-2.5 relative z-10 flex-1 pointer-events-none">
+                          {adSlide === 0 && (
+                            <div className="flex flex-row items-center justify-between gap-3 w-full">
+                              <span className="text-sm font-bold tracking-tight text-black">Advertising</span>
+                              <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-[0.12em] text-black/70 bg-white/60 backdrop-blur-sm">
+                                Open spot
+                              </span>
+                            </div>
+                          )}
 
                           <div className="relative flex-1 min-h-[170px] mt-1">
                             <AnimatePresence mode="wait" initial={false}>
@@ -1091,9 +1098,9 @@ export default function App() {
                                   animate={{ opacity: 1, x: 0 }}
                                   exit={{ opacity: 0, x: -16 }}
                                   transition={{ duration: 0.35, ease: 'easeOut' }}
-                                  className="absolute inset-0 flex items-start"
+                                  className="absolute inset-0 flex items-center justify-center"
                                 >
-                                  <p className="text-[11px] text-black/55 leading-relaxed">
+                                  <p className="max-w-[88%] text-center text-[15px] font-medium leading-relaxed text-black">
                                     Welcome to The Living Pixel, a premium, interactive place to advertise your brand. This is a lease high-engagement real estate where your brand can create living, breathing digital installations so people can feel your brand.
                                   </p>
                                 </motion.div>
@@ -1102,15 +1109,17 @@ export default function App() {
                           </div>
                         </div>
 
-                        <div className="self-start relative z-10">
-                          <LiquidMetalButton
-                            label="Feature your brand here"
-                            width={190}
-                            onClick={() => {
-                              window.open('https://ig.me/m/abdulazeemshaikhh', '_blank');
-                            }}
-                          />
-                        </div>
+                        {adSlide === 0 && (
+                          <div className="self-start relative z-10">
+                            <LiquidMetalButton
+                              label="Feature your brand here"
+                              width={190}
+                              onClick={() => {
+                                window.open('https://ig.me/m/abdulazeemshaikhh', '_blank');
+                              }}
+                            />
+                          </div>
+                        )}
                       </div>
 
                       {/* Certificates carousel — below the Zivai card */}
