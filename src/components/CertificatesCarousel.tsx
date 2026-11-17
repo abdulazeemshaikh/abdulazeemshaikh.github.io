@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Award } from 'lucide-react';
 import { CERTIFICATES } from '../data/certificates';
 
 export const CertificatesCarousel: React.FC = () => {
@@ -65,7 +65,8 @@ export const CertificatesCarousel: React.FC = () => {
   return (
     <section className="w-full max-w-[976px] order-3 sm:order-3 min-w-0">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4 w-full mb-4">
+      <div className="flex items-center gap-2.5 w-full mb-4">
+        <Award size={16} strokeWidth={1.8} className="shrink-0 text-black/60" aria-hidden="true" />
         <h2 className="text-sm font-bold tracking-tight text-black">Certificates</h2>
 
         <div className="flex items-center gap-1.5 shrink-0">
