@@ -1054,6 +1054,7 @@ export default function App() {
                                   background="#08080c"
                                   sequence="full"
                                   speed={1}
+                                  markSrc="assets/logos/zivai-mark.png"
                                   className="h-full w-full"
                                 />
                               </motion.div>
@@ -1062,7 +1063,7 @@ export default function App() {
                         </div>
 
                         {/* Slide dots — outside the card, vertically on the right */}
-                        <div className="absolute -right-2 top-1/2 translate-x-full -translate-y-1/2 flex flex-col items-center gap-1.5 z-20">
+                        <div className="absolute -right-2 top-1/2 translate-x-full -translate-y-1/2 flex flex-col items-center z-20">
                           {[0, 1].map((index) => (
                             <button
                               key={`ad-dot-${index}`}
@@ -1070,12 +1071,16 @@ export default function App() {
                               onClick={() => setAdSlide(index)}
                               aria-label={`Show advertising slide ${index + 1}`}
                               aria-pressed={adSlide === index}
-                              className={`w-1.5 rounded-full transition-all duration-200 ${
-                                adSlide === index
-                                  ? 'h-4 bg-black/70'
-                                  : 'h-1.5 bg-black/20 hover:bg-black/40'
-                              }`}
-                            />
+                              className="group flex items-center justify-center w-4 h-4 cursor-pointer"
+                            >
+                              <span
+                                className={`block w-1.5 rounded-full transition-all duration-200 ${
+                                  adSlide === index
+                                    ? 'h-4 bg-black/70'
+                                    : 'h-1.5 bg-black/25 group-hover:bg-black/50'
+                                }`}
+                              />
+                            </button>
                           ))}
                         </div>
 

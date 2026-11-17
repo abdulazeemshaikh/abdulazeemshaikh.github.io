@@ -44,6 +44,11 @@ export interface GlossClusterProps {
   interactive?: boolean
   /** Accessible name. The scene is announced as an image with this text. Default "Cluster of glossy 3D icons around the Louis Studios mark". */
   ariaLabel?: string
+  /**
+   * Optional image used for the centre mark (its alpha becomes the silhouette). Leave empty to
+   * use the built-in Louis Studios mark. Any square-ish PNG with transparency works.
+   */
+  markSrc?: string
   /** Class for the root element. The component fills its parent: give the parent (or this class) a size. */
   className?: string
   /** Inline style for the root element. */
@@ -515,11 +520,17 @@ function compileGL(gl: WebGLRenderingContext, markCanvas: HTMLCanvasElement): GL
 }
 
 /** Mark silhouette (alpha) inside the unit disc, 512 px square. */
-function makeMarkCanvas(): HTMLCanvasElement {
+function makeMarkCanvas(img?: HTMLImageElement | null): HTMLCanvasElement {
   const c = document.createElement("canvas")
   c.width = c.height = 512
   const x = c.getContext("2d")
   if (x) {
+    if (img && img.complete && img.naturalWidth > 0) {
+      const ih = 0.62 * 512
+      const iw = ih * (img.naturalWidth / img.naturalHeight)
+      x.drawImage(img, 256 - iw / 2, 256 - ih / 2, iw, ih)
+      return c
+    }
     const s = (0.6 * 512) / MARK_BOX.h
     x.translate(256 - (MARK_BOX.w * s) / 2 + 6, 256 - (MARK_BOX.h * s) / 2 + 14)
     x.scale(s, s)
@@ -705,6 +716,7 @@ export function GlossCluster({
   speed = 1,
   interactive = true,
   ariaLabel = "Cluster of glossy 3D icons around the Louis Studios mark",
+  markSrc = "",
   className,
   style,
 }: GlossClusterProps) {
@@ -733,15 +745,36 @@ export function GlossCluster({
     const mq = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null
     let reduced = !!mq?.matches
 
+    // Optional custom centre mark. Its alpha channel is used as the silhouette.
+    let markImg: HTMLImageElement | null = null
+    let markReady = false
+    if (markSrc) {
+      markImg = new Image()
+      markImg.crossOrigin = "anonymous"
+      markImg.src = markSrc
+      markReady = markImg.complete && markImg.naturalWidth > 0
+    }
+
     let kit: GLKit | null = null
     try {
       const gl = glCanvas.getContext("webgl", { premultipliedAlpha: true, alpha: true, antialias: false }) as WebGLRenderingContext | null
-      if (gl) kit = compileGL(gl, makeMarkCanvas())
+      if (gl) kit = compileGL(gl, makeMarkCanvas(markImg))
     } catch {
       kit = null
     }
     const markPath = new Path2D(MARK_PATH)
     const fbPaths = OBJS.map((o) => fallbackPath(o.type))
+
+    const onMarkLoad = () => {
+      markReady = true
+      if (kit) {
+        const { gl, tex } = kit
+        gl.bindTexture(gl.TEXTURE_2D, tex)
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, makeMarkCanvas(markImg))
+      }
+      draw()
+    }
+    if (markImg && !markReady) markImg.addEventListener("load", onMarkLoad, { once: true })
 
     let W = 1, H = 1, dpr = 1
     const resize = () => {
@@ -856,7 +889,7 @@ export function GlossCluster({
           gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
         }
       }
-      if (st.cluster || st.markOnly) {
+      if ((st.cluster || st.markOnly) && !markSrc) {
         const f = markFrame(st)
         gl.uniform2f(u.uC, f.cx, H - f.cy)
         gl.uniform1f(u.uR, f.R)
@@ -894,7 +927,7 @@ export function GlossCluster({
           ctx.restore()
         }
       }
-      if (st.cluster || st.markOnly) {
+      if ((st.cluster || st.markOnly) && !markSrc) {
         const f = markFrame(st)
         ctx.save()
         ctx.translate(f.cx, f.cy)
@@ -909,14 +942,31 @@ export function GlossCluster({
           ctx.fillStyle = g
         }
         ctx.fill()
-        const s = (0.6 * 2 * f.R) / MARK_BOX.h
-        ctx.translate(-(MARK_BOX.w * s) / 2 + f.R * 0.0230, -(MARK_BOX.h * s) / 2 + f.R * 0.055)
-        ctx.scale(s, s)
-        ctx.translate(-MARK_BOX.x, -MARK_BOX.y)
         ctx.globalCompositeOperation = "destination-out"
-        ctx.fill(markPath)
+        if (markReady && markImg) {
+          const ih = 0.62 * 2 * f.R
+          const iw = ih * (markImg.naturalWidth / markImg.naturalHeight)
+          ctx.drawImage(markImg, -iw / 2 + f.R * 0.023, -ih / 2 + f.R * 0.055, iw, ih)
+        } else {
+          const s = (0.6 * 2 * f.R) / MARK_BOX.h
+          ctx.translate(-(MARK_BOX.w * s) / 2 + f.R * 0.0230, -(MARK_BOX.h * s) / 2 + f.R * 0.055)
+          ctx.scale(s, s)
+          ctx.translate(-MARK_BOX.x, -MARK_BOX.y)
+          ctx.fill(markPath)
+        }
         ctx.restore()
       }
+    }
+
+    /** Draw a supplied centre mark image (e.g. a brand logo) on the top canvas. */
+    const drawMarkImage = (st: Stage) => {
+      if (!ctx || !markImg || !markReady) return
+      const f = markFrame(st)
+      const ih = f.R * 2 * 0.96
+      const iw = ih * (markImg.naturalWidth / markImg.naturalHeight)
+      ctx.save()
+      ctx.drawImage(markImg, f.cx - iw / 2, f.cy - ih / 2, iw, ih)
+      ctx.restore()
     }
 
     function draw() {
@@ -926,6 +976,7 @@ export function GlossCluster({
       if (ctx) ctx.clearRect(0, 0, W, H)
       if (kit) drawGL(st)
       else drawFallback(st)
+      if (markSrc && (st.cluster || st.markOnly)) drawMarkImage(st)
       if (st.title && ctx) drawTitle(ctx, W, H, p, lv.word, lv.num, lv.font, lv.textColor, lv.numberColor)
     }
 
@@ -1031,13 +1082,14 @@ export function GlossCluster({
       root.removeEventListener("pointermove", onMove)
       root.removeEventListener("pointerleave", onLeave)
       root.removeEventListener("pointerdown", onDown)
+      if (markImg) markImg.removeEventListener("load", onMarkLoad)
       if (kit) {
         kit.gl.deleteTexture(kit.tex)
         kit.gl.deleteProgram(kit.prog)
         kit.gl.getExtension("WEBGL_lose_context")?.loseContext()
       }
     }
-  }, [colorKey])
+  }, [colorKey, markSrc])
 
   React.useEffect(() => { redraw.current() }, [wordmark, number, textColor, numberColor, font, sequence])
 
