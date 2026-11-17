@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, ArrowUpRight, Copy, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -784,8 +784,57 @@ export default function App() {
                       </span>
                     </motion.div>
 
-                    <div className="mt-2 flex flex-col items-center gap-4">
-                    </div>
+                    <motion.div variants={itemVariants} className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+                      <a
+                        href="https://www.instagram.com/abdulazeemshaikhh/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-[11px] font-medium text-black/50"
+                      >
+                        <Instagram size={14} strokeWidth={1.5} className="shrink-0" />
+                        <span className="underline underline-offset-4">@abdulazeemshaikhh</span>
+                      </a>
+                      <a
+                        href="https://www.instagram.com/zivaihq/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-[11px] font-medium text-black/50"
+                      >
+                        <Instagram size={14} strokeWidth={1.5} className="shrink-0" />
+                        <span className="underline underline-offset-4">@zivaihq</span>
+                      </a>
+                      <a
+                        href="https://x.com/abdulazeem_s"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-[11px] font-medium text-black/50"
+                      >
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="shrink-0"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+                        <span className="underline underline-offset-4">@abdulazeem_s</span>
+                      </a>
+                      <button
+                        type="button"
+                        onClick={handleCopyEmail}
+                        className="inline-flex items-center gap-1.5 text-[11px] font-medium text-black/50 cursor-pointer"
+                      >
+                        <Mail size={14} strokeWidth={1.5} className="shrink-0" />
+                        <span className="underline underline-offset-4">abdulazeemshaikhbusiness@gmail.com</span>
+                        <AnimatePresence>
+                          {copied && (
+                            <motion.span
+                              key="check"
+                              initial={{ opacity: 0, scale: 0.5 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0.5 }}
+                              transition={{ duration: 0.15 }}
+                              className="inline-flex ml-0.5 text-green-600"
+                            >
+                              <Check size={14} strokeWidth={2} />
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
+                      </button>
+                    </motion.div>
                     
                     <motion.div 
                       variants={containerVariants}
@@ -892,135 +941,6 @@ export default function App() {
                       ))}
 
                       
-                       {/* Connect card — beside the Zivai card */}
-                       <motion.div
-                         variants={cardVariants}
-                         className="order-2 w-full md:w-[300px] md:max-w-[300px] self-stretch bg-white p-6 border border-black/5 min-h-[320px] flex flex-col justify-between"
-                       >
-                         <div className="flex flex-col gap-2.5">
-                           <div className="flex flex-col gap-3">
-                             {/* Instagram @abdulazeemshaikhh */}
-                             {(() => {
-                               const [hovered, setHovered] = React.useState(false);
-                               return (
-                                 <a
-                                   href="https://www.instagram.com/abdulazeemshaikhh/"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   className="group flex items-center gap-2.5 text-black/70 hover:text-black transition-colors duration-200"
-                                   onMouseEnter={() => setHovered(true)}
-                                   onMouseLeave={() => setHovered(false)}
-                                 >
-                                   <Instagram size={16} strokeWidth={1.5} className="shrink-0" />
-                                   <span className="text-xs font-medium">@abdulazeemshaikhh</span>
-                                   <motion.span
-                                     initial={{ opacity: 0, x: -4, y: 4 }}
-                                     animate={hovered ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -4, y: 4 }}
-                                     transition={{ duration: 0.2, ease: 'easeOut' }}
-                                     className="inline-flex ml-0.5"
-                                   >
-                                     <ArrowUpRight size={14} strokeWidth={2} />
-                                   </motion.span>
-                                 </a>
-                               );
-                             })()}
-
-                             {/* Instagram @zivaihq */}
-                             {(() => {
-                               const [hovered, setHovered] = React.useState(false);
-                               return (
-                                 <a
-                                   href="https://www.instagram.com/zivaihq/"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   className="group flex items-center gap-2.5 text-black/70 hover:text-black transition-colors duration-200"
-                                   onMouseEnter={() => setHovered(true)}
-                                   onMouseLeave={() => setHovered(false)}
-                                 >
-                                   <Instagram size={16} strokeWidth={1.5} className="shrink-0" />
-                                   <span className="text-xs font-medium">@zivaihq</span>
-                                   <motion.span
-                                     initial={{ opacity: 0, x: -4, y: 4 }}
-                                     animate={hovered ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -4, y: 4 }}
-                                     transition={{ duration: 0.2, ease: 'easeOut' }}
-                                     className="inline-flex ml-0.5"
-                                   >
-                                     <ArrowUpRight size={14} strokeWidth={2} />
-                                   </motion.span>
-                                 </a>
-                               );
-                             })()}
-
-                             {/* X @abdulazeem_s */}
-                             {(() => {
-                               const [hovered, setHovered] = React.useState(false);
-                               return (
-                                 <a
-                                   href="https://x.com/abdulazeem_s"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   className="group flex items-center gap-2.5 text-black/70 hover:text-black transition-colors duration-200"
-                                   onMouseEnter={() => setHovered(true)}
-                                   onMouseLeave={() => setHovered(false)}
-                                 >
-                                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="shrink-0"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
-                                   <span className="text-xs font-medium">@abdulazeem_s</span>
-                                   <motion.span
-                                     initial={{ opacity: 0, x: -4, y: 4 }}
-                                     animate={hovered ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: -4, y: 4 }}
-                                     transition={{ duration: 0.2, ease: 'easeOut' }}
-                                     className="inline-flex ml-0.5"
-                                   >
-                                     <ArrowUpRight size={14} strokeWidth={2} />
-                                   </motion.span>
-                                 </a>
-                               );
-                             })()}
-
-                             {/* Email with copy */}
-                             {(() => {
-                               const [hovered, setHovered] = React.useState(false);
-                               return (
-                                 <button
-                                   onClick={handleCopyEmail}
-                                   className="group flex items-center gap-2.5 text-black/70 hover:text-black transition-colors duration-200 cursor-pointer"
-                                   onMouseEnter={() => setHovered(true)}
-                                   onMouseLeave={() => setHovered(false)}
-                                 >
-                                   <Mail size={16} strokeWidth={1.5} className="shrink-0" />
-                                   <span className="text-[11px] font-medium leading-tight whitespace-nowrap">abdulazeemshaikhbusiness@gmail.com</span>
-                                   <AnimatePresence mode="wait">
-                                     {copied ? (
-                                       <motion.span
-                                         key="check"
-                                         initial={{ opacity: 0, scale: 0.5 }}
-                                         animate={{ opacity: 1, scale: 1 }}
-                                         exit={{ opacity: 0, scale: 0.5 }}
-                                         transition={{ duration: 0.15 }}
-                                         className="inline-flex ml-0.5 text-green-600"
-                                       >
-                                         <Check size={14} strokeWidth={2} />
-                                       </motion.span>
-                                     ) : (
-                                       <motion.span
-                                         key="copy"
-                                         initial={{ opacity: 0, scale: 0.8 }}
-                                         animate={hovered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                                         exit={{ opacity: 0, scale: 0.8 }}
-                                         transition={{ duration: 0.2, ease: 'easeOut' }}
-                                         className="inline-flex ml-0.5"
-                                       >
-                                         <Copy size={14} strokeWidth={2} />
-                                       </motion.span>
-                                     )}
-                                   </AnimatePresence>
-                                 </button>
-                               );
-                             })()}
-                           </div>
-                         </div>
-                       </motion.div>
-
                        {/* Advertising space — opens Instagram DM */}
                       <div
                         className="relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 text-left transition-all duration-500"
@@ -1084,45 +1004,33 @@ export default function App() {
                           ))}
                         </div>
 
-                        <div className="flex flex-col gap-2.5 relative z-10 flex-1 pointer-events-none">
-                          {adSlide === 0 && (
-                            <div className="flex flex-row items-center justify-between gap-3 w-full">
-                              <span className="text-sm font-bold tracking-tight text-black">Advertising</span>
-                              <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-[0.12em] text-black/70 bg-white/60 backdrop-blur-sm">
-                                Open spot
-                              </span>
-                            </div>
-                          )}
-
-                          <div className="relative flex-1 min-h-[170px] mt-1">
-                            <AnimatePresence mode="wait" initial={false}>
-                              {adSlide === 0 && (
-                                <motion.div
-                                  key="ad-copy"
-                                  initial={{ opacity: 0, x: 16 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  exit={{ opacity: 0, x: -16 }}
-                                  transition={{ duration: 0.35, ease: 'easeOut' }}
-                                  className="absolute inset-0 flex items-center justify-center"
-                                >
-                                  <p className="max-w-[88%] text-center text-[15px] font-medium leading-relaxed text-black">
-                                    Welcome to The Living Pixel, a premium, interactive place to advertise your brand. This is a lease high-engagement real estate where your brand can create living, breathing digital installations so people can feel your brand.
-                                  </p>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        </div>
-
                         {adSlide === 0 && (
-                          <div className="self-start relative z-10">
-                            <LiquidMetalButton
-                              label="Feature your brand here"
-                              width={190}
-                              onClick={() => {
-                                window.open('https://ig.me/m/abdulazeemshaikhh', '_blank');
-                              }}
-                            />
+                          <div className="relative z-10 flex-1 flex flex-col items-center justify-center gap-5 text-center pointer-events-none">
+                            <p className="max-w-[92%] text-[15px] font-medium leading-relaxed text-black">
+                              {'Welcome to The Living Pixel, a premium, interactive place to advertise your brand. This is a lease high-engagement real estate where your brand can create living, breathing digital installations so people can feel your brand.'
+                                .split(' ')
+                                .map((word, index, all) => (
+                                  <motion.span
+                                    key={`${word}-${index}`}
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.4, delay: index * 0.035, ease: 'easeOut' }}
+                                    className="inline-block"
+                                  >
+                                    {word}{index < all.length - 1 ? '\u00A0' : ''}
+                                  </motion.span>
+                                ))}
+                            </p>
+
+                            <div className="pointer-events-auto">
+                              <LiquidMetalButton
+                                label="Feature your brand here"
+                                width={190}
+                                onClick={() => {
+                                  window.open('https://ig.me/m/abdulazeemshaikhh', '_blank');
+                                }}
+                              />
+                            </div>
                           </div>
                         )}
                       </div>
