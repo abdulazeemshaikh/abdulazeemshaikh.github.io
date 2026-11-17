@@ -943,7 +943,9 @@ export default function App() {
                       
                        {/* Advertising space — opens Instagram DM */}
                       <div
-                        className="relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 bg-white border border-black/5 text-left transition-all duration-500"
+                        className={`relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 border text-left transition-all duration-500 ${
+                          adSlide === 0 ? 'bg-transparent border-transparent' : 'bg-white border-black/5'
+                        }`}
                       >
                         <div className="absolute inset-0 overflow-hidden pointer-events-none">
                           <img
