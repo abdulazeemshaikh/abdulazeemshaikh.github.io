@@ -956,7 +956,7 @@ export default function App() {
                               WebkitMaskImage: 'radial-gradient(ellipse at center, #000 38%, rgba(0,0,0,0.7) 58%, transparent 78%)',
                               maskImage: 'radial-gradient(ellipse at center, #000 38%, rgba(0,0,0,0.7) 58%, transparent 78%)',
                             }}
-                            className="absolute left-1/2 top-1/2 w-[78%] h-[78%] -translate-x-1/2 -translate-y-1/2 object-cover object-center pointer-events-none select-none"
+                            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
                           />
                           <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/30 to-white/45 pointer-events-none" />
 
@@ -1008,7 +1008,7 @@ export default function App() {
 
                         {adSlide === 0 && (
                           <div className="relative z-10 flex-1 flex flex-col items-center justify-center gap-5 text-center pointer-events-none">
-                            <p className="max-w-[84%] text-[15px] font-medium leading-relaxed text-black">
+                            <p className="max-w-[92%] text-[15px] font-medium leading-relaxed text-black">
                               {'Welcome to The Living Pixel, a premium, interactive place to advertise your brand. This is a lease high-engagement real estate where your brand can create living, breathing digital installations so people can feel your brand.'
                                 .split(' ')
                                 .map((word, index, all) => (
