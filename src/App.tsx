@@ -61,6 +61,7 @@ export default function App() {
     id: string;
     src: string;
     alt: string;
+    date?: string;
     caption?: string;
     images?: string[];
   }
@@ -70,6 +71,7 @@ export default function App() {
       id: 'moon',
       src: 'assets/moon.png',
       alt: 'Moon visual',
+      date: 'Oct 22, 2026',
       images: [
         'assets/moon.png',
         'assets/moon-carousel/moon-1.jpg',
@@ -84,11 +86,13 @@ export default function App() {
       id: 'silver-emblem',
       src: 'assets/silver-emblem.png',
       alt: 'Emblem visual',
+      date: 'Oct 22, 2026',
     },
     {
       id: 'sunset-balcony',
       src: 'assets/balcony-sunset.jpg',
       alt: 'Sunset balcony visual',
+      date: 'Nov 20, 2026',
     },
   ];
 
@@ -1357,6 +1361,13 @@ export default function App() {
                                       Post
                                     </button>
                                   </form>
+                                )}
+
+                                {/* Date Added */}
+                                {item.date && (
+                                  <div className="text-[10px] text-black/40 font-medium tracking-tight mt-1 select-none">
+                                    {item.date}
+                                  </div>
                                 )}
                               </div>
                             </motion.div>
