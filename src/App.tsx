@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2, Camera } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -753,43 +753,51 @@ export default function App() {
 
                     <motion.div variants={itemVariants} className="text-sm text-black/40 mt-1 text-center select-none">
                       <span 
-                        onMouseEnter={() => setHoveredCategory('energy')} 
+                        onMouseEnter={() => setHoveredCategory('software')} 
                         onMouseLeave={() => setHoveredCategory(null)} 
-                        className="cursor-pointer hover:text-green-600 transition-colors underline decoration-dotted underline-offset-4"
+                        className="cursor-pointer hover:text-blue-600 transition-colors underline decoration-dotted underline-offset-4"
                       >
-                        Sustainable Energy
+                        Software
                       </span>
                       ,{' '}
                       <span 
-                        onMouseEnter={() => setHoveredCategory('space')} 
+                        onMouseEnter={() => setHoveredCategory('automata')} 
                         onMouseLeave={() => setHoveredCategory(null)} 
-                        className="cursor-pointer hover:text-blue-500 transition-colors underline decoration-dotted underline-offset-4"
+                        className="cursor-pointer hover:text-amber-600 transition-colors underline decoration-dotted underline-offset-4"
                       >
-                        Space
+                        Automata
                       </span>
                       ,{' '}
                       <span 
-                        onMouseEnter={() => setHoveredCategory('cars')} 
+                        onMouseEnter={() => setHoveredCategory('creative')} 
                         onMouseLeave={() => setHoveredCategory(null)} 
-                        className="cursor-pointer hover:text-red-500 transition-colors underline decoration-dotted underline-offset-4"
+                        className="cursor-pointer hover:text-purple-600 transition-colors underline decoration-dotted underline-offset-4"
                       >
-                        Cars
+                        Creative
                       </span>
                       ,{' '}
                       <span 
-                        onMouseEnter={() => setHoveredCategory('robots')} 
+                        onMouseEnter={() => setHoveredCategory('fashion')} 
                         onMouseLeave={() => setHoveredCategory(null)} 
-                        className="cursor-pointer hover:text-purple-500 transition-colors underline decoration-dotted underline-offset-4"
+                        className="cursor-pointer hover:text-rose-500 transition-colors underline decoration-dotted underline-offset-4"
                       >
-                        Robots
+                        Fashion
                       </span>
-                      {' '}&{' '}
+                      ,{' '}
                       <span 
-                        onMouseEnter={() => setHoveredCategory('ai')} 
+                        onMouseEnter={() => setHoveredCategory('science')} 
                         onMouseLeave={() => setHoveredCategory(null)} 
-                        className="cursor-pointer hover:text-amber-500 transition-colors underline decoration-dotted underline-offset-4"
+                        className="cursor-pointer hover:text-cyan-600 transition-colors underline decoration-dotted underline-offset-4"
                       >
-                        AI
+                        Science
+                      </span>
+                      ,{' '}
+                      <span 
+                        onMouseEnter={() => setHoveredCategory('nature')} 
+                        onMouseLeave={() => setHoveredCategory(null)} 
+                        className="cursor-pointer hover:text-emerald-600 transition-colors underline decoration-dotted underline-offset-4"
+                      >
+                        Nature
                       </span>
                     </motion.div>
 
@@ -1046,9 +1054,16 @@ export default function App() {
                       <CertificatesCarousel />
 
                       {/* Clean Visual Media Feed — below the certificates */}
-                      <div className="flex flex-row flex-wrap items-start justify-start gap-8 w-full max-w-[976px] mt-2 order-5 sm:order-5">
-                        {mediaItems.map((item) => {
-                          const isLiked = !!likedPosts[item.id];
+                      <section className="w-full max-w-[976px] mt-4 order-5 sm:order-5 min-w-0">
+                        {/* Section Header */}
+                        <div className="flex items-center gap-2.5 w-full mb-4">
+                          <Camera size={16} strokeWidth={1.8} className="shrink-0 text-black/60" aria-hidden="true" />
+                          <h2 className="text-sm font-bold tracking-tight text-black">Camera roll</h2>
+                        </div>
+
+                        <div className="flex flex-row flex-wrap items-start justify-start gap-8 w-full">
+                          {mediaItems.map((item) => {
+                            const isLiked = !!likedPosts[item.id];
                           const likes = postLikes[item.id] || 0;
                           const shares = postShares[item.id] || 0;
                           const views = postViews[item.id] || 0;
@@ -1374,6 +1389,7 @@ export default function App() {
                           );
                         })}
                         </div>
+                      </section>
                     </motion.div>
 
                   </div>
@@ -1398,11 +1414,12 @@ export default function App() {
                 exit={{ scale: 0, opacity: 0 }}
                 className="text-3xl filter drop-shadow-md select-none"
               >
-                {hoveredCategory === 'energy' && '⚡'}
-                {hoveredCategory === 'space' && '🚀'}
-                {hoveredCategory === 'cars' && '🏎️'}
-                {hoveredCategory === 'robots' && '🤖'}
-                {hoveredCategory === 'ai' && '🧠'}
+                {hoveredCategory === 'software' && '💻'}
+                {hoveredCategory === 'automata' && '⚙️'}
+                {hoveredCategory === 'creative' && '🎨'}
+                {hoveredCategory === 'fashion' && '✨'}
+                {hoveredCategory === 'science' && '🔬'}
+                {hoveredCategory === 'nature' && '🌿'}
               </motion.div>
             )}
 
