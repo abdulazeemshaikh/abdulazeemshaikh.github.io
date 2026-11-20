@@ -952,10 +952,6 @@ export default function App() {
                             src="assets/clouds.png"
                             alt=""
                             aria-hidden="true"
-                            style={{
-                              WebkitMaskImage: 'radial-gradient(ellipse at center, #000 38%, rgba(0,0,0,0.7) 58%, transparent 78%)',
-                              maskImage: 'radial-gradient(ellipse at center, #000 38%, rgba(0,0,0,0.7) 58%, transparent 78%)',
-                            }}
                             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
                           />
                           <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/30 to-white/45 pointer-events-none" />
