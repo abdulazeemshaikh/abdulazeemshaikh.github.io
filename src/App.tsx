@@ -85,6 +85,11 @@ export default function App() {
       src: 'assets/silver-emblem.png',
       alt: 'Emblem visual',
     },
+    {
+      id: 'sunset-balcony',
+      src: 'assets/balcony-sunset.jpg',
+      alt: 'Sunset balcony visual',
+    },
   ];
 
   const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>(() => {
@@ -1037,7 +1042,7 @@ export default function App() {
                       <CertificatesCarousel />
 
                       {/* Clean Visual Media Feed — below the certificates */}
-                      <div className="flex flex-row flex-wrap sm:flex-nowrap items-start justify-start gap-8 w-full max-w-[480px] mt-2 order-5 sm:order-5">
+                      <div className="flex flex-row flex-wrap items-start justify-start gap-8 w-full max-w-[976px] mt-2 order-5 sm:order-5">
                         {mediaItems.map((item) => {
                           const isLiked = !!likedPosts[item.id];
                           const likes = postLikes[item.id] || 0;
