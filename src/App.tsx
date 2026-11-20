@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2, Camera } from 'lucide-react';
+import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2, Camera, Sparkles } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -54,7 +54,16 @@ export default function App() {
   const [isInvestSubmitted, setIsInvestSubmitted] = useState<boolean>(false);
 
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [selectedDomain, setSelectedDomain] = useState<string>('Software');
   const [adSlide, setAdSlide] = useState<number>(0);
+
+  const domainDescriptions: Record<string, string> = {
+    Software: 'Apps, websites, systems, AI',
+    Automata: 'Cars, planes, drones, hoverboards, robots',
+    Creative: 'Photography, film, art, fashion, research & design',
+    Science: 'Physics via calisthenics, Chemistry via food application (diet), Biology via gym application (muscle anatomy)',
+    Nature: 'Sustainable energy, space',
+  };
 
   // Instagram-style Media Items State
   interface MediaItemData {
@@ -777,14 +786,6 @@ export default function App() {
                       </span>
                       ,{' '}
                       <span 
-                        onMouseEnter={() => setHoveredCategory('fashion')} 
-                        onMouseLeave={() => setHoveredCategory(null)} 
-                        className="cursor-pointer hover:text-rose-500 transition-colors underline decoration-dotted underline-offset-4"
-                      >
-                        Fashion
-                      </span>
-                      ,{' '}
-                      <span 
                         onMouseEnter={() => setHoveredCategory('science')} 
                         onMouseLeave={() => setHoveredCategory(null)} 
                         className="cursor-pointer hover:text-cyan-600 transition-colors underline decoration-dotted underline-offset-4"
@@ -858,7 +859,7 @@ export default function App() {
                       className="mt-4 flex flex-wrap justify-center gap-1 sm:gap-4 w-full min-w-0 pb-8"
                     >
                       {activeProjects.filter(p => p.id === 'zalt').map((project) => (
-                        <div key={project.id} className="flex flex-col gap-4 order-1 w-full md:w-[calc(50%-0.5rem)] max-w-[480px]">
+                        <div key={project.id} className="flex flex-col gap-4 order-1 w-full md:w-[460px] md:max-w-[460px]">
                           <motion.div 
                             variants={cardVariants}
                             className={`bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full transition-all duration-500 ease-in-out overflow-hidden border border-black/5`}
@@ -957,10 +958,77 @@ export default function App() {
                         </div>
                       ))}
 
-                      
-                       {/* Advertising space — opens Instagram DM */}
+                      {/* Domains & Focus Card — in between Zivai and The Living Pixel */}
+                      <motion.div
+                        variants={cardVariants}
+                        className="bg-white p-6 rounded-none text-left relative group min-h-[320px] h-auto w-full md:w-[460px] md:max-w-[460px] flex flex-col justify-between border border-black/5 overflow-hidden order-2 md:order-2"
+                      >
+                        {/* Soft Subtle Gradient Background */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-teal-500/5 opacity-60 blur-3xl -z-10" />
+
+                        <div className="flex flex-col gap-5 relative z-10">
+                          {/* Card Header */}
+                          <div className="flex items-center justify-between border-b border-black/5 pb-3">
+                            <div className="flex items-center gap-2">
+                              <Sparkles size={14} className="text-black/60" />
+                              <span className="text-xs font-bold tracking-tight text-black uppercase">Focus & Domains</span>
+                            </div>
+                            <span className="text-[10px] text-black/40 font-mono tracking-wider">01 — 05</span>
+                          </div>
+
+                          {/* Interactive Domain Pills */}
+                          <div className="flex flex-wrap gap-1.5">
+                            {(['Software', 'Automata', 'Creative', 'Science', 'Nature'] as const).map((domain) => {
+                              const isSelected = selectedDomain === domain;
+                              return (
+                                <button
+                                  key={domain}
+                                  type="button"
+                                  onClick={() => setSelectedDomain(domain)}
+                                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer active:scale-95 border ${
+                                    isSelected
+                                      ? 'bg-black text-white border-black shadow-xs'
+                                      : 'bg-black/[0.03] text-black/65 border-black/5 hover:bg-black/[0.07] hover:text-black'
+                                  }`}
+                                >
+                                  {domain}
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {/* Dynamic Description Box */}
+                          <div className="relative min-h-[110px] bg-black/[0.02] border border-black/5 rounded-lg p-4 flex flex-col justify-center">
+                            <AnimatePresence mode="wait">
+                              <motion.div
+                                key={selectedDomain}
+                                initial={{ opacity: 0, y: 6 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -6 }}
+                                transition={{ duration: 0.2, ease: 'easeOut' }}
+                                className="flex flex-col gap-1.5"
+                              >
+                                <span className="text-[11px] font-bold text-black tracking-tight">
+                                  {selectedDomain}
+                                </span>
+                                <p className="text-[13px] leading-relaxed text-black/75 font-normal">
+                                  {domainDescriptions[selectedDomain]}
+                                </p>
+                              </motion.div>
+                            </AnimatePresence>
+                          </div>
+                        </div>
+
+                        {/* Bottom subtle hint */}
+                        <div className="pt-4 border-t border-black/5 flex items-center justify-between text-[10px] text-black/40 relative z-10">
+                          <span>Click a domain to explore focus areas</span>
+                          <span className="font-mono">{selectedDomain.toLowerCase()}</span>
+                        </div>
+                      </motion.div>
+
+                      {/* Advertising space — opens Instagram DM */}
                       <div
-                        className={`relative flex flex-col justify-between gap-6 order-4 md:order-2 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 border text-left transition-all duration-500 ${
+                        className={`relative flex flex-col justify-between gap-6 order-3 md:order-3 w-full md:w-[460px] md:max-w-[460px] self-stretch min-h-[320px] p-6 border text-left transition-all duration-500 ${
                           adSlide === 0 ? 'bg-transparent border-transparent' : 'bg-white border-black/5'
                         }`}
                       >
@@ -1417,7 +1485,6 @@ export default function App() {
                 {hoveredCategory === 'software' && '💻'}
                 {hoveredCategory === 'automata' && '⚙️'}
                 {hoveredCategory === 'creative' && '🎨'}
-                {hoveredCategory === 'fashion' && '✨'}
                 {hoveredCategory === 'science' && '🔬'}
                 {hoveredCategory === 'nature' && '🌿'}
               </motion.div>
