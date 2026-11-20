@@ -71,7 +71,7 @@ export default function App() {
       id: 'moon',
       src: 'assets/moon.png',
       alt: 'Moon visual',
-      date: 'Oct 22, 2026',
+      date: 'Oct 22, 2026 • 5:49 PM',
       images: [
         'assets/moon.png',
         'assets/moon-carousel/moon-1.jpg',
@@ -86,13 +86,13 @@ export default function App() {
       id: 'silver-emblem',
       src: 'assets/silver-emblem.png',
       alt: 'Emblem visual',
-      date: 'Oct 22, 2026',
+      date: 'Oct 22, 2026 • 10:55 PM',
     },
     {
       id: 'sunset-balcony',
       src: 'assets/balcony-sunset.jpg',
       alt: 'Sunset balcony visual',
-      date: 'Nov 20, 2026',
+      date: 'Nov 20, 2026 • 5:43 PM',
     },
   ];
 
@@ -1185,7 +1185,14 @@ export default function App() {
                               </div>
 
                               {/* Buttons starting directly flush with the image left edge */}
-                              <div className="pt-2 flex flex-col gap-2 w-full">
+                              <div className="pt-2 flex flex-col gap-1.5 w-full">
+                                {/* Date & Time Added (below post, above buttons) */}
+                                {item.date && (
+                                  <div className="text-[10px] text-black/40 font-medium tracking-tight select-none">
+                                    {item.date}
+                                  </div>
+                                )}
+
                                 <div className="flex items-center gap-2.5">
                                   {/* Heart Button with like count beside it */}
                                   <button 
@@ -1361,13 +1368,6 @@ export default function App() {
                                       Post
                                     </button>
                                   </form>
-                                )}
-
-                                {/* Date Added */}
-                                {item.date && (
-                                  <div className="text-[10px] text-black/40 font-medium tracking-tight mt-1 select-none">
-                                    {item.date}
-                                  </div>
                                 )}
                               </div>
                             </motion.div>
