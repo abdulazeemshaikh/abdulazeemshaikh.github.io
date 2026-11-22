@@ -72,6 +72,7 @@ export default function App() {
     date?: string;
     caption?: string;
     location?: string;
+    flag?: string;
     images?: string[];
   }
 
@@ -83,6 +84,7 @@ export default function App() {
       date: 'Oct 22, 2026 • 5:49 PM',
       caption: 'Moon',
       location: 'Bangalore, India',
+      flag: '🇮🇳',
       images: [
         'assets/moon.png',
         'assets/moon-carousel/moon-1.jpg',
@@ -107,6 +109,7 @@ export default function App() {
       date: 'Nov 20, 2026 • 5:43 PM',
       caption: 'Sunrise in Africa',
       location: 'Ghana, Accra',
+      flag: '🇬🇭',
     },
     {
       id: 'city-clouds-skyline',
@@ -115,6 +118,7 @@ export default function App() {
       date: 'Nov 22, 2026 • 7:35 PM',
       caption: 'Blue dreamy sky of Africa',
       location: 'Ghana, Accra',
+      flag: '🇬🇭',
     },
   ];
 
@@ -1260,15 +1264,16 @@ export default function App() {
 
                                 {/* Description / Caption & Location Tag (below date & time, above buttons) */}
                                 {(item.caption || item.location) && (
-                                  <div className="flex flex-col gap-0.5 text-left mb-0.5 select-none">
+                                  <div className="flex flex-col gap-1 text-left mb-0.5 select-none">
                                     {item.caption && (
                                       <p className="text-[11px] font-semibold text-black/85 leading-snug tracking-tight">
                                         {item.caption}
                                       </p>
                                     )}
                                     {item.location && (
-                                      <div className="inline-flex items-center gap-1 text-[10px] text-black/50 font-medium tracking-tight">
-                                        <MapPin size={11} strokeWidth={2} className="text-black/45 shrink-0" />
+                                      <div className="inline-flex items-center gap-1.5 text-[10px] text-black/65 font-medium tracking-tight bg-black/[0.04] border border-black/5 rounded-full px-2.5 py-0.5 w-fit">
+                                        {item.flag && <span className="text-[11px] leading-none">{item.flag}</span>}
+                                        <MapPin size={10} strokeWidth={2} className="text-black/45 shrink-0" />
                                         <span>{item.location}</span>
                                       </div>
                                     )}
