@@ -922,8 +922,8 @@ export default function App() {
                                     </p>
                                   </div>
 
-                                  {/* Sub-cards inside Zivai card: AKRA and CELESTE */}
-                                  <div className="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full">
+                                  {/* Sub-cards inside Zivai card: AKRA, CELESTE, and KLIN */}
+                                  <div className="pt-3 grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full">
                                     {/* AKRA Card */}
                                     <a
                                       href="https://zivaihq.ai.studio/akra"
@@ -967,6 +967,29 @@ export default function App() {
                                       </div>
                                       <p className="text-[10px] text-black/55 leading-tight">
                                         A new paradigm of education
+                                      </p>
+                                    </a>
+
+                                    {/* KLIN Card */}
+                                    <a
+                                      href="https://klinhq.pages.dev/"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs hover:bg-white/60 transition-colors"
+                                    >
+                                      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-transparent opacity-50 blur-xl -z-10" />
+                                      <div className="flex flex-col items-start gap-1.5">
+                                        <img
+                                          src="assets/logos/klin-mark.png"
+                                          alt="KLIN"
+                                          className="w-9 h-9 object-contain shrink-0"
+                                        />
+                                        <span className="text-xs font-bold text-black tracking-tight">
+                                          KLIN
+                                        </span>
+                                      </div>
+                                      <p className="text-[10px] text-black/55 leading-tight">
+                                        Small, clear first steps. 12 digital explorations
                                       </p>
                                     </a>
                                   </div>
