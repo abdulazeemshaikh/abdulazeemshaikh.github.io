@@ -102,6 +102,12 @@ export default function App() {
       alt: 'Sunset balcony visual',
       date: 'Nov 20, 2026 • 5:43 PM',
     },
+    {
+      id: 'city-clouds-skyline',
+      src: 'assets/city-clouds-skyline.jpg',
+      alt: 'Cityscape under dramatic blue sky and clouds',
+      date: 'Nov 22, 2026 • 7:35 PM',
+    },
   ];
 
   const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>(() => {
