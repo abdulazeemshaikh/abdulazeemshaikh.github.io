@@ -98,7 +98,7 @@ export default function App() {
       src: 'assets/silver-emblem.png',
       alt: 'Emblem visual',
       date: 'Oct 22, 2026 • 10:55 PM',
-      caption: 'Birth to Zivai',
+      caption: 'Birth to Zivai zivaihq.ai.studio',
     },
     {
       id: 'sunset-balcony',
