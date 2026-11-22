@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2, Camera } from 'lucide-react';
+import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2, Camera, MapPin } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -71,6 +71,7 @@ export default function App() {
     alt: string;
     date?: string;
     caption?: string;
+    location?: string;
     images?: string[];
   }
 
@@ -80,6 +81,8 @@ export default function App() {
       src: 'assets/moon.png',
       alt: 'Moon visual',
       date: 'Oct 22, 2026 • 5:49 PM',
+      caption: 'Moon',
+      location: 'Bangalore, India',
       images: [
         'assets/moon.png',
         'assets/moon-carousel/moon-1.jpg',
@@ -95,18 +98,23 @@ export default function App() {
       src: 'assets/silver-emblem.png',
       alt: 'Emblem visual',
       date: 'Oct 22, 2026 • 10:55 PM',
+      caption: 'Birth to Zivai',
     },
     {
       id: 'sunset-balcony',
       src: 'assets/balcony-sunset.jpg',
       alt: 'Sunset balcony visual',
       date: 'Nov 20, 2026 • 5:43 PM',
+      caption: 'Sunrise in Africa',
+      location: 'Ghana, Accra',
     },
     {
       id: 'city-clouds-skyline',
       src: 'assets/city-clouds-skyline.jpg',
       alt: 'Cityscape under dramatic blue sky and clouds',
       date: 'Nov 22, 2026 • 7:35 PM',
+      caption: 'Blue dreamy sky of Africa',
+      location: 'Ghana, Accra',
     },
   ];
 
@@ -1248,15 +1256,32 @@ export default function App() {
                               </div>
 
                               {/* Buttons starting directly flush with the image left edge */}
-                              <div className="pt-2 flex flex-col gap-1.5 w-full">
-                                {/* Date & Time Added (below post, above buttons) */}
+                              <div className="pt-2 flex flex-col gap-1 w-full">
+                                {/* Date & Time Added */}
                                 {item.date && (
                                   <div className="text-[10px] text-black/40 font-medium tracking-tight select-none">
                                     {item.date}
                                   </div>
                                 )}
 
-                                <div className="flex items-center gap-2.5">
+                                {/* Description / Caption & Location Tag (below date & time, above buttons) */}
+                                {(item.caption || item.location) && (
+                                  <div className="flex flex-col gap-0.5 text-left mb-0.5 select-none">
+                                    {item.caption && (
+                                      <p className="text-[11px] font-semibold text-black/85 leading-snug tracking-tight">
+                                        {item.caption}
+                                      </p>
+                                    )}
+                                    {item.location && (
+                                      <div className="inline-flex items-center gap-1 text-[10px] text-black/50 font-medium tracking-tight">
+                                        <MapPin size={11} strokeWidth={2} className="text-black/45 shrink-0" />
+                                        <span>{item.location}</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+
+                                <div className="flex items-center gap-2.5 pt-0.5">
                                   {/* Heart Button with like count beside it */}
                                   <button 
                                     onClick={() => handleToggleLike(item.id)}
