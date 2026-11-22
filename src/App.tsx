@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2, Camera, MapPin } from 'lucide-react';
+import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2, MapPin } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -984,26 +984,26 @@ export default function App() {
                                       </p>
                                     </a>
 
-                                    {/* KLIN Card */}
+                                    {/* NØVA Card */}
                                     <a
-                                      href="https://klinhq.pages.dev/"
+                                      href="https://novamaxing.pages.dev/"
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       className="bg-white/40 backdrop-blur-md border border-black/10 p-3 rounded-none relative overflow-hidden text-left flex flex-col justify-between gap-2 shadow-xs hover:bg-white/60 transition-colors"
                                     >
-                                      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-transparent opacity-50 blur-xl -z-10" />
+                                      <div className="absolute inset-0 bg-gradient-to-br from-neutral-500/10 via-stone-500/10 to-transparent opacity-50 blur-xl -z-10" />
                                       <div className="flex flex-col items-start gap-1.5">
                                         <img
-                                          src="assets/logos/klin-mark.png"
-                                          alt="KLIN"
-                                          className="w-9 h-9 object-contain shrink-0"
+                                          src="assets/logos/nova-mark.png"
+                                          alt="NØVA"
+                                          className="w-9 h-9 object-contain shrink-0 rounded-xs"
                                         />
                                         <span className="text-xs font-bold text-black tracking-tight">
-                                          KLIN
+                                          NØVA
                                         </span>
                                       </div>
                                       <p className="text-[10px] text-black/55 leading-tight">
-                                        Small, clear first steps. 12 digital explorations
+                                        Go Beyond. Simple digital services & explorations
                                       </p>
                                     </a>
                                   </div>
@@ -1111,12 +1111,6 @@ export default function App() {
 
                       {/* Clean Visual Media Feed — below the certificates */}
                       <section className="w-full max-w-[976px] mt-4 order-5 sm:order-5 min-w-0">
-                        {/* Section Header */}
-                        <div className="flex items-center gap-2.5 w-full mb-4">
-                          <Camera size={16} strokeWidth={1.8} className="shrink-0 text-black/60" aria-hidden="true" />
-                          <h2 className="text-sm font-bold tracking-tight text-black">Camera roll</h2>
-                        </div>
-
                         <div className="flex flex-row flex-wrap items-start justify-start gap-8 w-full">
                           {mediaItems.map((item) => {
                             const isLiked = !!likedPosts[item.id];
