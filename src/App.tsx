@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2, MapPin } from 'lucide-react';
+import { Instagram, Mail, Check, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Heart, MessageCircle, Send, Eye, Pencil, Trash2 } from 'lucide-react';
 import { TextShimmer } from './components/TextShimmer';
 import ResponsiveHeroBanner from './components/ResponsiveHeroBanner';
 import { LiquidMetalButton } from './components/LiquidMetalButton';
@@ -1133,7 +1133,7 @@ export default function App() {
                             <motion.div
                               key={item.id}
                               variants={cardVariants}
-                              className="flex flex-col max-w-[210px] w-auto text-left shrink-0"
+                              className="group relative flex flex-col max-w-[210px] w-auto text-left shrink-0"
                             >
                               {/* Media Image with Double-Tap to Like (Adaptive natural aspect ratio, no container constraints) */}
                               <div 
@@ -1237,6 +1237,16 @@ export default function App() {
                                   />
                                 )}
 
+                                {/* Location Tag turned 90° clockwise, seamlessly attached to right edge, visible on hover */}
+                                {item.location && (
+                                  <div className="absolute right-0 top-3 translate-x-full origin-top-left rotate-90 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-30">
+                                    <div className="inline-flex items-center gap-1.5 text-[9px] font-medium tracking-tight text-black/75 bg-white/90 backdrop-blur-md border border-black/10 border-l-0 rounded-r-full px-2 py-0.5 shadow-xs whitespace-nowrap select-none">
+                                      {item.flag && <span className="text-[10px] leading-none -rotate-90">{item.flag}</span>}
+                                      <span>{item.location}</span>
+                                    </div>
+                                  </div>
+                                )}
+
                                 {/* Heart burst on double-tap */}
                                 <AnimatePresence>
                                   {isHeartAnim && (
@@ -1254,33 +1264,24 @@ export default function App() {
                               </div>
 
                               {/* Buttons starting directly flush with the image left edge */}
-                              <div className="pt-2 flex flex-col gap-1 w-full">
+                              <div className="pt-1 flex flex-col gap-0 w-full">
                                 {/* Date & Time Added */}
                                 {item.date && (
-                                  <div className="text-[10px] text-black/40 font-medium tracking-tight select-none">
+                                  <div className="text-[9px] text-black/35 font-medium tracking-tight select-none leading-tight">
                                     {item.date}
                                   </div>
                                 )}
 
-                                {/* Description / Caption & Location Tag (below date & time, above buttons) */}
-                                {(item.caption || item.location) && (
-                                  <div className="flex flex-col gap-1 text-left mb-0.5 select-none">
-                                    {item.caption && (
-                                      <p className="text-[11px] font-semibold text-black/85 leading-snug tracking-tight">
-                                        {item.caption}
-                                      </p>
-                                    )}
-                                    {item.location && (
-                                      <div className="inline-flex items-center gap-1.5 text-[10px] text-black/65 font-medium tracking-tight bg-black/[0.04] border border-black/5 rounded-full px-2.5 py-0.5 w-fit">
-                                        {item.flag && <span className="text-[11px] leading-none">{item.flag}</span>}
-                                        <MapPin size={10} strokeWidth={2} className="text-black/45 shrink-0" />
-                                        <span>{item.location}</span>
-                                      </div>
-                                    )}
+                                {/* Description / Caption (flush with date & image) */}
+                                {item.caption && (
+                                  <div className="text-left select-none leading-snug">
+                                    <p className="text-[11px] font-semibold text-black/85 tracking-tight">
+                                      {item.caption}
+                                    </p>
                                   </div>
                                 )}
 
-                                <div className="flex items-center gap-2.5 pt-0.5">
+                                <div className="flex items-center gap-2.5 pt-1.5">
                                   {/* Heart Button with like count beside it */}
                                   <button 
                                     onClick={() => handleToggleLike(item.id)}
