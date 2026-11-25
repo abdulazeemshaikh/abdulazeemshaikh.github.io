@@ -1256,11 +1256,11 @@ export default function App() {
 
                               {/* Location tag — vertical pill attached outside the post's bottom-right edge */}
                               {item.location && (
-                                <div className="pointer-events-none absolute bottom-0 left-full z-30 -translate-x-2 opacity-0 transition-all duration-500 ease-out group-hover:translate-x-0 group-hover:opacity-100 max-sm:translate-x-0 max-sm:opacity-100">
-                                  <div className="flex flex-col items-center gap-1.5 rounded-r-[10px] bg-white/95 backdrop-blur-md px-1.5 pt-2 pb-1.5 shadow-[0_1px_6px_rgba(0,0,0,0.06)] whitespace-nowrap select-none">
+                                <div className="pointer-events-none absolute bottom-3 left-full z-30 -translate-x-2 opacity-0 transition-all duration-500 ease-out group-hover:translate-x-0 group-hover:opacity-100 max-sm:translate-x-0 max-sm:opacity-100">
+                                  <div className="flex flex-col items-center gap-2 rounded-r-[8px] bg-neutral-100 px-1.5 py-2 whitespace-nowrap select-none">
                                     {item.flag && <span className="text-[10px] leading-none">{item.flag}</span>}
                                     <span
-                                      className="text-[9px] font-medium tracking-tight text-black/75"
+                                      className="text-[9px] font-medium tracking-tight text-black/70"
                                       style={{ writingMode: 'vertical-rl' }}
                                     >
                                       {item.location}
