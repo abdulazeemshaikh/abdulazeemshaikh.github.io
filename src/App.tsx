@@ -1136,6 +1136,7 @@ export default function App() {
                               className="group relative flex flex-col max-w-[210px] w-auto text-left shrink-0"
                             >
                               {/* Media Image with Double-Tap to Like (Adaptive natural aspect ratio, no container constraints) */}
+                              <div className="relative inline-block">
                               <div 
                                 className="relative inline-block overflow-hidden cursor-pointer select-none"
                                 onClick={() => {
@@ -1237,21 +1238,6 @@ export default function App() {
                                   />
                                 )}
 
-                                {/* Location tag — vertical pill attached to the bottom-right edge, slides in on hover */}
-                                {item.location && (
-                                  <div className="absolute bottom-0 right-0 z-30 translate-x-full opacity-0 transition-all duration-500 ease-out group-hover:translate-x-0 group-hover:opacity-100 pointer-events-none">
-                                    <div className="flex flex-col items-center gap-1.5 rounded-tl-[10px] rounded-tr-[10px] bg-white/90 backdrop-blur-md px-1.5 pt-2 pb-1.5 shadow-[0_1px_6px_rgba(0,0,0,0.06)] whitespace-nowrap select-none">
-                                      {item.flag && <span className="text-[10px] leading-none">{item.flag}</span>}
-                                      <span
-                                        className="text-[9px] font-medium tracking-tight text-black/75"
-                                        style={{ writingMode: 'vertical-rl' }}
-                                      >
-                                        {item.location}
-                                      </span>
-                                    </div>
-                                  </div>
-                                )}
-
                                 {/* Heart burst on double-tap */}
                                 <AnimatePresence>
                                   {isHeartAnim && (
@@ -1266,6 +1252,22 @@ export default function App() {
                                     </motion.div>
                                   )}
                                 </AnimatePresence>
+                              </div>
+
+                              {/* Location tag — vertical pill attached outside the post's bottom-right edge */}
+                              {item.location && (
+                                <div className="pointer-events-none absolute bottom-0 left-full z-30 -translate-x-2 opacity-0 transition-all duration-500 ease-out group-hover:translate-x-0 group-hover:opacity-100 max-sm:translate-x-0 max-sm:opacity-100">
+                                  <div className="flex flex-col items-center gap-1.5 rounded-r-[10px] bg-white/95 backdrop-blur-md px-1.5 pt-2 pb-1.5 shadow-[0_1px_6px_rgba(0,0,0,0.06)] whitespace-nowrap select-none">
+                                    {item.flag && <span className="text-[10px] leading-none">{item.flag}</span>}
+                                    <span
+                                      className="text-[9px] font-medium tracking-tight text-black/75"
+                                      style={{ writingMode: 'vertical-rl' }}
+                                    >
+                                      {item.location}
+                                    </span>
+                                  </div>
+                                </div>
+                              )}
                               </div>
 
                               {/* Buttons starting directly flush with the image left edge */}
