@@ -1137,8 +1137,8 @@ export default function App() {
                             >
                               {/* Media Image with Double-Tap to Like (Adaptive natural aspect ratio, no container constraints) */}
                               <div className="relative inline-block">
-                              <div 
-                                className="relative inline-block overflow-hidden cursor-pointer select-none"
+                                <div 
+                                  className="relative z-10 inline-block overflow-hidden cursor-pointer select-none"
                                 onClick={() => {
                                   if (mediaClickTimeout.current !== null) return;
                                   mediaClickTimeout.current = window.setTimeout(() => {
@@ -1254,9 +1254,9 @@ export default function App() {
                                 </AnimatePresence>
                               </div>
 
-                              {/* Location tag — vertical pill attached outside the post's bottom-right edge */}
+                              {/* Location tag — vertical pill attached outside the post's bottom-right edge, sliding out from behind the image */}
                               {item.location && (
-                                <div className="pointer-events-none absolute bottom-3 left-full z-30 -translate-x-2 opacity-0 transition-all duration-500 ease-out group-hover:translate-x-0 group-hover:opacity-100 max-sm:translate-x-0 max-sm:opacity-100">
+                                <div className="pointer-events-none absolute bottom-3 left-full z-0 -translate-x-2 opacity-0 transition-all duration-500 ease-out group-hover:translate-x-0 group-hover:opacity-100 max-sm:translate-x-0 max-sm:opacity-100">
                                   <div className="flex flex-col items-center gap-2 rounded-r-[8px] bg-neutral-100 px-1.5 py-2 whitespace-nowrap select-none">
                                     {item.flag && <span className="text-[10px] leading-none">{item.flag}</span>}
                                     <span
