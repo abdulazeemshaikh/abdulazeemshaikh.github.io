@@ -1237,12 +1237,17 @@ export default function App() {
                                   />
                                 )}
 
-                                {/* Location Tag turned 90° clockwise, seamlessly attached to right edge, visible on hover */}
+                                {/* Location tag — vertical pill attached to the bottom-right edge, slides in on hover */}
                                 {item.location && (
-                                  <div className="absolute right-0 top-3 translate-x-full origin-top-left rotate-90 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-30">
-                                    <div className="inline-flex items-center gap-1.5 text-[9px] font-medium tracking-tight text-black/75 bg-white/90 backdrop-blur-md border border-black/10 border-l-0 rounded-r-full px-2 py-0.5 shadow-xs whitespace-nowrap select-none">
-                                      {item.flag && <span className="text-[10px] leading-none -rotate-90">{item.flag}</span>}
-                                      <span>{item.location}</span>
+                                  <div className="absolute bottom-0 right-0 z-30 translate-x-full opacity-0 transition-all duration-500 ease-out group-hover:translate-x-0 group-hover:opacity-100 pointer-events-none">
+                                    <div className="flex flex-col items-center gap-1.5 rounded-tl-[10px] rounded-tr-[10px] bg-white/90 backdrop-blur-md px-1.5 pt-2 pb-1.5 shadow-[0_1px_6px_rgba(0,0,0,0.06)] whitespace-nowrap select-none">
+                                      {item.flag && <span className="text-[10px] leading-none">{item.flag}</span>}
+                                      <span
+                                        className="text-[9px] font-medium tracking-tight text-black/75"
+                                        style={{ writingMode: 'vertical-rl' }}
+                                      >
+                                        {item.location}
+                                      </span>
                                     </div>
                                   </div>
                                 )}
