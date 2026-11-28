@@ -67,7 +67,7 @@ export const CertificatesCarousel: React.FC = () => {
       {/* Header */}
       <div className="flex items-center gap-2.5 w-full mb-4">
         <Award size={16} strokeWidth={1.8} className="shrink-0 text-black/60" aria-hidden="true" />
-        <h2 className="text-sm font-bold tracking-tight text-black">Certificates</h2>
+        <h2 className="text-sm font-bold tracking-tight text-black">Certificates ({CERTIFICATES.length})</h2>
 
         <div className="flex items-center gap-1.5 shrink-0">
           <button

@@ -1110,9 +1110,6 @@ export default function App() {
                         )}
                       </div>
 
-                      {/* Certificates carousel — below the Zivai card */}
-                      <CertificatesCarousel />
-
                       {/* Clean Visual Media Feed — below the certificates */}
                       <section className="w-full max-w-[976px] mt-4 order-5 sm:order-5 min-w-0">
                         <div className="flex flex-row flex-wrap items-start justify-start gap-8 w-full">
@@ -1470,6 +1467,9 @@ export default function App() {
                         })}
                         </div>
                       </section>
+
+                      {/* Certificates carousel — below the media posts */}
+                      <CertificatesCarousel />
 
                     </motion.div>
 
