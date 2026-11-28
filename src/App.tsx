@@ -7,7 +7,6 @@ import { LiquidMetalButton } from './components/LiquidMetalButton';
 import { UnicornBackground } from './components/UnicornBackground';
 import { SplineBackground } from './components/SplineBackground';
 import CertificatesCarousel from './components/CertificatesCarousel';
-import ArcCarousel from './components/ui/cue-chained-spring-arc-carousel';
 import { GlossCluster } from './components/ui/gloss-cluster';
 // ...
 
@@ -1469,13 +1468,6 @@ export default function App() {
                             </motion.div>
                           );
                         })}
-                        </div>
-                      </section>
-
-                      {/* Chained Spring Arc Carousel — interactive certificate showcase */}
-                      <section className="w-full max-w-[976px] mt-12 order-5 sm:order-5 min-w-0">
-                        <div className="relative h-[500px] w-full">
-                          <ArcCarousel />
                         </div>
                       </section>
 
