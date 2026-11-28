@@ -7,6 +7,7 @@ import { LiquidMetalButton } from './components/LiquidMetalButton';
 import { UnicornBackground } from './components/UnicornBackground';
 import { SplineBackground } from './components/SplineBackground';
 import CertificatesCarousel from './components/CertificatesCarousel';
+import ArcCarousel from './components/ui/cue-chained-spring-arc-carousel';
 import { GlossCluster } from './components/ui/gloss-cluster';
 // ...
 
@@ -1112,6 +1113,13 @@ export default function App() {
 
                       {/* Certificates carousel — below the Zivai card */}
                       <CertificatesCarousel />
+
+                      {/* Chained Spring Arc Carousel — interactive certificate showcase */}
+                      <section className="w-full max-w-[976px] mt-12 order-4 sm:order-4 min-w-0">
+                        <div className="relative h-[600px] w-full">
+                          <ArcCarousel />
+                        </div>
+                      </section>
 
                       {/* Clean Visual Media Feed — below the certificates */}
                       <section className="w-full max-w-[976px] mt-4 order-5 sm:order-5 min-w-0">
