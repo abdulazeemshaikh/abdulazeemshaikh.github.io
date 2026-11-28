@@ -1114,13 +1114,6 @@ export default function App() {
                       {/* Certificates carousel — below the Zivai card */}
                       <CertificatesCarousel />
 
-                      {/* Chained Spring Arc Carousel — interactive certificate showcase */}
-                      <section className="w-full max-w-[976px] mt-12 order-4 sm:order-4 min-w-0">
-                        <div className="relative h-[600px] w-full">
-                          <ArcCarousel />
-                        </div>
-                      </section>
-
                       {/* Clean Visual Media Feed — below the certificates */}
                       <section className="w-full max-w-[976px] mt-4 order-5 sm:order-5 min-w-0">
                         <div className="flex flex-row flex-wrap items-start justify-start gap-8 w-full">
@@ -1478,6 +1471,14 @@ export default function App() {
                         })}
                         </div>
                       </section>
+
+                      {/* Chained Spring Arc Carousel — interactive certificate showcase */}
+                      <section className="w-full max-w-[976px] mt-12 order-5 sm:order-5 min-w-0">
+                        <div className="relative h-[500px] w-full">
+                          <ArcCarousel />
+                        </div>
+                      </section>
+
                     </motion.div>
 
                   </div>

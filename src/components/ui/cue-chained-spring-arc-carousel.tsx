@@ -74,8 +74,6 @@ export default function ArcCarousel({
   stiffness = 0.2,
   damping = 0.4,
 }: ArcCarouselProps) {
-  const [focusedIndex, setFocusedIndex] = useState(initialIndex);
-  const [labelVisible, setLabelVisible] = useState(false);
 
   const cardsElRef = useRef<Array<HTMLDivElement | null>>([]);
   const rafRef = useRef<number | null>(null);
@@ -93,7 +91,11 @@ export default function ArcCarousel({
   // Seed z-index once on mount
   useEffect(() => {
     cardsElRef.current.forEach((el, i) => {
-      if (el) el.style.zIndex = String(images.length - Math.abs(i - initialIndex));
+      if (el) {
+        el.style.zIndex = String(images.length - Math.abs(i - initialIndex));
+        // Set CSS custom property for z-index layering
+        el.style.setProperty('--card-index', String(Math.abs(i - initialIndex)));
+      }
     });
 
     // Enable fan-out after slide-up arrival
@@ -106,7 +108,6 @@ export default function ArcCarousel({
         c.velocity = 0;
       });
       st.isIntro = false;
-      setLabelVisible(true);
     } else {
       fanTimer = setTimeout(() => { stateRef.current.introFanning = true; }, 1000);
     }
@@ -130,7 +131,6 @@ export default function ArcCarousel({
           }
           if (settled) {
             st.isIntro = false;
-            setLabelVisible(true);
           }
         }
       } else {
@@ -158,14 +158,12 @@ export default function ArcCarousel({
       let closest = 0;
       st.cards.forEach((c, i) => {
         const el = cardsElRef.current[i];
-        if (el) el.style.transform = `rotate(${c.angle}deg) translateY(-800px)`;
+        if (el) el.style.transform = `rotate(${c.angle}deg)`;
         if (Math.abs(c.angle) < minAbs) {
           minAbs = Math.abs(c.angle);
           closest = i;
         }
       });
-
-      if (!st.isIntro) setFocusedIndex(prev => prev === closest ? prev : closest);
 
       rafRef.current = requestAnimationFrame(step);
     };
@@ -195,13 +193,7 @@ export default function ArcCarousel({
     <>
       <style>{CSS}</style>
 
-      <div className="ac-global-label" style={{ opacity: labelVisible ? 1 : 0 }}>
-        <div className="ac-gl-num">{String(focusedIndex + 1).padStart(2, '0')}</div>
-        <div className="ac-gl-name">{labels[focusedIndex]}</div>
-      </div>
-
       <div className="ac-carousel-wrapper">
-        <div className="ac-arch" />
         <div className="ac-pivot">
           {images.map((src, i) => (
             <div key={i} className="ac-card" ref={el => (cardsElRef.current[i] = el)}>
@@ -216,43 +208,33 @@ export default function ArcCarousel({
 
 const CSS = `
 .ac-carousel-wrapper {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  position: relative;
+  width: 100%;
+  max-width: 976px;
+  margin: 0 auto;
   display: flex; justify-content: center; align-items: center;
   font-family: 'Inter', sans-serif;
-  overflow: hidden;
-}
-
-.ac-arch {
-  position: absolute;
-  bottom: -600px;
-  width: 1600px; height: 800px;
-  background: #d4d4d4;
-  border-radius: 50% 50% 0 0;
-  z-index: 1;
+  overflow: visible;
+  height: 500px;
 }
 
 .ac-pivot {
-  position: absolute;
-  bottom: -600px;
-  width: 0; height: 0;
-  z-index: 5;
-  transform: translateY(100vh);
-  opacity: 0;
-  animation: ac-slideUpArrival 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes ac-slideUpArrival {
-  to { transform: translateY(0); opacity: 1; }
+  position: relative;
+  width: 100%;
+  height: 500px;
+  display: flex; justify-content: center; align-items: flex-end;
 }
 
 .ac-card {
   position: absolute;
   width: 220px; height: 340px;
-  left: -110px;
-  bottom: -170px;
+  left: 50%;
+  transform-origin: center bottom;
+  margin-left: -110px;
+  bottom: 0;
   will-change: transform;
   display: flex; justify-content: center;
+  z-index: calc(10 - var(--card-index, 0));
 }
 
 .ac-card-inner {
@@ -270,27 +252,12 @@ const CSS = `
   box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 
-.ac-global-label {
-  position: fixed;
-  top: 12%; left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center;
-  gap: 8px;
-  z-index: 20;
-  text-align: center;
-  transition: opacity 0.8s ease;
-  font-family: 'Inter', sans-serif;
-}
-.ac-gl-num  { font-size: 56px; font-weight: 300; color: #111; letter-spacing: -2px; line-height: 1; }
-.ac-gl-name { font-size: 13px; font-weight: 600; color: #777; text-transform: uppercase; letter-spacing: 5px; }
-
 @media (max-width: 900px) {
-  .ac-card { width: 160px; height: 240px; left: -80px; bottom: -120px; }
-  .ac-arch { width: 1200px; height: 600px; bottom: -450px; }
-  .ac-pivot { bottom: -450px; }
+  .ac-carousel-wrapper { height: 400px; }
+  .ac-pivot { height: 400px; }
+  .ac-card { width: 160px; height: 240px; margin-left: -80px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ac-pivot { animation: none !important; opacity: 1 !important; transform: none !important; }
   .ac-card-inner { transition: none !important; }
 }
 `;
